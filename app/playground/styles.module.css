@@ -1,0 +1,34 @@
+/* .container {
+  height: calc(100vh - 3rem);
+}
+.panel__top {
+  padding: 0 !important;
+  width: 100% !important;
+  display: flex !important;
+  position: initial !important;
+  justify-content: center !important;
+  justify-content: space-between !important;
+}
+.panel__basic__actions {
+  position: initial !important;
+}
+.editor__row {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  flex-wrap: nowrap !important;
+  height: 100%;
+}
+
+.editor__canvas {
+  flex-grow: 1 !important;
+}
+
+.panel__right {
+  flex-basis: 20rem !important;
+  position: relative !important;
+  overflow-y: scroll !important;
+}
+.panel__switcher {
+  position: initial !important;
+} */

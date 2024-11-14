@@ -1,0 +1,10 @@
+.paginateContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.paginateButton {
+  cursor: pointer;
+  padding-inline: 0.6rem;
+}
