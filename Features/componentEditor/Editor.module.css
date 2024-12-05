@@ -1,17 +1,15 @@
-/* .container {
-  height: calc(100vh - 3rem);
+.container {
+  height: calc(100vh - 5.2rem);
 }
 .panel__top {
   padding: 0 !important;
   width: 100% !important;
   display: flex !important;
   position: initial !important;
-  justify-content: center !important;
+  align-items: center !important;
   justify-content: space-between !important;
 }
-.panel__basic__actions {
-  position: initial !important;
-}
+
 .editor__row {
   display: flex !important;
   justify-content: flex-start !important;
@@ -19,7 +17,6 @@
   flex-wrap: nowrap !important;
   height: 100%;
 }
-
 .editor__canvas {
   flex-grow: 1 !important;
 }
@@ -29,6 +26,19 @@
   position: relative !important;
   overflow-y: scroll !important;
 }
-.panel__switcher {
+.panel__switcher,
+.panel__basic__actions,
+.panel__device_manager,
+.panel__basic__left,
+.panel__basic__middle,
+.panel__basic__right {
   position: initial !important;
-} */
+}
+.panel__basic__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & > :not(:last-of-type) {
+    border-right: 1px solid #ddddddb0;
+  }
+}

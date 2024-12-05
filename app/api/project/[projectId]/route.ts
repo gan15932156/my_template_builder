@@ -134,7 +134,8 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ projectId: string }> }
 ) {
-  if (!(await params).projectId) {
+  const projectId = (await params).projectId;
+  if (!projectId) {
     return Response.json(
       {
         success: false,
@@ -144,20 +145,47 @@ export async function GET(
       { status: 404 }
     );
   }
-  return Response.json(
-    {
-      success: true,
-      data: MOCK_PROJECT_DATA,
-      message: "Success",
-    },
-    { status: 200 }
-  );
+  try {
+    const res = await db.project.findUnique({ where: { id: projectId } });
+    if (res?.data) {
+      return Response.json(
+        {
+          success: true,
+          data: res?.data,
+          message: "Success",
+        },
+        { status: 200 }
+      );
+    } else {
+      return Response.json(
+        {
+          success: true,
+          data: {},
+          message: "Success",
+        },
+        { status: 200 }
+      );
+    }
+  } catch (error) {
+    console.error("Error on select project", error);
+    return Response.json(
+      {
+        success: false,
+        message: "Fail to select project",
+        data: {},
+      },
+      { status: 500 }
+    );
+  } finally {
+    await db.$disconnect();
+  }
 }
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ projectId: string }> }
 ) {
-  if (!(await params).projectId) {
+  const projectId = (await params).projectId;
+  if (!projectId) {
     return Response.json(
       {
         success: false,
@@ -166,26 +194,46 @@ export async function POST(
       { status: 404 }
     );
   }
-  const body = await request.json();
-  // จะสร้าง project โดยใช้ projectId อย่างงั้นหรือ ????? 5555 บ้าหรือเปล่า
-  const upsertedProject = await db.project.upsert({
-    where: {
-      id: (await params).projectId,
-    },
-    update: {
-      data: body,
-    },
-    create: {
-      data: body,
-    },
-  });
-
-  return Response.json(
-    {
-      success: true,
-      message: "Success",
-      data: upsertedProject,
-    },
-    { status: 200 }
-  );
+  try {
+    const body = await request.json();
+    const res = await db.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        data: body,
+      },
+    });
+    if (res) {
+      return Response.json(
+        {
+          success: true,
+          message: "Success",
+          data: res.data,
+        },
+        { status: 200 }
+      );
+    } else {
+      return Response.json(
+        {
+          success: false,
+          message: "Fail to update project",
+          data: {},
+        },
+        { status: 500 }
+      );
+    }
+  } catch (error) {
+    console.error("Error on update project", error);
+    return Response.json(
+      {
+        success: false,
+        message: "Fail to update project",
+        data: {},
+      },
+      { status: 500 }
+    );
+  } finally {
+    await db.$disconnect();
+  }
 }

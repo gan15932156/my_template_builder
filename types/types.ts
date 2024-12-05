@@ -1,3 +1,4 @@
+import { TComponentCategoryEnum } from "./../zodObject/index";
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -9,4 +10,18 @@ export interface IProject {
   name?: string;
   createdAt: string;
   status: ProjectStatus;
+}
+export interface IComponent {
+  id: string;
+  name?: string;
+  createdAt: string;
+  status: ProjectStatus;
+  category: TComponentCategoryEnum;
+}
+export interface IComponentBody {
+  id: string;
+  name?: string;
+  html: string;
+  css: string;
+  category: TComponentCategoryEnum;
 }

@@ -1,11 +1,6 @@
 import { cloudinary } from "@/config/cloudinary-config";
-import { generateSignature, uploadFiles } from "@/utils/mediaUtils";
-import { generateSHA1 } from "@/utils/utils";
-// export const config = {
-//   api: {
-//     bodyParser: false,
-//   },
-// };
+import { uploadFiles } from "@/utils/mediaUtils";
+
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ projectId: string }> }

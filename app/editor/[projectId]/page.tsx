@@ -1,11 +1,12 @@
-import Test from "../../components/Test";
+import ProjectEditor from "@/Features/projectEditor/ProjectEditor";
+
 const EditorPage = async ({
   params,
 }: {
   params: Promise<{ projectId: string }>;
 }) => {
   const projectId = (await params).projectId;
-  return <Test projectId={projectId} />;
+  return <ProjectEditor projectId={projectId} />;
 };
 
 export default EditorPage;

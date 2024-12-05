@@ -1,4 +1,4 @@
-import Dashboard from "@/Features/dashboard/Dashboard";
+import Dashboard from "@/Features/projectEditor/Dashboard";
 
 export default function Home() {
   return <Dashboard />;

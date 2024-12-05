@@ -16,12 +16,28 @@ enum ProjectStatus {
   INACTIVE
 }
 
+enum ComponentCategory {
+  COMPONENT
+  SECTION
+  PAGE
+}
+
 model Project {
+  id            String          @id @default(cuid())
+  name          String?
+  data          Json?
+  status        ProjectStatus @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Component {
     id            String          @id @default(cuid())
     name          String?
-    data          Json?
+    html          String?
+    css          String?
     status        ProjectStatus @default(ACTIVE)
+    category      ComponentCategory @default(COMPONENT)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
-

@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import grapesjs, { Editor } from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
-import styles from "../editor/styles.module.css";
+import styles from "./ProjectEditor.module.css";
 import basicBlockPlugin from "grapesjs-blocks-basic";
 import formBlockPlugin from "grapesjs-plugin-forms";
 import {
@@ -12,14 +12,16 @@ import {
   layerManager,
   panels,
   selectorManager,
-  styleManager,
   traitManager,
 } from "@/config/gjs-config";
-import { callSaveProject } from "@/fetcher/gjs";
+import { saveProject } from "@/fetcher/gjs";
+import { templateBlock } from "@/plugins/block-template";
+import { styleManager } from "@/config/gjs-style-manager-config";
+import InfoField from "./InfoField";
 interface Props {
   projectId: string;
 }
-const Test: React.FC<Props> = ({ projectId }) => {
+const ProjectEditor: React.FC<Props> = ({ projectId }) => {
   const [editor, setEditor] = useState<Editor | null>(null);
   // https://fontawesome.com/v4/icons/
   const storageApiPath = useMemo(
@@ -27,9 +29,11 @@ const Test: React.FC<Props> = ({ projectId }) => {
     [projectId]
   );
 
-  const assetApiPath = useMemo(() => `/api/project/${projectId}`, [projectId]);
+  const assetApiPath = useMemo(
+    () => `/api/editor/${projectId}/media`,
+    [projectId]
+  );
   useEffect(() => {
-    console.log("call");
     const editorInstance = grapesjs.init({
       container: "#gjs",
       fromElement: true,
@@ -46,7 +50,14 @@ const Test: React.FC<Props> = ({ projectId }) => {
             onLoad: (result) => {
               // can check result is exist before set project data
               if (result.data) {
-                return result.data;
+                const projectData = {
+                  ...result.data,
+                  assets: [
+                    ...result.data.assets,
+                    "https://placehold.co/600x400",
+                  ],
+                };
+                return projectData;
               } else {
                 return {};
               }
@@ -102,6 +113,7 @@ const Test: React.FC<Props> = ({ projectId }) => {
       traitManager: traitManager,
       panels: panels,
       plugins: [
+        (editor) => templateBlock(editor),
         (editor) => basicBlockPlugin(editor, {}),
         (editor) => formBlockPlugin(editor, {}),
       ],
@@ -114,18 +126,25 @@ const Test: React.FC<Props> = ({ projectId }) => {
         {
           id: "save",
           attributes: { class: "fa fa-floppy-o", title: "Save" },
-          async command(editor: any) {
+          async command(editor: Editor) {
             const projectData = editor.getProjectData();
-            // console.log(JSON.stringify(projectData));
-            const res = await callSaveProject(storageApiPath, projectData);
-            console.log(res);
+            const res = await saveProject(storageApiPath, projectData);
+            editor.loadProjectData(res.data);
           },
         },
         {
           id: "export",
           attributes: { class: "fa fa-upload", title: "Export" },
-          command(editor: any) {
-            console.log(editor.Commands.getAll());
+          command(editor: Editor) {
+            const pagesHtml = editor.Pages.getAll().map((page) => {
+              const component = page.getMainComponent();
+              // avoidProtected: true is mean don't include css reset like *{margin:0}
+              return {
+                html: editor.getHtml({ component }),
+                css: editor.getCss({ component, avoidProtected: true }),
+              };
+            });
+            console.log(pagesHtml);
           },
         },
       ],
@@ -148,7 +167,11 @@ const Test: React.FC<Props> = ({ projectId }) => {
       // call save function
     });
     setEditor(editorInstance);
-  }, []);
+    return () => {
+      editorInstance.destroy();
+      setEditor(null);
+    };
+  }, [projectId]);
   return (
     <div className={styles.container}>
       <div id="panel__top" className={styles.panel__top}>
@@ -182,14 +205,17 @@ const Test: React.FC<Props> = ({ projectId }) => {
         <div id="panel__right" className={styles.panel__right}>
           <div className="layers-container"></div>
           <div className="styles-container">
+            <div className="traits-container"></div>
             <div className="selector-container"></div>
           </div>
           <div className="blocks-container"></div>
-          <div className="traits-container"></div>
+          <div className="settings-container">
+            <InfoField id={projectId} />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Test;
+export default ProjectEditor;

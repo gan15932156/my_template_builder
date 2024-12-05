@@ -2,32 +2,43 @@
 
 import Badge from "@/app/components/Badge";
 import BaseTableHeader from "@/app/components/BaseTableHeader";
-import ActionColumn from "@/Features/projectEditor/ActionColumn";
-import { ApiResponse, IProject, ProjectStatus } from "@/types/types";
+import ActionColumn from "@/Features/componentEditor/ActionColumn";
+import CategoryColumn from "@/Features/componentEditor/CategoryColumn";
+import { ApiResponse, IComponent } from "@/types/types";
 import { formattedDate } from "@/utils";
-import { searchParamsSchema, searchParamsSchemaType } from "@/zodObject";
+import {
+  searchParamsSchema,
+  searchParamsSchemaType,
+  TComponentCategoryEnum,
+} from "@/zodObject";
+import { ProjectStatus } from "@prisma/client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { useSearchParams } from "next/navigation";
-const fetchProjects = async (
+
+const componentCategoryText = {
+  CATEGORY: "Category",
+  SECTION: "Section",
+  PAGE: "Page",
+};
+const fetchComponents = async (
   searchParams: searchParamsSchemaType
-): Promise<ApiResponse<{ projects: IProject[]; pageCount: number }>> => {
+): Promise<ApiResponse<{ components: IComponent[]; pageCount: number }>> => {
   const { page, per_page } = searchParams;
   const offset = (page - 1) * per_page;
-  const apiPath = `/api/project?offset=${offset}&limit=${per_page}`;
+  const apiPath = `/api/component?offset=${offset}&limit=${per_page}`;
   return fetch(apiPath, { method: "GET" }).then((response) => response.json());
 };
-
-const useProjectTableData = () => {
+const useComponentTableData = () => {
   const searchParams = useSearchParams();
   const search = searchParamsSchema.parse(Object.fromEntries(searchParams));
   const { data, isError, isLoading } = useQuery({
-    queryKey: ["projects", search],
-    queryFn: () => fetchProjects(search),
+    queryKey: ["components", search],
+    queryFn: () => fetchComponents(search),
     placeholderData: keepPreviousData,
     select: (data) => data.data,
   });
-  const columns: ColumnDef<IProject, any>[] = [
+  const columns: ColumnDef<IComponent, any>[] = [
     {
       id: "no",
       header: () => <BaseTableHeader text={"No."} />,
@@ -56,6 +67,24 @@ const useProjectTableData = () => {
       ),
     },
     {
+      id: "category",
+      accessorKey: "category",
+      header: () => "Category",
+      cell: (info) => (
+        <div style={{ textAlign: "center" }}>
+          <span style={{ textTransform: "capitalize" }}>
+            {info.getValue<TComponentCategoryEnum>().toString() == "COMPONENT"
+              ? "Component"
+              : info.getValue<TComponentCategoryEnum>().toString() == "SECTION"
+              ? "Section"
+              : info.getValue<TComponentCategoryEnum>().toString() == "PAGE"
+              ? "Page"
+              : ""}
+          </span>
+        </div>
+      ),
+    },
+    {
       id: "status",
       accessorKey: "status",
       header: () => "Status",
@@ -79,4 +108,4 @@ const useProjectTableData = () => {
   return { columns, data, isError, isLoading };
 };
 
-export default useProjectTableData;
+export default useComponentTableData;
