@@ -26,6 +26,7 @@ export const templateBlock = (editor: Editor) => {
       if (template.html) {
         blockManager.add(template.id, {
           label: template.name || "-",
+          media: `<img style="height:100px;width:100px;object-fit:contain;" src=${template.imageUrl} alt="Test image"/>`,
           content: `${template.html}<style>${template.css}</style>`,
           category: template.category,
         });
@@ -35,35 +36,4 @@ export const templateBlock = (editor: Editor) => {
   editor.on("load", () => {
     populateBlocks();
   });
-  // editor.Blocks.add("my-first-block", {
-  //   label: "Simple block",
-  //   category: "Custom block",
-  //   content: {
-  //     type: "text",
-  //     style: { color: "#d983a6", padding: "10px", "background-color": "red" },
-  //     attributes: { id: "ikjl" },
-  //     components: [
-  //       {
-  //         type: "textnode",
-  //         content: "Insert your text here",
-  //       },
-  //     ],
-  //   },
-  // });
-  // editor.Blocks.add("my-second-block", {
-  //   label: "Test block",
-  //   category: "Custom block",
-  //   content: `
-  //               <div id="test123456" class="test">Initial content</div><div id="ikjl-2">Insert your text here</div><div id="ikjl-4">Insert your text here</div>
-  //               <style>.test{color:red;}#ikjl-2{color:#d983a6;padding:10px;background-color:red;}#ikjl-4{color:#d983a6;padding:10px;background-color:red;}</style>
-  //             `,
-  // });
-  // editor.Blocks.add("my-third-block", {
-  //   label: "Test block 2",
-  //   category: "Custom block",
-  //   content: `
-  //               <div class="gjs-row" id="i9qi"><div class="gjs-cell"><div id="i7mj">Insert your text here</div></div></div>
-  //               <style>.gjs-row{display:table;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;width:100%;}.gjs-cell{width:8%;display:table-cell;height:75px;}#i7mj{padding:10px;}@media (max-width: 768px){.gjs-cell{width:100%;display:block;}}</style>
-  //             `,
-  // });
 };

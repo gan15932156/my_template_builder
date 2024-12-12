@@ -2,10 +2,23 @@
 :root {
   --background: #fff6e3;
   --foreground: #112a46;
+  --success100: #d4edda;
+  --success200: #a9dcb5;
+  --success300: #7eca8f;
+  --success400: #53b96a;
   --success: #28a745;
+  --success600: #208637;
+  --success700: #186429;
+  --success800: #10431c;
   --danger: #dc3545;
   --warning: #ffc107;
+  --primary700: #004392;
+  --primary600: #005ac2;
   --primary: #0070f3;
+  --primary400: #338df5;
+  --primary300: #66a9f8;
+  --primary200: #99c6fa;
+  --primary100: #cce2fd;
 }
 *,
 *::before,

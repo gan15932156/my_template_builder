@@ -21,6 +21,7 @@
     "grapesjs-blocks-basic": "^1.0.2",
     "grapesjs-plugin-forms": "^2.0.6",
     "grapesjs-preset-webpage": "^1.0.3",
+    "html2canvas": "^1.4.1",
     "next": "15.0.1",
     "prisma": "^5.22.0",
     "react": "19.0.0-rc-69d4b800-20241021",

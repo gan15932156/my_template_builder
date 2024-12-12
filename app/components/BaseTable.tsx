@@ -7,7 +7,7 @@ interface Props<TData> {
 const BaseTable = <TData,>({ table }: Props<TData>) => {
   // https://www.youtube.com/watch?v=EaTNDGrCYIU&t=1640s
   return (
-    <div>
+    <div className={styles.container}>
       <table className={styles.table}>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

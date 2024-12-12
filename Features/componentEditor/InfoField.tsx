@@ -24,8 +24,8 @@ const fetchComponent = async (
 };
 const InfoField: React.FC<Props> = ({ id }) => {
   const queryClient = useQueryClient();
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [name, setName] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const {
     data,
     isError,
@@ -62,7 +62,7 @@ const InfoField: React.FC<Props> = ({ id }) => {
     },
   });
   const handleNameFieldOnBlue = (e: React.FocusEvent<HTMLInputElement>) => {
-    mutation.mutate({ name, category });
+    mutation.mutate({ name: name || "", category });
   };
   const handleNameFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -71,7 +71,7 @@ const InfoField: React.FC<Props> = ({ id }) => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = event.target.value;
     setCategory(newCategory);
-    mutation.mutate({ name, category: newCategory });
+    mutation.mutate({ name: name || "", category: newCategory });
   };
   useEffect(() => {
     if (data && data.data) {
@@ -101,19 +101,31 @@ const InfoField: React.FC<Props> = ({ id }) => {
           disabled={isFetchLoading || mutation.isPending}
           id={"name"}
         />
-        <div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.4rem",
+          }}
+        >
           <label htmlFor={"dropdown"}>Category</label>
           <select
             id="dropdown"
             disabled={isFetchLoading || mutation.isPending}
             value={category}
             onChange={handleSelectChange}
-            //   style={{
-            //     padding: "4px",
-            //     borderRadius: "4px",
-            //     border: "1px solid #ccc",
-            //     minWidth: "80px",
-            //   }}
+            style={{
+              appearance: "none",
+              border: "none",
+              borderRadius: "2px",
+              boxShadow: "none",
+              width: "100%",
+              padding: "5px",
+              fontSize: "0.75rem",
+              backgroundColor: "rgba(0,0,0,0.2)",
+              color: "#ddd",
+            }}
           >
             <option value="" disabled>
               -- Choose an category --

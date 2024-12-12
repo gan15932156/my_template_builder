@@ -15,7 +15,7 @@ const fetchProject = async (
 };
 const InfoField: React.FC<Props> = ({ id }) => {
   const queryClient = useQueryClient();
-  const [name, setName] = useState("");
+  const [name, setName] = useState<string>("");
   const {
     data,
     isError,
@@ -53,7 +53,7 @@ const InfoField: React.FC<Props> = ({ id }) => {
   });
   const handleNameFieldOnBlue = (e: React.FocusEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    mutation.mutate(value);
+    mutation.mutate(value || "");
   };
   const handleNameFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;

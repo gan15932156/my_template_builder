@@ -16,7 +16,7 @@
   display: block;
   &:before {
     content: "";
-    border-bottom: solid 1px #5caaef;
+    border-bottom: solid 1px var(--primary);
     position: absolute;
     bottom: 0;
     left: 0;
@@ -31,13 +31,13 @@
   transition: all 0.2s ease;
 }
 .link:hover {
-  color: #5caaef;
+  color: var(--primary);
   &:before {
     opacity: 1;
   }
 }
 .link.active {
-  color: #5caaef;
+  color: var(--primary);
   &:before {
     opacity: 1;
   }

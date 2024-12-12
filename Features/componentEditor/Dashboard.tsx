@@ -5,10 +5,7 @@ import Table from "./Table";
 const Dashboard: React.FC = () => {
   return (
     <div className={styles.container}>
-      <p>[Dashbaord component display]</p>
-      <div className={styles.butttonContainer}>
-        <CreateButton />
-      </div>
+      <CreateButton />
       <Table />
     </div>
   );

@@ -14,10 +14,11 @@ import {
   selectorManager,
   traitManager,
 } from "@/config/gjs-config";
-import { saveProject } from "@/fetcher/gjs";
 import { templateBlock } from "@/plugins/block-template";
 import { styleManager } from "@/config/gjs-style-manager-config";
 import InfoField from "./InfoField";
+import { update } from "./utils";
+import { additionStyle } from "@/plugins/additionStyle";
 interface Props {
   projectId: string;
 }
@@ -28,7 +29,6 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
     () => `/api/project/${projectId}`,
     [projectId]
   );
-
   const assetApiPath = useMemo(
     () => `/api/editor/${projectId}/media`,
     [projectId]
@@ -49,7 +49,7 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
             onStore: (data) => ({ id: projectId, data }),
             onLoad: (result) => {
               // can check result is exist before set project data
-              if (result.data) {
+              if (Object.keys(result.data).length > 0) {
                 const projectData = {
                   ...result.data,
                   assets: [
@@ -59,7 +59,10 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
                 };
                 return projectData;
               } else {
-                return {};
+                return {
+                  pages: [{}],
+                  assets: ["https://placehold.co/600x400"],
+                };
               }
             },
           },
@@ -113,9 +116,10 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
       traitManager: traitManager,
       panels: panels,
       plugins: [
-        (editor) => templateBlock(editor),
         (editor) => basicBlockPlugin(editor, {}),
         (editor) => formBlockPlugin(editor, {}),
+        (editor) => templateBlock(editor),
+        (editor) => additionStyle(editor),
       ],
     });
     initConfigGjs(editorInstance);
@@ -128,7 +132,10 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
           attributes: { class: "fa fa-floppy-o", title: "Save" },
           async command(editor: Editor) {
             const projectData = editor.getProjectData();
-            const res = await saveProject(storageApiPath, projectData);
+            const iframe = document.querySelector(
+              ".gjs-frame"
+            ) as unknown as HTMLIFrameElement;
+            const res = await update(iframe, projectId, projectData);
             editor.loadProjectData(res.data);
           },
         },
@@ -144,7 +151,7 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
                 css: editor.getCss({ component, avoidProtected: true }),
               };
             });
-            console.log(pagesHtml);
+            console.log(editor.Blocks.getAll());
           },
         },
       ],

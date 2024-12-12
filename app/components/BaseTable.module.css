@@ -24,3 +24,6 @@
 .table tbody tr:nth-child(odd) {
   background-color: #ffffff;
 }
+.container {
+  width: 100%;
+}

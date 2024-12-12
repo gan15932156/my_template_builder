@@ -1,4 +1,5 @@
 "use client";
+import styles from "./DataInfoInput.module.css";
 interface Props {
   label: string;
   placeholder: string;
@@ -18,9 +19,10 @@ const DataInfoInput: React.FC<Props> = ({
   id,
 }) => {
   return (
-    <div>
+    <div className={styles.container}>
       <label htmlFor={id}>{label}</label>
       <input
+        className={styles.input}
         type="text"
         placeholder={placeholder}
         value={value}

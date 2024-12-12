@@ -8,6 +8,7 @@ import { formattedDate } from "@/utils";
 import { searchParamsSchema, searchParamsSchemaType } from "@/zodObject";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 const fetchProjects = async (
   searchParams: searchParamsSchemaType
@@ -34,6 +35,26 @@ const useProjectTableData = () => {
       cell: (info) => (
         <div style={{ textAlign: "center" }}>{info.row.index + 1}</div>
       ),
+    },
+    {
+      id: "imageUrl",
+      accessorKey: "imageUrl",
+      header: () => "",
+      cell: (info) =>
+        info.getValue() ? (
+          <div style={{ textAlign: "center", position: "relative" }}>
+            <Image
+              style={{ objectFit: "contain" }}
+              width={320}
+              height={160}
+              priority={true}
+              src={info.getValue()}
+              alt="Project screenshot image"
+            />
+          </div>
+        ) : (
+          ""
+        ),
     },
     {
       id: "name",

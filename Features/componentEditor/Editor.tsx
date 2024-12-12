@@ -19,6 +19,7 @@ import formBlockPlugin from "grapesjs-plugin-forms";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TcomponentBody } from "@/zodObject";
 import InfoField from "./InfoField";
+import { captureImage } from "./utils";
 interface Props {
   id: string;
 }
@@ -70,7 +71,7 @@ const Editor: React.FC<Props> = ({ id }) => {
             // https://grapesjs.com/docs/modules/Storage.html#common-use-cases
             onStore: (data) => ({ id, data }),
             onLoad: (result) => {
-              if (result.data) {
+              if (Object.keys(result.data).length > 0) {
                 return {
                   pages: [
                     {
@@ -83,7 +84,10 @@ const Editor: React.FC<Props> = ({ id }) => {
                   assets: ["https://placehold.co/600x400"],
                 };
               } else {
-                return {};
+                return {
+                  pages: [{}],
+                  assets: ["https://placehold.co/600x400"],
+                };
               }
             },
           },
@@ -124,10 +128,17 @@ const Editor: React.FC<Props> = ({ id }) => {
                 component,
                 avoidProtected: true,
               });
-              await mutation.mutateAsync({
-                html: cleanedHTML,
-                css: fullCSS || "",
-              });
+              const iframe = document.querySelector(
+                ".gjs-frame"
+              ) as unknown as HTMLIFrameElement;
+              const imageUri = await captureImage(iframe);
+              if (imageUri) {
+                await mutation.mutateAsync({
+                  html: cleanedHTML,
+                  css: fullCSS || "",
+                  imageUri,
+                });
+              }
             }
           },
         },

@@ -1,10 +1,4 @@
-.paginateContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-}
-.paginateButton {
+.button {
   cursor: pointer;
   padding-inline: 1.2rem;
   padding-block: 0.4rem;
@@ -13,9 +7,9 @@
   transition: background-color 0.3s, border 0.3s;
   border: 1px solid transparent;
   border-radius: 0.4rem;
-  background-color: var(--primary);
+  background-color: var(--success);
   &:hover {
-    background-color: var(--primary300);
+    background-color: var(--success300);
     border: 1px solid white;
   }
 }

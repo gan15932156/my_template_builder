@@ -3,6 +3,7 @@
 import { ApiResponse } from "@/types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import styles from "../componentEditor/CreateButton.module.css";
 const apiPath = "/api/project";
 const createProject = (): Promise<ApiResponse<string>> =>
   fetch(apiPath, { method: "POST" }).then((response) => response.json());
@@ -20,7 +21,12 @@ const CreateButton: React.FC = () => {
     mutate();
   };
   return (
-    <button disabled={isPending} onClick={handleOnClick} type="button">
+    <button
+      className={styles.button}
+      disabled={isPending}
+      onClick={handleOnClick}
+      type="button"
+    >
       Create project
     </button>
   );

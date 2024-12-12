@@ -10,6 +10,7 @@ export const searchParamsSchema = z.object({
 export const componentBodySchema = z.object({
   html: z.string(),
   css: z.string().default(""),
+  imageUri: z.string(),
 });
 export type TcomponentBody = z.infer<typeof componentBodySchema>;
 export type searchParamsSchemaType = z.infer<typeof searchParamsSchema>;

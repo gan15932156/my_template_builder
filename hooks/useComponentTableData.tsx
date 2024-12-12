@@ -3,7 +3,6 @@
 import Badge from "@/app/components/Badge";
 import BaseTableHeader from "@/app/components/BaseTableHeader";
 import ActionColumn from "@/Features/componentEditor/ActionColumn";
-import CategoryColumn from "@/Features/componentEditor/CategoryColumn";
 import { ApiResponse, IComponent } from "@/types/types";
 import { formattedDate } from "@/utils";
 import {
@@ -14,13 +13,9 @@ import {
 import { ProjectStatus } from "@prisma/client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-const componentCategoryText = {
-  CATEGORY: "Category",
-  SECTION: "Section",
-  PAGE: "Page",
-};
 const fetchComponents = async (
   searchParams: searchParamsSchemaType
 ): Promise<ApiResponse<{ components: IComponent[]; pageCount: number }>> => {
@@ -45,6 +40,26 @@ const useComponentTableData = () => {
       cell: (info) => (
         <div style={{ textAlign: "center" }}>{info.row.index + 1}</div>
       ),
+    },
+    {
+      id: "imageUrl",
+      accessorKey: "imageUrl",
+      header: () => "",
+      cell: (info) =>
+        info.getValue() ? (
+          <div style={{ textAlign: "center", position: "relative" }}>
+            <Image
+              style={{ objectFit: "contain" }}
+              width={320}
+              height={160}
+              priority={true}
+              src={info.getValue()}
+              alt="Component screenshot image"
+            />
+          </div>
+        ) : (
+          ""
+        ),
     },
     {
       id: "name",
