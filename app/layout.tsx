@@ -3,6 +3,7 @@ import { Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import TanStackQueryProvider from "@/providers/TanStackQueryProvider";
 import Layout from "./components/Layout";
+import StyledComponentsRegistry from "@/libs/registry";
 
 const roboto = Roboto_Mono({
   weight: ["400", "500", "600", "700"],
@@ -21,9 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={roboto.className}>
       <body>
-        <Layout>
-          <TanStackQueryProvider>{children}</TanStackQueryProvider>
-        </Layout>
+        <StyledComponentsRegistry>
+          <Layout>
+            <TanStackQueryProvider>{children}</TanStackQueryProvider>
+          </Layout>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

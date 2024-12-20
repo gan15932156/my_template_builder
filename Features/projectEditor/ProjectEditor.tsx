@@ -19,6 +19,7 @@ import { styleManager } from "@/config/gjs-style-manager-config";
 import InfoField from "./InfoField";
 import { update } from "./utils";
 import { additionStyle } from "@/plugins/additionStyle";
+import { randomElement } from "@/plugins/randomPlugin";
 interface Props {
   projectId: string;
 }
@@ -120,6 +121,7 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
         (editor) => formBlockPlugin(editor, {}),
         (editor) => templateBlock(editor),
         (editor) => additionStyle(editor),
+        (editor) => randomElement(editor),
       ],
     });
     initConfigGjs(editorInstance);
@@ -132,11 +134,12 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
           attributes: { class: "fa fa-floppy-o", title: "Save" },
           async command(editor: Editor) {
             const projectData = editor.getProjectData();
-            const iframe = document.querySelector(
-              ".gjs-frame"
-            ) as unknown as HTMLIFrameElement;
-            const res = await update(iframe, projectId, projectData);
-            editor.loadProjectData(res.data);
+            console.log(projectData);
+            // const iframe = document.querySelector(
+            //   ".gjs-frame"
+            // ) as unknown as HTMLIFrameElement;
+            // const res = await update(iframe, projectId, projectData);
+            // editor.loadProjectData(res.data);
           },
         },
         {
@@ -151,7 +154,7 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
                 css: editor.getCss({ component, avoidProtected: true }),
               };
             });
-            console.log(editor.Blocks.getAll());
+            console.log(pagesHtml);
           },
         },
       ],
