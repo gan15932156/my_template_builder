@@ -22,6 +22,14 @@ function Layout({ children }: { children: React.ReactNode }) {
         >
           Component
         </Link>
+        <Link
+          href={"/blueprint"}
+          className={`${styles.link} ${
+            pathName === "/blueprint" ? styles.active : ""
+          }`}
+        >
+          Blueprint
+        </Link>
       </nav>
       {children}
     </div>

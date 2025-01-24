@@ -43,3 +43,15 @@ model Component {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
+
+model Blueprint{
+  id            String          @id @default(cuid())
+  name          String?
+  category      String?
+  imageUrl      String?
+  styles        Json?
+  element       Json?
+  status        ProjectStatus @default(ACTIVE)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

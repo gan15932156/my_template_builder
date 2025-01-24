@@ -28,3 +28,17 @@ export interface IComponentBody {
   css: string;
   category: TComponentCategoryEnum;
 }
+
+export type TBlueprint = {
+  id: string;
+  name?: string;
+  imageUrl?: string;
+  createdAt: string;
+  category: string;
+  status: ProjectStatus;
+};
+export type TBlueprintWithElement = TBlueprint & {
+  styles: object;
+  element: object;
+  updatedAt: string;
+};
