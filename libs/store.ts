@@ -1,4 +1,3 @@
-import counterReducer from "@/Features/blueprint/slice/counterSlice";
 import panelReducer from "@/Features/blueprint/slice/panelSlice";
 import elementReducer from "@/Features/blueprint/slice/elementSlice";
 import { configureStore } from "@reduxjs/toolkit";

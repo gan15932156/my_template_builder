@@ -10,7 +10,7 @@ import {
   BlockWrapper,
 } from "./styledComponents";
 import { FiChevronUp } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetBlueprintBlock from "../../editor/hooks/useGetBlueprintBlock";
 
 const Wrapper = styled.div`
@@ -30,6 +30,9 @@ const BlockManager = () => {
       setCurrentTab(newTab);
     }
   };
+  useEffect(() => {
+    console.log(blueprintBlock);
+  }, [blueprintBlock]);
   if (isLoading)
     return (
       <Wrapper>
@@ -63,7 +66,7 @@ const BlockManager = () => {
           </BlockGrid>
         </BlockWrapper>
       ))}
-      {blueprintBlock &&
+      {/* {blueprintBlock &&
         Object.keys(blueprintBlock).map((category) => (
           <BlockWrapper key={category}>
             <BlockHeading onClick={() => handleChangeCurrentTab(category)}>
@@ -84,7 +87,7 @@ const BlockManager = () => {
               ))}
             </BlockGrid>
           </BlockWrapper>
-        ))}
+        ))} */}
     </Wrapper>
   );
 };

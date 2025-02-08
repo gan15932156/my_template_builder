@@ -40,33 +40,34 @@ function useDragDropEvent() {
       if (isDragBlueprint) {
         // Handle blueprints
         if (activeId && activeCategory) {
-          const blueprint = blueprintBlock?.[activeCategory]?.[activeId];
-          if (blueprint) {
-            if (isDropInEditor) {
-              const newBlueprint = handleInsertElementToBlueprint(
-                currentBlueprint,
-                blueprint
-              );
-              dispatch(updateElement(newBlueprint));
-              // console.log("Blueprint found:", blueprint, "Drop on editor area");
-            } else if (isDropInElement) {
-              console.log(
-                "Blueprint found:",
-                blueprint,
-                "Drop on another element"
-              );
-            } else {
-              console.log(
-                "Blueprint found:",
-                blueprint,
-                "Drop on another element"
-              );
-            }
-          } else {
-            console.warn(
-              `Blueprint not found for category: ${activeCategory}, ID: ${activeId}`
-            );
-          }
+          console.log("work in progess");
+          // const blueprint = blueprintBlock?.[activeCategory]?.[activeId];
+          // if (blueprint) {
+          //   if (isDropInEditor) {
+          //     const newBlueprint = handleInsertElementToBlueprint(
+          //       currentBlueprint,
+          //       blueprint
+          //     );
+          //     dispatch(updateElement(newBlueprint));
+          //     // console.log("Blueprint found:", blueprint, "Drop on editor area");
+          //   } else if (isDropInElement) {
+          //     console.log(
+          //       "Blueprint found:",
+          //       blueprint,
+          //       "Drop on another element"
+          //     );
+          //   } else {
+          //     console.log(
+          //       "Blueprint found:",
+          //       blueprint,
+          //       "Drop on another element"
+          //     );
+          //   }
+          // } else {
+          //   console.warn(
+          //     `Blueprint not found for category: ${activeCategory}, ID: ${activeId}`
+          //   );
+          // }
         } else {
           console.warn("Missing ID or category in active data.");
         }

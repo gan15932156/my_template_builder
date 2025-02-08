@@ -28,7 +28,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             pathName === "/blueprint" ? styles.active : ""
           }`}
         >
-          Blueprint
+          Blueprint(In progess)
         </Link>
       </nav>
       {children}

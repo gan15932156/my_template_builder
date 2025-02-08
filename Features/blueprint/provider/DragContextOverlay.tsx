@@ -63,22 +63,23 @@ const DragContextOverlay = () => {
     }
   } else if (isBlueprint) {
     if (activeCategory && activeCategory) {
-      const blueprint = blueprintBlock?.[activeCategory]?.[activeId];
-      if (blueprint) {
-        // console.log(blueprint);
-        Node = (
-          <Block>
-            <img
-              src={blueprint.imageUrl}
-              alt={blueprint.name}
-              style={{ width: "24px", height: "24px" }}
-            />
-            <p style={{ textAlign: "center" }}>
-              {blueprint.name ? blueprint.name : "n/a"}
-            </p>
-          </Block>
-        );
-      }
+      // const blueprint = blueprintBlock?.[activeCategory]?.[activeId];
+      // if (blueprint) {
+      //   // console.log(blueprint);
+      //   Node = (
+      //     <Block>
+      //       <img
+      //         src={blueprint.imageUrl}
+      //         alt={blueprint.name}
+      //         style={{ width: "24px", height: "24px" }}
+      //       />
+      //       <p style={{ textAlign: "center" }}>
+      //         {blueprint.name ? blueprint.name : "n/a"}
+      //       </p>
+      //     </Block>
+      //   );
+      // }
+      console.log("DragContextOverlay.tsx : work in progess");
     }
   }
   // else if (isDraggableElement) {

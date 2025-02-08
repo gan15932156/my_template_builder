@@ -1,7 +1,12 @@
 import Dashboard from "@/Features/componentEditor/Dashboard";
+import { Suspense } from "react";
 
 const Page = () => {
-  return <Dashboard />;
+  return (
+    <Suspense>
+      <Dashboard />
+    </Suspense>
+  );
 };
 
 export default Page;
