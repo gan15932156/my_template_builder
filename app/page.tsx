@@ -1,5 +1,6 @@
-import Dashboard from "@/Features/projectEditor/Dashboard";
+"use client";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <Dashboard />;
+  if (true) redirect("/project");
 }
