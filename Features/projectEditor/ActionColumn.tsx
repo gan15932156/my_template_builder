@@ -11,7 +11,7 @@ const ActionColumn: React.FC<Props> = ({ row }) => {
   const { id, status } = row.original;
   const router = useRouter();
   const handleEdit = () => {
-    router.push(`/editor/${id}`);
+    router.push(`/project/editor/${id}`);
   };
   const handleCahngeStatus = () => {
     console.log("handleCahngeStatus", id);
