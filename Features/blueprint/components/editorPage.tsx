@@ -18,7 +18,7 @@ const EditorPage: React.FC<Props> = ({ blueprintId }) => {
       <DndContextWithNoSSR>
         <TopPanel />
         {/* <Editor blueprintId={blueprintId} /> */}
-        {/* <SidePanel /> */}
+        <SidePanel />
         {/* <DragContextOverlay /> */}
       </DndContextWithNoSSR>
     </EditorWrapper>

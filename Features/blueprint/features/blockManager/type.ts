@@ -50,6 +50,16 @@ export type TBlueprintElement = {
   attributes?: Record<string, string | string[]>;
   content: Array<TBlueprintElement | TBlueprintRefElement> | string; // Nested content
 };
+export type TBlueprintElement2 = {
+  id: string; // Unique ID
+  category: string; // Element category
+  elmType: string; // Element type
+  tag: string;
+  isListing: boolean;
+  isRootElm: boolean;
+  attributes?: Record<string, string | string[]>;
+  content: Array<TBlueprintElement2> | string;
+};
 export type TBlueprintElementWithRefElement = {
   id: string; // Unique ID
   category: string; // Element category
@@ -103,6 +113,8 @@ export const mockData = {
     category: "box",
     elmType: "box",
     tag: "div",
+    isListing: true,
+    isRootElm: false,
     content: [
       {
         type: "element",
@@ -110,36 +122,13 @@ export const mockData = {
         category: "textField",
         elmType: "input",
         tag: "input",
+        isListing: false,
+        isRootElm: false,
         content: "",
         attributes: {
           type: "text",
           placeholder: "input here",
         },
-      },
-      {
-        type: "refElement",
-        id: "ref1",
-        isShowElm: true,
-        isUseRef: true,
-        refId: "cm55a32680000gwwhmjw0utv7",
-        category: "",
-      },
-      {
-        type: "element",
-        id: "wrapper2",
-        category: "box",
-        elmType: "box",
-        tag: "div",
-        content: [
-          {
-            type: "refElement",
-            id: "ref2",
-            isShowElm: true,
-            isUseRef: true,
-            refId: "cm606po0e000012lxt11bsl4s",
-            category: "card",
-          },
-        ],
       },
     ],
   },

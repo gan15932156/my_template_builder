@@ -20,11 +20,13 @@ import InfoField from "./InfoField";
 import { update } from "./utils";
 import { additionStyle } from "@/plugins/additionStyle";
 import { randomElement } from "@/plugins/randomPlugin";
+import { useQueryClient } from "@tanstack/react-query";
 interface Props {
   projectId: string;
 }
 const ProjectEditor: React.FC<Props> = ({ projectId }) => {
   const [editor, setEditor] = useState<Editor | null>(null);
+  const queryClient = useQueryClient();
   // https://fontawesome.com/v4/icons/
   const storageApiPath = useMemo(
     () => `/api/project/${projectId}`,
@@ -134,12 +136,12 @@ const ProjectEditor: React.FC<Props> = ({ projectId }) => {
           attributes: { class: "fa fa-floppy-o", title: "Save" },
           async command(editor: Editor) {
             const projectData = editor.getProjectData();
-            console.log(projectData);
-            // const iframe = document.querySelector(
-            //   ".gjs-frame"
-            // ) as unknown as HTMLIFrameElement;
-            // const res = await update(iframe, projectId, projectData);
-            // editor.loadProjectData(res.data);
+            const iframe = document.querySelector(
+              ".gjs-frame"
+            ) as unknown as HTMLIFrameElement;
+            const res = await update(iframe, projectId, projectData);
+            editor.loadProjectData(res.data);
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
           },
         },
         {
