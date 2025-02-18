@@ -10,7 +10,7 @@ import {
   BlockWrapper,
 } from "./styledComponents";
 import { FiChevronUp } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useGetBlueprintBlock from "../../editor/hooks/useGetBlueprintBlock";
 
 const Wrapper = styled.div`
@@ -30,9 +30,6 @@ const BlockManager = () => {
       setCurrentTab(newTab);
     }
   };
-  useEffect(() => {
-    console.log(blueprintBlock);
-  }, [blueprintBlock]);
   if (isLoading)
     return (
       <Wrapper>
@@ -66,28 +63,33 @@ const BlockManager = () => {
           </BlockGrid>
         </BlockWrapper>
       ))}
-      {/* {blueprintBlock &&
-        Object.keys(blueprintBlock).map((category) => (
-          <BlockWrapper key={category}>
-            <BlockHeading onClick={() => handleChangeCurrentTab(category)}>
-              <span style={{ textTransform: "capitalize" }}>{category}</span>
-              <BlockIcon $isActive={currentTab == category}>
-                <FiChevronUp />
-              </BlockIcon>
-            </BlockHeading>
-            <BlockGrid
-              className="block_grid"
-              $isActive={currentTab == category}
-            >
-              {Object.keys(blueprintBlock[category]).map((key) => (
-                <BlockItem
-                  key={blueprintBlock[category][key].id}
-                  block={blueprintBlock[category][key]}
-                />
-              ))}
-            </BlockGrid>
-          </BlockWrapper>
-        ))} */}
+      {blueprintBlock &&
+        Object.keys(blueprintBlock).map(
+          (category) =>
+            Object.keys(blueprintBlock[category]).length > 0 && (
+              <BlockWrapper key={category}>
+                <BlockHeading onClick={() => handleChangeCurrentTab(category)}>
+                  <span style={{ textTransform: "capitalize" }}>
+                    {category}
+                  </span>
+                  <BlockIcon $isActive={currentTab == category}>
+                    <FiChevronUp />
+                  </BlockIcon>
+                </BlockHeading>
+                <BlockGrid
+                  className="block_grid"
+                  $isActive={currentTab == category}
+                >
+                  {Object.keys(blueprintBlock[category]).map((key) => (
+                    <BlockItem
+                      key={blueprintBlock[category][key].id}
+                      block={blueprintBlock[category][key]}
+                    />
+                  ))}
+                </BlockGrid>
+              </BlockWrapper>
+            )
+        )}
     </Wrapper>
   );
 };

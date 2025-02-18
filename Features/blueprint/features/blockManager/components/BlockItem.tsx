@@ -28,10 +28,9 @@ const BlockItem: React.FC<Props> = ({ block }) => {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: "draggable-" + id,
     data: {
-      isBlueprint,
       id,
       category: category ? category : "other",
-      isBlock: isBlueprint ? false : true,
+      isBlueprintBlock: isBlueprint,
     },
   });
   if (isBlueprint) {

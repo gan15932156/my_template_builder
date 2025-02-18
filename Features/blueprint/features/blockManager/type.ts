@@ -41,58 +41,51 @@ export type TBlueprintRefElement = {
 };
 
 // Blueprint element definition
-export type TBlueprintElement = {
+export type TBlueprintElement2 = {
   type: "element"; // Discriminant
   id: string; // Unique ID
   category: string; // Element category
   elmType: string; // Element type
   tag: string;
   attributes?: Record<string, string | string[]>;
-  content: Array<TBlueprintElement | TBlueprintRefElement> | string; // Nested content
+  content: Array<TBlueprintElement2 | TBlueprintRefElement> | string; // Nested content
 };
-export type TBlueprintElement2 = {
+export type TBlueprintElement = {
   id: string; // Unique ID
   category: string; // Element category
   elmType: string; // Element type
   tag: string;
   isListing: boolean;
-  isRootElm: boolean;
+  isRand: boolean;
   attributes?: Record<string, string | string[]>;
-  content: Array<TBlueprintElement2> | string;
+  content: Array<TBlueprintElement> | string;
 };
-export type TBlueprintElementWithRefElement = {
-  id: string; // Unique ID
-  category: string; // Element category
-  elmType: string; // Element type
-  tag: string;
-  isRefElement: boolean;
-  attributes?: Record<string, string | string[]>;
-  content: TBlueprintElementWithRefElement[] | string; // Nested content
-};
+
 // Blueprint definition
-export type TBlueprint = TBaseBlock & {
+export type TBlueprint2 = TBaseBlock & {
   imageUrl?: string; // URL of the blueprint image
   styles?: TStyle; // Optional styles
   element?: TBlueprintElement | TBlueprintRefElement; // Element or reference element
 };
-export type TBlueprintWithRefElement = TBaseBlock & {
+export type TBlueprint = TBaseBlock & {
   imageUrl?: string; // URL of the blueprint image
   styles?: TStyle; // Optional styles
-  element?: TBlueprintElementWithRefElement; // Reference element
+  element?: TBlueprintElement; // Element
 };
+
 export type TBlueprintWithoutElement = TBaseBlock & {
   imageUrl?: string; // URL of the blueprint image
 };
 export interface HashMap<T> {
   [key: string]: T;
 }
-export const mockData = {
+export const mockData: TBlueprint = {
   id: "blueprint1",
   name: "Example Blueprint",
   category: "layout",
   isBlueprint: true,
   styles: {
-    cardId1: {
+    card1: {
       normal: {
         "background-color": "white",
         padding: "1rem",
@@ -108,22 +101,20 @@ export const mockData = {
     },
   },
   element: {
-    type: "element",
     id: "card1",
     category: "box",
     elmType: "box",
     tag: "div",
     isListing: true,
-    isRootElm: false,
+    isRand: false,
     content: [
       {
-        type: "element",
         id: "field1",
         category: "textField",
         elmType: "input",
         tag: "input",
         isListing: false,
-        isRootElm: false,
+        isRand: false,
         content: "",
         attributes: {
           type: "text",

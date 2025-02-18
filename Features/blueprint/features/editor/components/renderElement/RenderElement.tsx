@@ -2,70 +2,39 @@
 
 import { selectBlueprint } from "@/Features/blueprint/slice/elementSlice";
 import { useAppSelector } from "@/hooks/reduxHooks";
-import { transformRefElementToBlueprint } from "../../utils/transformData";
-import useGetBlueprintBlock from "../../hooks/useGetBlueprintBlock";
 import SwitchCaseElement from "./SwitchCaseElement";
-import { useMemo } from "react";
-import { TBlueprintWithRefElement } from "../../../blockManager/type";
 
 const RenderElement: React.FC = () => {
-  // const { data: blueprintBlock, isLoading, isError } = useGetBlueprintBlock();
-  // const currentElement = useAppSelector(selectBlueprint);
-  // const transformedBlueprint: TBlueprintWithRefElement | undefined =
-  //   useMemo(() => {
-  //     if (currentElement?.element) {
-  //       try {
-  //         const rel = transformRefElementToBlueprint(
-  //           blueprintBlock ?? {},
-  //           currentElement
-  //         );
-  //         return rel;
-  //       } catch (error) {
-  //         let errorMessage = "An unknown error occurred.";
+  const currentElement = useAppSelector(selectBlueprint);
+  if (!currentElement?.element) {
+    return (
+      <div>
+        <p>No element selected for rendering.</p>
+      </div>
+    );
+  }
 
-  //         if (error instanceof Error) {
-  //           errorMessage = error.message;
-  //         }
-  //         console.error("error", errorMessage);
-  //         return undefined;
-  //       }
-  //     } else {
-  //       return undefined;
-  //     }
-  //   }, [currentElement]);
-  // if (!currentElement?.element) {
-  //   return (
-  //     <div>
-  //       <p>No element selected for rendering.</p>
-  //     </div>
-  //   );
-  // }
-
-  // if (isLoading) {
-  //   return (
-  //     <div>
-  //       <p>Loading...</p>
-  //     </div>
-  //   );
-  // }
-
-  // if (isError) {
-  //   return (
-  //     <div>
-  //       <p>Error loading blueprint. Please try again.</p>
-  //     </div>
-  //   );
-  // }
-
-  // if (transformedBlueprint?.element) {
-  //   console.log(transformedBlueprint?.element);
-  //   return (
-  //     <SwitchCaseElement
-  //       element={transformedBlueprint.element}
-  //       styles={transformedBlueprint.styles}
-  //     />
-  //   );
-  // }
+  if (currentElement?.element) {
+    const isLastElm = Array.isArray(currentElement.element.content)
+      ? currentElement.element.content.length == 1
+      : true;
+    const parentStyles = currentElement.styles?.[currentElement.element.id];
+    let isHorizontal = true;
+    if (parentStyles) {
+      isHorizontal =
+        parentStyles.normal["display"] != "flex" ||
+        parentStyles.normal["flex-direction"] != "row";
+    }
+    return (
+      <SwitchCaseElement
+        element={currentElement.element}
+        styles={currentElement.styles}
+        isLastElm={isLastElm}
+        isHorizontal={isHorizontal}
+        isRootElement={true}
+      />
+    );
+  }
 
   return (
     <div>

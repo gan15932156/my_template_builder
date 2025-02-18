@@ -8,7 +8,11 @@ import {
   selectBlueprint,
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
-import { handleInsertElementToBlueprint } from "../utils/handleDragDropEvent";
+import {
+  handleChangeElement,
+  handleInsertElementToBlueprint,
+  handleInsertElementToElement,
+} from "../utils/handleDragDropEvent";
 
 function useDragDropEvent() {
   const { data: blueprintBlock, isError, isLoading } = useGetBlueprintBlock();
@@ -28,77 +32,83 @@ function useDragDropEvent() {
       const activeId = activeData?.id;
       const overId = overData?.id;
 
-      if (activeId == overId) return;
-      const isDragBlueprint = activeData?.isBlueprint;
-      const isDragBlock = activeData?.isBlock;
-      const isDropInEditor = overData?.isEditorDropArea;
-      const isDropInElement = overData?.isDroppableElement;
-
-      // Skip if not dragged over a valid editor drop area
-
       const activeCategory = activeData?.category;
-      if (isDragBlueprint) {
-        // Handle blueprints
-        if (activeId && activeCategory) {
-          console.log("work in progess");
-          // const blueprint = blueprintBlock?.[activeCategory]?.[activeId];
-          // if (blueprint) {
-          //   if (isDropInEditor) {
-          //     const newBlueprint = handleInsertElementToBlueprint(
-          //       currentBlueprint,
-          //       blueprint
-          //     );
-          //     dispatch(updateElement(newBlueprint));
-          //     // console.log("Blueprint found:", blueprint, "Drop on editor area");
-          //   } else if (isDropInElement) {
-          //     console.log(
-          //       "Blueprint found:",
-          //       blueprint,
-          //       "Drop on another element"
-          //     );
-          //   } else {
-          //     console.log(
-          //       "Blueprint found:",
-          //       blueprint,
-          //       "Drop on another element"
-          //     );
-          //   }
-          // } else {
-          //   console.warn(
-          //     `Blueprint not found for category: ${activeCategory}, ID: ${activeId}`
-          //   );
-          // }
-        } else {
-          console.warn("Missing ID or category in active data.");
-        }
-      } else if (isDragBlock) {
-        // Handle basic elements
-        const block = blockCategories?.[activeCategory]?.[activeId];
-        if (block) {
-          if (isDropInEditor) {
-            const newBlueprint = handleInsertElementToBlueprint(
-              currentBlueprint,
-              block
+
+      if (activeId == overId) return;
+
+      const isDragBlueprintBlock = activeData?.isBlueprintBlock;
+      const isDragElement = activeData?.isDragElement;
+
+      const isDropInEditor = overData?.isEditorDropArea;
+      const isDropInElement = overData?.isDropElement;
+      const isDropInTopElement = overData?.isTopDropArea;
+      // console.log({ isDropInElement, isDragElement, activeId, activeCategory });
+      if (activeId && activeCategory) {
+        if (isDragElement) {
+          console.log(isDropInTopElement);
+          if (isDropInElement && currentBlueprint.element) {
+            let tempElement = JSON.parse(
+              JSON.stringify(currentBlueprint.element)
+            ); // Deep clone
+            handleChangeElement(activeId, overId, [tempElement]);
+            dispatch(
+              updateElement({ ...currentBlueprint, element: tempElement })
             );
-            // console.log(newBlueprint);
-            dispatch(updateElement(newBlueprint));
-            // console.log(
-            //   "Drag basic element to editor screen",
-            //   block,
-            //   "Drop on editor area"
-            // );
-          } else {
-            console.log(
-              "Drag basic element to editor screen",
-              block,
-              "Drop on another element"
-            );
+            console.log("DRAG element DROP IN element");
+            return;
+          } else if (isDropInTopElement && currentBlueprint.element) {
+            console.log("DRAG element DROP IN top element");
+            return;
+          } else if (!isDropInTopElement && currentBlueprint.element) {
+            console.log("DRAG element DROP IN bottom element");
+            return;
+          }
+        } else if (isDragBlueprintBlock) {
+          const blueprint = blueprintBlock?.[activeCategory]?.[activeId];
+          if (blueprint) {
+            if (isDropInEditor) {
+              const newBlueprint = handleInsertElementToBlueprint(
+                currentBlueprint,
+                blueprint
+              );
+              dispatch(updateElement(newBlueprint));
+              console.log("DRAG blueprint block DROP IN editor");
+              return;
+            } else if (isDropInElement) {
+              const newBlueprint = handleInsertElementToElement(
+                currentBlueprint,
+                blueprint,
+                overId
+              );
+              dispatch(updateElement(newBlueprint));
+              console.log("DRAG blueprint block DROP IN element");
+              return;
+            }
           }
         } else {
-          console.warn("Missing ID or category in active data.");
+          const block = blockCategories?.[activeCategory]?.[activeId];
+          if (block) {
+            if (isDropInEditor) {
+              const newBlueprint = handleInsertElementToBlueprint(
+                currentBlueprint,
+                block
+              );
+              dispatch(updateElement(newBlueprint));
+              console.log("DRAG basic block DROP IN editor");
+              return;
+            } else if (isDropInElement) {
+              const newBlueprint = handleInsertElementToElement(
+                currentBlueprint,
+                block,
+                overId
+              );
+              dispatch(updateElement(newBlueprint));
+              console.log("DRAG basic block DROP IN element");
+              return;
+            }
+          }
         }
-      } else {
-        console.warn("Cannot find drag element");
+        //  else console.warn("Cannot find drag element");
       }
     },
   });

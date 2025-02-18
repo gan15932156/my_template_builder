@@ -14,7 +14,7 @@ const CreateButton: React.FC = () => {
     mutationFn: createProject,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
-      router.push(`/editor/${data.data}`);
+      router.push(`/project/editor/${data.data}`);
     },
   });
   const handleOnClick = () => {
