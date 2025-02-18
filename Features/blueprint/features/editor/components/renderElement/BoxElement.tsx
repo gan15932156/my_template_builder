@@ -5,19 +5,14 @@ import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
+import useOverlay from "../../hooks/useSibingOverlay";
 const Box = styled.div<{
   $style: Record<string, any>;
-  $isContentExist: boolean;
   $isOver: boolean;
   $isDragging: boolean;
 }>`
+  position: relative;
   outline: 1px dashed ${editorStyle.primary500};
-  /* use for case no content exist */
-  /* ${(props) =>
-    !props.$isContentExist &&
-    css`
-      padding: 0.2rem;
-    `} */
   && {
     ${(props) =>
       props.$style &&
@@ -39,16 +34,18 @@ const Box = styled.div<{
 const BoxElement: React.FC<RenderElementProps> = ({
   element: elements,
   styles,
+  isLastElm = false,
+  isHorizontal = true,
+  isRootElement,
 }) => {
   const extractedStyles = styles?.[elements.id];
   const elementStyles = transformStyleToStyleComponent(extractedStyles);
 
   const { isOver, setNodeRef: setDropNodeRef } = useDroppable({
     id: "droppable-" + elements.id,
-    data: { isDroppableElement: true, id: elements.id },
-    disabled: elements.content.length > 0 || elements.isRefElement,
+    data: { isDropElement: true, id: elements.id, category: elements.category },
+    // disabled: elements.content.length > 0,
   });
-  // console.log(isRootElement, elements.isRefElement);
   const {
     attributes,
     listeners,
@@ -56,8 +53,14 @@ const BoxElement: React.FC<RenderElementProps> = ({
     setNodeRef: setDragNodeRef,
   } = useDraggable({
     id: "draggable-" + elements.id,
-    data: { isDraggableElement: true, id: elements.id },
+    data: { isDragElement: true, id: elements.id, category: elements.category },
   });
+  const { TopOverlay, BottomOverlay } = useOverlay(
+    isHorizontal,
+    elements.id,
+    elements.category
+  );
+  if (isDragging) return;
   if (Array.isArray(elements.content)) {
     if (elements.content.length > 0) {
       return (
@@ -70,17 +73,24 @@ const BoxElement: React.FC<RenderElementProps> = ({
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
-          $isContentExist={elements.content.length > 0}
           {...listeners}
           {...attributes}
         >
-          {elements.content.map((element) => (
-            <SwitchCaseElement
-              key={element.id}
-              element={element}
-              styles={styles}
-            />
-          ))}
+          {!isRootElement && <TopOverlay />}
+          {elements.content.map((element, index) => {
+            const isLastChildElm = index + 1 == elements.content.length;
+            return (
+              <SwitchCaseElement
+                key={element.id}
+                element={element}
+                styles={styles}
+                isLastElm={isLastChildElm}
+                isHorizontal={isHorizontal}
+                isRootElement={false}
+              />
+            );
+          })}
+          {!isRootElement && isLastElm && <BottomOverlay />}
         </Box>
       );
     } else {
@@ -94,11 +104,12 @@ const BoxElement: React.FC<RenderElementProps> = ({
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
-          $isContentExist={elements.content.length > 0}
           {...listeners}
           {...attributes}
         >
+          {!isRootElement && <TopOverlay />}
           <p>Box</p>
+          {!isRootElement && isLastElm && <BottomOverlay />}
         </Box>
       );
     }
@@ -113,7 +124,6 @@ const BoxElement: React.FC<RenderElementProps> = ({
         $isOver={isOver}
         $style={elementStyles}
         $isDragging={isDragging}
-        $isContentExist={elements.content != ""}
         {...listeners}
         {...attributes}
       >

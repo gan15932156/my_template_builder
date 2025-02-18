@@ -40,8 +40,8 @@ interface Props {
 
 const Editor: React.FC<Props> = ({ blueprintId }) => {
   const currentElement = useAppSelector(selectBlueprint);
-  // const { isError: blueprintBlockIsError, isLoading: blueprintBlockIsLoading } =
-  //   useDragDropEvent();
+  const { isError: blueprintBlockIsError, isLoading: blueprintBlockIsLoading } =
+    useDragDropEvent();
   const {
     data: blueprintData,
     isError: blueprintIsError,
@@ -63,7 +63,6 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
         try {
           const blueprint = transformToTBlueprint({ ...rest, isBlueprint });
           dispatch(updateElement(blueprint));
-          console.log("Transformed Blueprint:", blueprint);
         } catch (error) {
           console.error(error);
         }
@@ -89,18 +88,18 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
   //     console.error(error);
   //   }
   // }, []);
-  // if (blueprintIsLoading && blueprintBlockIsLoading)
-  //   return (
-  //     <Wrapper>
-  //       <p>Loading...</p>
-  //     </Wrapper>
-  //   );
-  // if (blueprintIsError && blueprintBlockIsError)
-  //   return (
-  //     <Wrapper>
-  //       <p>Error loading blueprint. Please try again.</p>
-  //     </Wrapper>
-  //   );
+  if (blueprintIsLoading && blueprintBlockIsLoading)
+    return (
+      <Wrapper>
+        <p>Loading...</p>
+      </Wrapper>
+    );
+  if (blueprintIsError && blueprintBlockIsError)
+    return (
+      <Wrapper>
+        <p>Error loading blueprint. Please try again.</p>
+      </Wrapper>
+    );
   return (
     <Wrapper>
       <EditorArea ref={setNodeRef} $isOver={isOver}>

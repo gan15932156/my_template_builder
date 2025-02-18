@@ -47,11 +47,11 @@ const useGetBlueprintBlock = () => {
   const { data, isError, isLoading } = useQuery({
     queryKey: ["blueprint-block-editor"],
     queryFn: fetchBlueprint,
-    // select: useCallback(
-    //   (data: ApiResponse<TBlueprintWithElement[]>) =>
-    //     transformBlueprint(data.data ?? []),
-    //   []
-    // ),
+    select: useCallback(
+      (data: ApiResponse<TBlueprintWithElement[]>) =>
+        transformBlueprint(data.data ?? []),
+      []
+    ),
   });
   return { data, isError, isLoading };
 };
