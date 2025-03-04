@@ -10,6 +10,7 @@ import {
 } from "@/Features/blueprint/slice/elementSlice";
 import {
   handleChangeElement,
+  handleDropSiblingElement,
   handleInsertElementToBlueprint,
   handleInsertElementToElement,
 } from "../utils/handleDragDropEvent";
@@ -45,7 +46,6 @@ function useDragDropEvent() {
       // console.log({ isDropInElement, isDragElement, activeId, activeCategory });
       if (activeId && activeCategory) {
         if (isDragElement) {
-          console.log(isDropInTopElement);
           if (isDropInElement && currentBlueprint.element) {
             let tempElement = JSON.parse(
               JSON.stringify(currentBlueprint.element)
@@ -57,9 +57,27 @@ function useDragDropEvent() {
             console.log("DRAG element DROP IN element");
             return;
           } else if (isDropInTopElement && currentBlueprint.element) {
+            const result = handleDropSiblingElement({
+              elementType: "ELEMENT",
+              blueprint: currentBlueprint,
+              overId,
+              activeId,
+              element: null,
+              isDropInTopElement,
+            });
+            if (result) dispatch(updateElement({ ...result }));
             console.log("DRAG element DROP IN top element");
             return;
           } else if (!isDropInTopElement && currentBlueprint.element) {
+            const result = handleDropSiblingElement({
+              elementType: "ELEMENT",
+              blueprint: currentBlueprint,
+              overId,
+              activeId,
+              element: null,
+              isDropInTopElement,
+            });
+            if (result) dispatch(updateElement({ ...result }));
             console.log("DRAG element DROP IN bottom element");
             return;
           }
@@ -83,6 +101,30 @@ function useDragDropEvent() {
               dispatch(updateElement(newBlueprint));
               console.log("DRAG blueprint block DROP IN element");
               return;
+            } else if (isDropInTopElement && currentBlueprint.element) {
+              const result = handleDropSiblingElement({
+                elementType: "BLUEPRINT",
+                blueprint: currentBlueprint,
+                overId,
+                activeId,
+                element: blueprint,
+                isDropInTopElement,
+              });
+              if (result) dispatch(updateElement({ ...result }));
+              console.log("DRAG blueprint DROP IN top element");
+              return;
+            } else if (!isDropInTopElement && currentBlueprint.element) {
+              const result = handleDropSiblingElement({
+                elementType: "BLUEPRINT",
+                blueprint: currentBlueprint,
+                overId,
+                activeId,
+                element: blueprint,
+                isDropInTopElement,
+              });
+              if (result) dispatch(updateElement({ ...result }));
+              console.log("DRAG blueprint DROP IN bottom element");
+              return;
             }
           }
         } else {
@@ -104,6 +146,30 @@ function useDragDropEvent() {
               );
               dispatch(updateElement(newBlueprint));
               console.log("DRAG basic block DROP IN element");
+              return;
+            } else if (isDropInTopElement && currentBlueprint.element) {
+              const result = handleDropSiblingElement({
+                elementType: "BASIC_ELEMENT",
+                blueprint: currentBlueprint,
+                overId,
+                activeId,
+                element: block,
+                isDropInTopElement,
+              });
+              if (result) dispatch(updateElement({ ...result }));
+              console.log("DRAG basic DROP IN top element");
+              return;
+            } else if (!isDropInTopElement && currentBlueprint.element) {
+              const result = handleDropSiblingElement({
+                elementType: "BASIC_ELEMENT",
+                blueprint: currentBlueprint,
+                overId,
+                activeId,
+                element: block,
+                isDropInTopElement,
+              });
+              if (result) dispatch(updateElement({ ...result }));
+              console.log("DRAG basic DROP IN bottom element");
               return;
             }
           }
