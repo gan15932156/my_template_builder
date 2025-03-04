@@ -1,7 +1,7 @@
 "use client";
 
 import { Active, DragOverlay, useDndMonitor } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { editorStyle } from "../constants/editorStyle";
 import useGetBlueprintBlock from "../features/editor/hooks/useGetBlueprintBlock";

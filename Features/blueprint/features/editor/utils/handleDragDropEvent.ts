@@ -104,6 +104,44 @@ function findAndRemove(
   return null;
 }
 
+interface farrwpe {
+  element: TreeNode | null;
+  parentElementId: string | null;
+}
+function findAndRemoveReturnWithParentElmId(
+  nodes: TreeNode[],
+  predicate: (node: TreeNode) => boolean
+): farrwpe {
+  for (let i = 0; i < nodes.length; i++) {
+    if (predicate(nodes[i])) {
+      const removed = nodes[i];
+      nodes.splice(i, 1);
+      return { element: removed, parentElementId: "root" };
+    }
+    if (Array.isArray(nodes[i].content)) {
+      const found = findAndRemove(nodes[i].content as TreeNode[], predicate);
+      if (found) return { element: found, parentElementId: nodes[i].id };
+    }
+  }
+  return { element: null, parentElementId: null };
+}
+
+function findParent(
+  nodes: TreeNode[],
+  predicate: (node: TreeNode) => boolean
+): TreeNode | null {
+  for (let i = 0; i < nodes.length; i++) {
+    if (predicate(nodes[i])) {
+      return nodes[i];
+    }
+    if (Array.isArray(nodes[i].content)) {
+      const found = findParent(nodes[i].content as TreeNode[], predicate);
+      if (found) return nodes[i];
+    }
+  }
+  return null;
+}
+
 export const handleChangeElement = (
   id: string,
   newParentId: string,
@@ -132,19 +170,161 @@ export const handleChangeElement = (
 
   return findAndInsert(tree, newParentId, element);
 };
+type DropSiblingElementFunction = {
+  elementType: "ELEMENT" | "BASIC_ELEMENT" | "BLUEPRINT";
+  blueprint: TBlueprint;
+  overId: string;
+  activeId: string | null;
+  element: TBlueprintElement[] | TBlueprint | TBasicBlock | null;
+  isDropInTopElement: boolean;
+};
+export const handleDropSiblingElement = ({
+  elementType,
+  blueprint,
+  overId,
+  activeId,
+  element,
+  isDropInTopElement,
+}: DropSiblingElementFunction): TBlueprint | null => {
+  function findAndInsert(
+    nodes: TreeNode[],
+    parentId: string,
+    overId: string,
+    isDropInTopElement: boolean,
+    element: TreeNode
+  ): boolean {
+    for (const node of nodes) {
+      if (node.id === parentId && Array.isArray(node.content)) {
+        const overIndex = node.content.findIndex((item) => item.id === overId);
+
+        if (overIndex !== -1) {
+          if (isDropInTopElement) {
+            node.content.splice(overIndex, 0, element); // Insert before overId
+          } else {
+            node.content.push(element);
+          }
+          return true;
+        }
+      }
+
+      if (Array.isArray(node.content)) {
+        const inserted = findAndInsert(
+          node.content,
+          parentId,
+          overId,
+          isDropInTopElement,
+          element
+        );
+        if (inserted) return true;
+      }
+    }
+    return false;
+  }
+
+  // Deep clone blueprint.element
+  let tempElement: TBlueprint | undefined;
+  try {
+    tempElement = structuredClone(blueprint);
+  } catch {
+    tempElement = JSON.parse(JSON.stringify(blueprint));
+  }
+
+  if (elementType === "ELEMENT" && tempElement?.element) {
+    const result = findAndRemoveReturnWithParentElmId(
+      [tempElement.element],
+      (node) => node.id === activeId
+    );
+
+    if (!result.element || !result.parentElementId) return null;
+
+    const inserted = findAndInsert(
+      [tempElement.element],
+      result.parentElementId,
+      overId,
+      isDropInTopElement,
+      result.element
+    );
+
+    if (!inserted) {
+      console.error("Failed to insert element", {
+        result,
+        overId,
+        isDropInTopElement,
+      });
+      return null;
+    }
+    return tempElement;
+  } else if (elementType === "BLUEPRINT" && tempElement?.element) {
+    const copiedElement = copyBlueprint(element as TBlueprint);
+    const parentElement = findParent(
+      [tempElement.element],
+      (node) => node.id === overId
+    );
+    if (parentElement && copiedElement.element) {
+      const inserted = findAndInsert(
+        [tempElement.element],
+        parentElement.id,
+        overId,
+        isDropInTopElement,
+        copiedElement.element
+      );
+      tempElement.styles = {
+        ...tempElement.styles,
+        ...copiedElement.styles,
+      };
+      if (!inserted) {
+        console.error("Failed to insert element", {
+          element: copiedElement.element,
+          overId,
+          isDropInTopElement,
+        });
+        return null;
+      }
+    }
+    return tempElement;
+  } else if (elementType === "BASIC_ELEMENT" && tempElement?.element) {
+    const newElementData = getBasicBlockElementData(element as TBasicBlock);
+    const parentElement = findParent(
+      [tempElement.element],
+      (node) => node.id === overId
+    );
+    if (parentElement) {
+      const inserted = findAndInsert(
+        [tempElement.element],
+        parentElement.id,
+        overId,
+        isDropInTopElement,
+        newElementData
+      );
+      if (!inserted) {
+        console.error("Failed to insert element", {
+          element: newElementData,
+          overId,
+          isDropInTopElement,
+        });
+        return null;
+      }
+    }
+
+    return tempElement;
+  }
+
+  return null;
+};
+
 /**
  * drag use case
  * #1. Drag block to blueprint new
  * #2. Drag block to element new
- * 3. Drag block to top of element new
- * 4. Drag block to bottom of element new
+ * #3. Drag block to top of element new
+ * #4. Drag block to bottom of element new
  * #5. Drag blueprint block to blueprint new
  * #6. Drag blueprint block to element new
- * 7. Drag blueprint block to top of element new
- * 8. Drag blueprint block to bottom of element new
+ * #7. Drag blueprint block to top of element new
+ * #8. Drag blueprint block to bottom of element new
  * #9. Drag element to another element update transfer position or level of element
- * 10. Drag element to top of another element update
- * 11. Drag element to bottom of another element update
+ * #10. Drag element to top of another element update
+ * #11. Drag element to bottom of another element update
  */
 
 const getBasicBlockElementData = (
