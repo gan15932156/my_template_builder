@@ -80,11 +80,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
     elementId: string
   ) => {
     event.stopPropagation();
-    if (elementId == selectedElementId) {
-      dispatch(setSelectedElement(""));
-    } else {
-      dispatch(setSelectedElement(elementId));
-    }
+    dispatch(setSelectedElement(elementId));
   };
   if (isDragging) return;
   if (Array.isArray(elements.content)) {
@@ -104,7 +100,6 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          https://www.developerway.com/posts/positioning-and-portals-in-react
           <Tooltip
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}

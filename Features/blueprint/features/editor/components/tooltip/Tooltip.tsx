@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+import TooltipPanel from "./TooltipPanel";
 interface TooltipProps {
   targetRef: React.RefObject<HTMLElement>;
   isActive: boolean;
@@ -16,7 +17,6 @@ const TooltipContainer = styled.div<{ $top: number; $left: number }>`
   border-radius: 4px;
   white-space: nowrap;
   z-index: 1000;
-  pointer-events: none;
   transform: translate(-50%, -100%); /* Center horizontally */
 `;
 const Tooltip: React.FC<TooltipProps> = ({ targetRef, isActive }) => {
@@ -35,18 +35,9 @@ const Tooltip: React.FC<TooltipProps> = ({ targetRef, isActive }) => {
   return isActive
     ? createPortal(
         <TooltipContainer $top={position.top} $left={position.left}>
-          <div>
-            adaddsd
-            <button
-              onClick={(e) => {
-                console.log("click");
-              }}
-            >
-              Click
-            </button>
-          </div>
+          <TooltipPanel />
         </TooltipContainer>,
-        document.getElementById("root_layout") || document.body
+        document.body
       )
     : null;
 };

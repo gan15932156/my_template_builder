@@ -38,3 +38,8 @@ export function copyBlueprint(element: TBlueprint): TBlueprint {
   }
   throw new Error("Blueprint element is missing");
 }
+
+export function findElement(
+  elementId: string,
+  currentElement: TBlueprintElement
+) {}
