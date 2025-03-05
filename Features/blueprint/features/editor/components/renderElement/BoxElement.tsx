@@ -6,6 +6,14 @@ import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import useOverlay from "../../hooks/useSibingOverlay";
+import { MouseEvent, useRef } from "react";
+import Tooltip from "../tooltip/Tooltip";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import {
+  selectSelectedElementId,
+  setSelectedElement,
+} from "@/Features/blueprint/slice/elementSlice";
+import TooltipPanel from "../tooltip/TooltipPanel";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isOver: boolean;
@@ -13,6 +21,10 @@ const Box = styled.div<{
 }>`
   position: relative;
   outline: 1px dashed ${editorStyle.primary500};
+
+  &:hover {
+    outline: 1px solid ${editorStyle.primary500};
+  }
   && {
     ${(props) =>
       props.$style &&
@@ -60,15 +72,31 @@ const BoxElement: React.FC<RenderElementProps> = ({
     elements.id,
     elements.category
   );
+  const selectedElementId = useAppSelector(selectSelectedElementId);
+  const dispatch = useAppDispatch();
+  const targetRef = useRef<HTMLDivElement | null>(null);
+  const handleElementClick = (
+    event: MouseEvent<HTMLDivElement>,
+    elementId: string
+  ) => {
+    event.stopPropagation();
+    if (elementId == selectedElementId) {
+      dispatch(setSelectedElement(""));
+    } else {
+      dispatch(setSelectedElement(elementId));
+    }
+  };
   if (isDragging) return;
   if (Array.isArray(elements.content)) {
     if (elements.content.length > 0) {
       return (
         <Box
           ref={(node) => {
+            targetRef.current = node;
             setDropNodeRef(node);
             setDragNodeRef(node);
           }}
+          onClick={(e) => handleElementClick(e, elements.id)}
           as={elements.tag}
           $isOver={isOver}
           $style={elementStyles}
@@ -76,6 +104,11 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
+          https://www.developerway.com/posts/positioning-and-portals-in-react
+          <Tooltip
+            isActive={selectedElementId == elements.id}
+            targetRef={targetRef}
+          />
           {!isRootElement && <TopOverlay />}
           {elements.content.map((element, index) => {
             const isLastChildElm = index + 1 == elements.content.length;
@@ -97,9 +130,11 @@ const BoxElement: React.FC<RenderElementProps> = ({
       return (
         <Box
           ref={(node) => {
+            targetRef.current = node;
             setDropNodeRef(node);
             setDragNodeRef(node);
           }}
+          onClick={(e) => handleElementClick(e, elements.id)}
           as={elements.tag}
           $isOver={isOver}
           $style={elementStyles}
@@ -107,6 +142,10 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
+          <Tooltip
+            isActive={selectedElementId == elements.id}
+            targetRef={targetRef}
+          />
           {!isRootElement && <TopOverlay />}
           <p>{elements.elmType}</p>
           {!isRootElement && isLastElm && <BottomOverlay />}
@@ -117,9 +156,11 @@ const BoxElement: React.FC<RenderElementProps> = ({
     return (
       <Box
         ref={(node) => {
+          targetRef.current = node;
           setDropNodeRef(node);
           setDragNodeRef(node);
         }}
+        onClick={(e) => handleElementClick(e, elements.id)}
         as={elements.tag}
         $isOver={isOver}
         $style={elementStyles}
@@ -127,6 +168,10 @@ const BoxElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
+        <Tooltip
+          isActive={selectedElementId == elements.id}
+          targetRef={targetRef}
+        />
         {elements.content}
       </Box>
     );

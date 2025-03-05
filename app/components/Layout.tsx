@@ -6,7 +6,7 @@ import styles from "./Layout.module.css";
 function Layout({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
   return (
-    <div>
+    <div id="root_layout" style={{ position: "relative" }}>
       <nav className={styles.navContainer}>
         <Link
           href={"/"}
