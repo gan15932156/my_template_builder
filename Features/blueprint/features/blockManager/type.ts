@@ -22,7 +22,7 @@ export type TStyle = {
 // Basic block definition
 export type TBasicBlock = TBaseBlock & {
   icon?: string; // Icon representing the block
-  styles?: TStyle; // Optional styles
+  styles?: DynamicPseudoStyles; // Optional styles
   element: {
     elmType: string; // Element type
     content: string | []; // Element content (e.g., innerHTML)
@@ -59,6 +59,10 @@ export type TBlueprintElement = {
   isRand: boolean;
   attributes?: Record<string, string | string[]>;
   content: Array<TBlueprintElement> | string;
+};
+
+export type TBlueprintElementWithStyle = TBlueprintElement & {
+  styles?: TStyle;
 };
 
 // Blueprint definition

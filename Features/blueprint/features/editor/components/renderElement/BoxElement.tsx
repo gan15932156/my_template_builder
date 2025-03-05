@@ -77,7 +77,6 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...attributes}
         >
           {!isRootElement && <TopOverlay />}
-          {elements.id}
           {elements.content.map((element, index) => {
             const isLastChildElm = index + 1 == elements.content.length;
             return (
@@ -109,7 +108,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...attributes}
         >
           {!isRootElement && <TopOverlay />}
-          <p>{elements.id}</p>
+          <p>{elements.elmType}</p>
           {!isRootElement && isLastElm && <BottomOverlay />}
         </Box>
       );
@@ -128,7 +127,6 @@ const BoxElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
-        {elements.id}
         {elements.content}
       </Box>
     );

@@ -9,6 +9,7 @@ import {
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
 import {
+  getBasicBlockElementData2,
   handleChangeElement,
   handleDropSiblingElement,
   handleInsertElementToBlueprint,

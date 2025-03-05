@@ -4,7 +4,7 @@ import { Suspense } from "react";
 const ProjectPage = () => {
   return (
     <Suspense>
-      <Dashboard />;
+      <Dashboard />
     </Suspense>
   );
 };

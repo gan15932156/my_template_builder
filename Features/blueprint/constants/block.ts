@@ -30,6 +30,9 @@ basicBlocks["basicBox"] = {
   name: "Box",
   category: "basic",
   isBlueprint: false,
+  styles: {
+    normal: { padding: "1rem" },
+  },
   element: {
     elmType: "box",
     content: [],
