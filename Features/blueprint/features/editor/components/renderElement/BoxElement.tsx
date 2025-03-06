@@ -8,13 +8,12 @@ import { useDraggable, useDroppable } from "@dnd-kit/core";
 import useOverlay from "../../hooks/useSibingOverlay";
 import { MouseEvent, useRef } from "react";
 import Tooltip from "../tooltip/Tooltip";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import {
-  selectSelectedElementId,
-  setSelectedElement,
-} from "@/Features/blueprint/slice/elementSlice";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
+import useSelectedElement from "../../hooks/useSelectedElement";
 const Box = styled.div<{
   $style: Record<string, any>;
+  $isSelected: boolean;
   $isOver: boolean;
   $isDragging: boolean;
 }>`
@@ -31,7 +30,7 @@ const Box = styled.div<{
         ${props.$style}
       `}
     ${(props) =>
-      props.$isOver &&
+      (props.$isOver || props.$isSelected) &&
       css`
         outline: 1px solid ${editorStyle.primary500};
       `}
@@ -71,7 +70,8 @@ const BoxElement: React.FC<RenderElementProps> = ({
     elements.id,
     elements.category
   );
-  const selectedElementId = useAppSelector(selectSelectedElementId);
+  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
+  // const selectedElementId = useAppSelector(selectSelectedElementId);
   const dispatch = useAppDispatch();
   const targetRef = useRef<HTMLDivElement | null>(null);
   const handleElementClick = (
@@ -100,6 +100,10 @@ const BoxElement: React.FC<RenderElementProps> = ({
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
+          $isSelected={
+            selectedElementId == elements.id ||
+            layoutSelectedElementId == elements.id
+          }
           {...listeners}
           {...attributes}
         >
@@ -137,6 +141,10 @@ const BoxElement: React.FC<RenderElementProps> = ({
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
+          $isSelected={
+            selectedElementId == elements.id ||
+            layoutSelectedElementId == elements.id
+          }
           {...listeners}
           {...attributes}
         >
@@ -163,6 +171,10 @@ const BoxElement: React.FC<RenderElementProps> = ({
         $isOver={isOver}
         $style={elementStyles}
         $isDragging={isDragging}
+        $isSelected={
+          selectedElementId == elements.id ||
+          layoutSelectedElementId == elements.id
+        }
         {...listeners}
         {...attributes}
       >

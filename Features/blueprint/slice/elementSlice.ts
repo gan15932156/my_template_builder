@@ -5,9 +5,11 @@ import { RootState } from "@/libs/store";
 interface BlueprintState {
   blueprint?: TBlueprint;
   selectedElementId: string;
+  layoutSelectedElementId: string;
 }
 const initialState: BlueprintState = {
   selectedElementId: "",
+  layoutSelectedElementId: "",
 };
 
 export const ElementlSlice = createSlice({
@@ -20,10 +22,16 @@ export const ElementlSlice = createSlice({
     setSelectedElement: (state, action: PayloadAction<string>) => {
       state.selectedElementId = action.payload;
     },
+    setLayoutSelectedElement: (state, action: PayloadAction<string>) => {
+      state.layoutSelectedElementId = action.payload;
+    },
   },
 });
 export default ElementlSlice.reducer;
-export const { updateElement, setSelectedElement } = ElementlSlice.actions;
+export const { updateElement, setSelectedElement, setLayoutSelectedElement } =
+  ElementlSlice.actions;
 export const selectBlueprint = (state: RootState) => state.element.blueprint;
 export const selectSelectedElementId = (state: RootState) =>
   state.element.selectedElementId;
+export const selectLayoutSelectedElementId = (state: RootState) =>
+  state.element.layoutSelectedElementId;

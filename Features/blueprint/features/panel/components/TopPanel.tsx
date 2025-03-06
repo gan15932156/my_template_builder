@@ -38,6 +38,13 @@ const TopPanel = () => {
           <FiChrome size={16} />
         </NavButton>
         <NavButton
+          title="Layout manager"
+          onClick={() => handleClick("layout")}
+          $isActive={currentPanel == "layout"}
+        >
+          <FiChrome size={16} />
+        </NavButton>
+        <NavButton
           title="Style manager"
           onClick={() => handleClick("style")}
           $isActive={currentPanel == "style"}

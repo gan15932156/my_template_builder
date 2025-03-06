@@ -5,6 +5,7 @@ import styled from "styled-components";
 import BlockManager from "../../blockManager/components/BlockManager";
 import SidePanelItem from "./SidePanelItem";
 import StyleManager from "../../styleManager/components/StyleManager";
+import LayoutManager from "../../layoutManager/components/LayoutManager";
 
 const Wrapper = styled.div`
   ${getBgTextStyle}
@@ -15,6 +16,9 @@ const SidePanel = () => {
     <Wrapper>
       <SidePanelItem name="block">
         <BlockManager />
+      </SidePanelItem>
+      <SidePanelItem name="layout">
+        <LayoutManager />
       </SidePanelItem>
       <SidePanelItem name="style">
         <StyleManager />

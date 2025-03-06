@@ -2,7 +2,9 @@
 
 import {
   selectBlueprint,
+  selectLayoutSelectedElementId,
   selectSelectedElementId,
+  setLayoutSelectedElement,
   setSelectedElement,
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
@@ -12,6 +14,7 @@ import { deleteElement, findElement } from "../utils/utils";
 
 const useSelectedElement = () => {
   const selectedElementId = useAppSelector(selectSelectedElementId);
+  const layoutSelectedElementId = useAppSelector(selectLayoutSelectedElementId);
   const currentBlueprint = useAppSelector(selectBlueprint);
   const dispatch = useAppDispatch();
 
@@ -22,11 +25,25 @@ const useSelectedElement = () => {
   const handleDeleteElement = (elementId: string) => {
     if (currentBlueprint?.element) {
       const result = deleteElement(elementId, currentBlueprint);
+
       dispatch(setSelectedElement(""));
       dispatch(updateElement(result));
     }
   };
-  return { handleDeleteElement, selectedElementId, selectedElement };
+  const handleSetSelectedElementId = (elementId: string) => {
+    dispatch(setSelectedElement(elementId));
+  };
+  const handleSetlayoutSelectedElementId = (elementId: string) => {
+    dispatch(setLayoutSelectedElement(elementId));
+  };
+  return {
+    handleDeleteElement,
+    handleSetSelectedElementId,
+    handleSetlayoutSelectedElementId,
+    selectedElementId,
+    layoutSelectedElementId,
+    selectedElement,
+  };
 };
 
 export default useSelectedElement;
