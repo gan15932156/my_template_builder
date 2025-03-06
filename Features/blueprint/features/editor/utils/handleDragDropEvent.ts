@@ -97,7 +97,7 @@ export const handleInsertElementToBlueprint = (
 };
 type TreeNode = TBlueprintElement;
 
-function findAndRemove(
+export function findAndRemove(
   nodes: TreeNode[],
   predicate: (node: TreeNode) => boolean
 ): TreeNode | null {
@@ -115,43 +115,6 @@ function findAndRemove(
   return null;
 }
 
-interface farrwpe {
-  element: TreeNode | null;
-  parentElementId: string | null;
-}
-function findAndRemoveReturnWithParentElmId(
-  nodes: TreeNode[],
-  predicate: (node: TreeNode) => boolean
-): farrwpe {
-  for (let i = 0; i < nodes.length; i++) {
-    if (predicate(nodes[i])) {
-      const removed = nodes[i];
-      nodes.splice(i, 1);
-      return { element: removed, parentElementId: "root" };
-    }
-    if (Array.isArray(nodes[i].content)) {
-      const found = findAndRemove(nodes[i].content as TreeNode[], predicate);
-      if (found) return { element: found, parentElementId: nodes[i].id };
-    }
-  }
-  return { element: null, parentElementId: null };
-}
-
-function findParent(
-  nodes: TreeNode[],
-  predicate: (node: TreeNode) => boolean
-): TreeNode | null {
-  for (let i = 0; i < nodes.length; i++) {
-    if (predicate(nodes[i])) {
-      return nodes[i];
-    }
-    if (Array.isArray(nodes[i].content)) {
-      const found = findParent(nodes[i].content as TreeNode[], predicate);
-      if (found) return nodes[i];
-    }
-  }
-  return null;
-}
 function findParent2(
   nodes: TBlueprintElement,
   overId: string,
@@ -260,13 +223,13 @@ export const handleDropSiblingElement = ({
   if (!tempElement?.element) return null;
 
   if (elementType === "ELEMENT") {
-    const result = findAndRemoveReturnWithParentElmId(
+    const result = findAndRemove(
       [tempElement.element],
       (node) => node.id === activeId
     );
 
     const parentElementId = findParent2(tempElement.element, overId);
-    if (!result.element || !parentElementId) {
+    if (!result || !parentElementId) {
       console.error("Parent ID missing for ELEMENT insertion", result);
       return null;
     }
@@ -275,7 +238,7 @@ export const handleDropSiblingElement = ({
       parentElementId,
       overId,
       isDropInTopElement,
-      result.element
+      result
     );
 
     if (!inserted) {

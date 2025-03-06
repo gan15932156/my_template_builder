@@ -13,7 +13,6 @@ import {
   selectSelectedElementId,
   setSelectedElement,
 } from "@/Features/blueprint/slice/elementSlice";
-import TooltipPanel from "../tooltip/TooltipPanel";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isOver: boolean;
@@ -80,7 +79,11 @@ const BoxElement: React.FC<RenderElementProps> = ({
     elementId: string
   ) => {
     event.stopPropagation();
-    dispatch(setSelectedElement(elementId));
+    if (elementId === selectedElementId) {
+      dispatch(setSelectedElement(""));
+    } else {
+      dispatch(setSelectedElement(elementId));
+    }
   };
   if (isDragging) return;
   if (Array.isArray(elements.content)) {
