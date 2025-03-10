@@ -2,8 +2,8 @@
 
 import styled from "styled-components";
 import { FiChevronRight, FiX } from "react-icons/fi";
-import useSelectedElement from "../../editor/hooks/useSelectedElement";
 import { MouseEvent } from "react";
+import useSelectedElement from "../../../hooks/useSelectedElement";
 interface Props {
   isActive: boolean;
   isHaveChild: boolean;

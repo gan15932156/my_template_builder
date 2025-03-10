@@ -2,9 +2,9 @@
 
 import { ApiResponse, TBlueprintWithElement } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { HashMap, TBlueprint } from "../../blockManager/type";
-import { transformToTBlueprint } from "../utils/transformData";
+import { HashMap, TBlueprint } from "../features/blockManager/type";
 import { useCallback } from "react";
+import { transformToTBlueprint } from "../features/editor/utils/transformData";
 // https://tkdodo.eu/blog/react-query-as-a-state-manager
 // https://dev.to/franklin030601/managing-state-with-react-query-1842
 const fetchBlueprint = async (): Promise<

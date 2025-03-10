@@ -1,14 +1,9 @@
 "use client";
 
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import {
-  selectSelectedElementId,
-  setSelectedElement,
-} from "@/Features/blueprint/slice/elementSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent } from "react";
 import styled from "styled-components";
-import useSelectedElement from "../../hooks/useSelectedElement";
+import useSelectedElement from "../../../../hooks/useSelectedElement";
 
 const Wrapper = styled.div`
   font-size: 0.6rem;

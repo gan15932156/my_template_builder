@@ -11,7 +11,7 @@ import {
 } from "./styledComponents";
 import { FiChevronUp } from "react-icons/fi";
 import { useState } from "react";
-import useGetBlueprintBlock from "../../editor/hooks/useGetBlueprintBlock";
+import useGetBlueprintBlock from "../../../hooks/useGetBlueprintBlock";
 
 const Wrapper = styled.div`
   display: flex;

@@ -5,12 +5,12 @@ import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import useOverlay from "../../hooks/useSibingOverlay";
 import { MouseEvent, useRef } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
-import useSelectedElement from "../../hooks/useSelectedElement";
+import useOverlay from "../../../../hooks/useSibingOverlay";
+import useSelectedElement from "../../../../hooks/useSelectedElement";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isSelected: boolean;

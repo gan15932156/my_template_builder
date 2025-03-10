@@ -4,8 +4,8 @@ import { MouseEvent, useState } from "react";
 import { TBlueprintElement } from "../../blockManager/type";
 import AccordionHead from "./AccordionHead";
 import styled, { css } from "styled-components";
-import useSelectedElement from "../../editor/hooks/useSelectedElement";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
+import useSelectedElement from "../../../hooks/useSelectedElement";
 
 interface Props {
   element: TBlueprintElement;

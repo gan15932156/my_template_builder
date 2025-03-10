@@ -10,7 +10,7 @@ import {
 } from "@/Features/blueprint/slice/elementSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { useMemo } from "react";
-import { deleteElement, findElement } from "../utils/utils";
+import { deleteElement, findElement } from "../features/editor/utils/utils";
 
 const useSelectedElement = () => {
   const selectedElementId = useAppSelector(selectSelectedElementId);

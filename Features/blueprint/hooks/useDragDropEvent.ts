@@ -9,12 +9,11 @@ import {
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
 import {
-  getBasicBlockElementData2,
   handleChangeElement,
   handleDropSiblingElement,
   handleInsertElementToBlueprint,
   handleInsertElementToElement,
-} from "../utils/handleDragDropEvent";
+} from "../features/editor/utils/handleDragDropEvent";
 
 function useDragDropEvent() {
   const { data: blueprintBlock, isError, isLoading } = useGetBlueprintBlock();

@@ -1,7 +1,7 @@
 "use client";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDroppable } from "@dnd-kit/core";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import styled, { css } from "styled-components";
 const overlayHeight = "4px";
 const overalyPaadding = "4px";

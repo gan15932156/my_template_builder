@@ -3,7 +3,6 @@
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDroppable } from "@dnd-kit/core";
 import styled, { css } from "styled-components";
-import useBlueprintData from "../hooks/useGetBlueprint";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
@@ -11,8 +10,9 @@ import {
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
 import { transformToTBlueprint } from "../utils/transformData";
-import useDragDropEvent from "../hooks/useDragDropEvent";
 import RenderElement from "./renderElement/RenderElement";
+import useDragDropEvent from "../../../hooks/useDragDropEvent";
+import useBlueprintData from "../../../hooks/useGetBlueprint";
 
 const Wrapper = styled.div`
   grid-column: 1 / 3;
