@@ -1,6 +1,5 @@
 "use client";
 
-import LayoutManager from "@/Features/blueprint/features/layoutManager/components/LayoutManager";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
