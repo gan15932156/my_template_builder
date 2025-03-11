@@ -3,12 +3,15 @@
 import styled from "styled-components";
 import { getBgTextStyle } from "@/Features/blueprint/constants/editorStyle";
 import { NavButton, NavItemContainer } from "./styledComponents";
-import { FiBox, FiChrome } from "react-icons/fi";
+import { IoColorPaletteOutline } from "react-icons/io5";
+import { LuLayoutGrid } from "react-icons/lu";
+import { AiOutlineLayout } from "react-icons/ai";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
   changePanel,
   selectCurrentPanel,
 } from "@/Features/blueprint/slice/panelSlice";
+const ICON_SIZE = 18;
 const Wrapper = styled.div`
   ${getBgTextStyle}
   grid-column: 1 / -1;
@@ -35,21 +38,21 @@ const TopPanel = () => {
           onClick={() => handleClick("block")}
           $isActive={currentPanel == "block"}
         >
-          <FiChrome size={16} />
+          <LuLayoutGrid size={ICON_SIZE} />
         </NavButton>
         <NavButton
           title="Layout manager"
           onClick={() => handleClick("layout")}
           $isActive={currentPanel == "layout"}
         >
-          <FiChrome size={16} />
+          <AiOutlineLayout size={ICON_SIZE} />
         </NavButton>
         <NavButton
           title="Style manager"
           onClick={() => handleClick("style")}
           $isActive={currentPanel == "style"}
         >
-          <FiBox size={16} />
+          <IoColorPaletteOutline size={ICON_SIZE} />
         </NavButton>
       </NavItemContainer>
     </Wrapper>

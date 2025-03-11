@@ -1,54 +1,101 @@
 "use client";
 
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import useSelectedStyle from "@/Features/blueprint/hooks/useSelectedStyle";
-import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  FocusEvent,
+  MouseEvent,
+  useEffect,
+  useState,
+} from "react";
+import { FiX } from "react-icons/fi";
+import styled from "styled-components";
 
+const FormControl = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+`;
+const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: ${editorStyle.secondary500};
+  background-color: ${editorStyle.primary500};
+  border: 1px solid ${editorStyle.secondary500};
+  padding: 0.1rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: ${editorStyle.primary500};
+    background-color: ${editorStyle.secondary500};
+    border: 1px solid ${editorStyle.primary500};
+  }
+`;
+const InputField = styled.input`
+  border: 1px solid ${editorStyle.secondary500};
+  background-color: ${editorStyle.primary500};
+  color: ${editorStyle.secondary500};
+  padding-inline: 0.2rem;
+`;
 interface Props {
   currentStyleState: string;
   propertyName: string;
 }
+
 const PropertyField: React.FC<Props> = ({
   currentStyleState,
   propertyName,
 }) => {
-  const { styles } = useSelectedStyle();
+  const { styles, handleUpdateStyle, handleClearStyleProperty } =
+    useSelectedStyle();
 
-  const [propertyValue, setPropertyValue] = useState(
-    styles
-      ? styles[currentStyleState]
-        ? styles[currentStyleState][propertyName]
-        : ""
-      : ""
-  );
-  const handleOnFieldBlue = (event: FocusEvent<HTMLInputElement>) => {
-    console.log(currentStyleState, event.target.name, event.target.value);
+  const getInitialValue = () =>
+    styles?.[currentStyleState]?.[propertyName] ?? "";
+
+  const [propertyValue, setPropertyValue] = useState(getInitialValue);
+
+  const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+    handleUpdateStyle(currentStyleState, propertyName, event.target.value);
   };
+
   const handleOnFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
     setPropertyValue(event.target.value);
   };
+  const handleClearProperty = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    // handleUpdateStyle(currentStyleState, propertyName, "");
+    handleClearStyleProperty(currentStyleState, propertyName);
+  };
   useEffect(() => {
-    if (
-      styles &&
-      styles[currentStyleState] &&
-      styles[currentStyleState][propertyName]
-    ) {
-      setPropertyValue(styles[currentStyleState][propertyName]);
-    } else {
-      setPropertyValue("");
-    }
-  }, [currentStyleState, styles]);
+    setPropertyValue((prev) => {
+      const newValue = getInitialValue();
+      return prev !== newValue ? newValue : prev;
+    });
+  }, [currentStyleState, styles, propertyName]);
+
   return (
-    <div>
+    <FormControl>
       <label htmlFor={propertyName}>{propertyName}</label>
-      <input
+      <InputField
         type="text"
         name={propertyName}
         id={propertyName}
         value={propertyValue}
-        onBlur={handleOnFieldBlue}
+        onBlur={handleOnFieldBlur}
         onChange={handleOnFieldChange}
       />
-    </div>
+      {propertyValue != "" && (
+        <DeleteButton type="button" onClick={handleClearProperty}>
+          <FiX />
+        </DeleteButton>
+      )}
+    </FormControl>
   );
 };
 

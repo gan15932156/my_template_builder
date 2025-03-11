@@ -13,22 +13,25 @@ const NavButton = styled.button<{ $isActive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 0.4rem;
-  background-color: ${editorStyle.secondary500};
-  color: ${editorStyle.primary500};
-  padding: 0.2rem 0.4rem;
+  border-radius: 0.2rem;
+  border: 1px solid ${editorStyle.secondary500};
+  color: ${editorStyle.secondary500};
+  background-color: ${editorStyle.primary500};
+  padding: 0.1rem 0.2rem;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s ease;
   &:hover {
-    filter: brightness(0.7);
+    border: 1px solid ${editorStyle.primary500};
+    color: ${editorStyle.primary500};
+    background-color: ${editorStyle.secondary500};
   }
-
   ${(props) =>
     props.$isActive &&
     css`
-      filter: brightness(0.7);
+      border: 1px solid ${editorStyle.primary500};
+      color: ${editorStyle.primary500};
+      background-color: ${editorStyle.secondary500};
     `};
 `;
 export { NavButton, NavItemContainer };
