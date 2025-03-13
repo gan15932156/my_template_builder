@@ -87,6 +87,7 @@ function useOverlay(
       />
     );
   }, [elementId, isHorizontal, isBottomOver]);
+
   return { TopOverlay, BottomOverlay };
 }
 

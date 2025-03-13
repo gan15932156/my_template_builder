@@ -86,6 +86,7 @@ const InputElement: React.FC<RenderElementProps> = ({
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
       />
+      {!isRootElement && <TopOverlay />}
       <Input
         ref={(node) => {
           targetRef.current = node;
@@ -101,6 +102,7 @@ const InputElement: React.FC<RenderElementProps> = ({
         {...attributes}
         onClick={(e) => handleElementClick(e, element.id)}
       />
+      {!isRootElement && isLastElm && <BottomOverlay />}
     </>
   );
 };
