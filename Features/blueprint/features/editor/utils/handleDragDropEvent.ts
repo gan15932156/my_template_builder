@@ -337,7 +337,7 @@ export const getBasicBlockElementData2 = (
     content: basicBlock.element.content,
     isListing: false,
     isRand: false,
-    styles: { [elementId]: { ...basicBlock.styles } },
+    styles: { [elementId]: basicBlock.styles ? { ...basicBlock.styles } : {} },
   };
   return elementData;
 };

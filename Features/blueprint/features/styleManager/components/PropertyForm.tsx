@@ -18,7 +18,6 @@ const PropertyForm: React.FC<Props> = ({ currentStyleState }) => {
     const getReadstylePropertyJSON = async () => {
       const data = await readStylePropertyFromJSON();
       if (data) {
-        console.log(data.styleProperty);
         setStyleProperty(data.styleProperty);
       }
     };

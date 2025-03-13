@@ -3,6 +3,7 @@
 import { TBlueprintElement, TStyle } from "../../../blockManager/type";
 import BoxElement from "./BoxElement";
 import ImageElement from "./ImageElement";
+import InputElement from "./InputElement";
 
 export interface RenderElementProps {
   element: TBlueprintElement;
@@ -27,6 +28,16 @@ const SwitchCaseElement: React.FC<RenderElementProps> = ({
     case "box":
       return (
         <BoxElement
+          element={element}
+          styles={styles}
+          isLastElm={isLastElm}
+          isHorizontal={isHorizontal}
+          isRootElement={isRootElement}
+        />
+      );
+    case "input":
+      return (
+        <InputElement
           element={element}
           styles={styles}
           isLastElm={isLastElm}

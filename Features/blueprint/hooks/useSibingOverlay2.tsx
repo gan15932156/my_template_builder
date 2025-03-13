@@ -1,26 +1,26 @@
 "use client";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDroppable } from "@dnd-kit/core";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import styled, { css } from "styled-components";
 const overlayHeight = "4px";
 const overalyPaadding = "4px";
 const OverlayBase = styled.div<{ $isOver: boolean }>`
   position: absolute;
-  background-color: transparent;
+  background-color: royalblue;
   z-index: 999;
   padding: ${overalyPaadding};
-  && {
+  /* && {
     ${(props) =>
-      props.$isOver &&
-      css`
-        background-color: ${editorStyle.primary500};
-      `}
-  }
+    props.$isOver &&
+    css`
+      background-color: ${editorStyle.primary500};
+    `}
+  } */
 `;
 
 const TopOverlayStyled = styled(OverlayBase)<{ $isHorizontal: boolean }>`
-  ${(props) =>
+  /* ${(props) =>
     props.$isHorizontal
       ? css`
           width: 100%;
@@ -34,11 +34,11 @@ const TopOverlayStyled = styled(OverlayBase)<{ $isHorizontal: boolean }>`
           top: 0;
           left: -2px;
           bottom: 0;
-        `}
+        `} */
 `;
 
 const BottomOverlayStyled = styled(OverlayBase)<{ $isHorizontal: boolean }>`
-  ${(props) =>
+  /* ${(props) =>
     props.$isHorizontal
       ? css`
           width: 100%;
@@ -52,11 +52,12 @@ const BottomOverlayStyled = styled(OverlayBase)<{ $isHorizontal: boolean }>`
           top: 0;
           right: -2px;
           bottom: 0;
-        `}
+        `} */
 `;
 
-function useOverlay(
+function useOverlay2(
   isHorizontal: boolean,
+  targetRef: React.RefObject<HTMLElement>,
   elementId: string,
   category: string
 ) {
@@ -76,7 +77,7 @@ function useOverlay(
         $isHorizontal={isHorizontal}
       />
     );
-  }, [elementId, isHorizontal, isTopOver]);
+  }, [elementId, isHorizontal, isTopOver, targetRef]);
 
   const BottomOverlay = useMemo(() => {
     return () => (
@@ -86,8 +87,20 @@ function useOverlay(
         $isHorizontal={isHorizontal}
       />
     );
-  }, [elementId, isHorizontal, isBottomOver]);
+  }, [elementId, isHorizontal, isBottomOver, targetRef]);
+
+  useEffect(() => {
+    if (!targetRef.current || !elementId) return;
+
+    const target = targetRef.current;
+    const rect = target.getBoundingClientRect();
+    console.log(rect);
+    // setPosition({
+    //   top: rect.bottom + window.scrollY - rect.height,
+    //   left: rect.left + window.scrollX + rect.width / 2,
+    // });
+  }, [isHorizontal, targetRef, elementId, category]);
   return { TopOverlay, BottomOverlay };
 }
 
-export default useOverlay;
+export default useOverlay2;

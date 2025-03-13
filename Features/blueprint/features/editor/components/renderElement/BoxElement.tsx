@@ -71,7 +71,6 @@ const BoxElement: React.FC<RenderElementProps> = ({
     elements.category
   );
   const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
-  // const selectedElementId = useAppSelector(selectSelectedElementId);
   const dispatch = useAppDispatch();
   const targetRef = useRef<HTMLDivElement | null>(null);
   const handleElementClick = (

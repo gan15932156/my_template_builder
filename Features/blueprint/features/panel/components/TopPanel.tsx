@@ -88,6 +88,14 @@ const TopPanel = () => {
           <AiOutlineLayout size={ICON_SIZE} />
         </NavButton>
         <NavButton
+          title="Attribute manager"
+          disabled={isPending}
+          onClick={() => handleClick("attr")}
+          $isActive={currentPanel == "attr"}
+        >
+          <AiOutlineLayout size={ICON_SIZE} />
+        </NavButton>
+        <NavButton
           title="Style manager"
           disabled={isPending}
           onClick={() => handleClick("style")}

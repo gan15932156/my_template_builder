@@ -16,7 +16,7 @@ const Content = styled.div<{ $isActive: boolean }>`
         `
       : css`
           display: none;
-        `}
+        `};
 `;
 const SidePanelItem: React.FC<Props> = ({ children, name }) => {
   const currentPanel = useAppSelector(selectCurrentPanel);

@@ -51,7 +51,8 @@ function transformToTBlueprint(data: {
 
           validatedStyles[elementId] = validatedPseudoStyles;
         } else {
-          throw new Error(`Invalid pseudo styles for element: ${elementId}`);
+          // throw new Error(`Invalid pseudo styles for element: ${elementId}`);
+          validatedStyles[elementId] = {};
         }
       }
     }

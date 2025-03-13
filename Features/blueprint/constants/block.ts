@@ -58,6 +58,9 @@ basicBlocks["basicLink"] = {
   element: {
     elmType: "link",
     content: "Click me!",
+    attributes: {
+      href: "#",
+    },
   },
 };
 basicBlocks["basicImage"] = {
@@ -83,7 +86,7 @@ inputBlocks["formInput"] = {
   isBlueprint: false,
   element: {
     elmType: "form",
-    content: "",
+    content: [],
   },
 };
 inputBlocks["labelInput"] = {
@@ -94,9 +97,6 @@ inputBlocks["labelInput"] = {
   element: {
     elmType: "label",
     content: "",
-    attributes: {
-      for: "someId",
-    },
   },
 };
 inputBlocks["textInput"] = {

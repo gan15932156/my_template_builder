@@ -4,7 +4,7 @@ import { ChangeEvent, useState } from "react";
 import PropertyForm from "./PropertyForm";
 import styled from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import useSelectedStyle from "@/Features/blueprint/hooks/useSelectedStyle";
+import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 
 const Select = styled.select`
   appearance: none;
@@ -39,8 +39,8 @@ const StyleManager = () => {
   const handleStateChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setCurrentStyleState(event.target.value);
   };
-  const { styles } = useSelectedStyle();
-  if (Object.keys(styles).length == 0) return;
+  const { selectedElementId } = useSelectedElement();
+  if (!selectedElementId) return;
   return (
     <Wrapper>
       <SelectWrapper>
