@@ -1,9 +1,11 @@
 "use client";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { useDroppable } from "@dnd-kit/core";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { Active, useDndMonitor, useDroppable } from "@dnd-kit/core";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
+import { selectBlueprint } from "../slice/elementSlice";
 const overlayHeight = 4;
 const overalyPaadding = 2;
 const OverlayBase = styled.div<{ $isOver: boolean }>`
@@ -67,33 +69,47 @@ function useOverlay2(
     id: "drop-bottom-" + elementId,
     data: { isTopDropArea: false, id: elementId, category },
   });
-
+  const currentBlueprint = useAppSelector(selectBlueprint);
+  const [currentDragElement, setCurrentDragElement] = useState<Active>();
   const overlayHeight = 10; // Fixed: Ensure overlayHeight is defined
-
+  useDndMonitor({
+    onDragStart: (event) => {
+      setCurrentDragElement(event.active);
+    },
+    onDragCancel: () => {
+      setCurrentDragElement(undefined);
+    },
+    onDragEnd: () => {
+      setCurrentDragElement(undefined);
+    },
+  });
   useEffect(() => {
-    if (!targetRef.current) {
-      console.warn("targetRef.current is null");
-      return;
+    if (targetRef.current) {
+      const target = targetRef.current;
+      const rect = target.getBoundingClientRect();
+
+      const leftTopElm = `${rect.left + window.scrollX}px`;
+      const topTopElm = `${rect.top + window.scrollY}px`;
+
+      const leftBottomElm = `${rect.left + window.scrollX}px`;
+      const topBottomElm = `${rect.bottom + window.scrollY}px`;
+
+      const width = isHorizontal ? `${rect.width}px` : `${overlayHeight}px`;
+      const height = isHorizontal ? `${overlayHeight}px` : `${rect.height}px`;
+
+      setPositionAndSize({
+        topElm: { top: topTopElm, left: leftTopElm, width, height },
+        bottomElm: { top: topBottomElm, left: leftBottomElm, width, height },
+      });
     }
-
-    const target = targetRef.current;
-    const rect = target.getBoundingClientRect();
-
-    const leftTopElm = `${rect.left + window.scrollX}px`;
-    const topTopElm = `${rect.top + window.scrollY}px`;
-
-    const leftBottomElm = `${rect.left + window.scrollX}px`;
-    const topBottomElm = `${rect.bottom + window.scrollY}px`;
-
-    const width = isHorizontal ? `${rect.width}px` : `${overlayHeight}px`;
-
-    const height = isHorizontal ? `${overlayHeight}px` : `${rect.height}px`;
-
-    setPositionAndSize({
-      topElm: { top: topTopElm, left: leftTopElm, width, height },
-      bottomElm: { top: topBottomElm, left: leftBottomElm, width, height },
-    });
-  }, [isHorizontal, targetRef, elementId, category]);
+  }, [
+    isHorizontal,
+    targetRef,
+    elementId,
+    category,
+    currentDragElement,
+    currentBlueprint,
+  ]);
 
   const TopOverlay = useMemo(() => {
     return () =>
@@ -108,7 +124,15 @@ function useOverlay2(
         />,
         document.body
       );
-  }, [isTopOver, positionAndSize, setTopNodeRef]);
+  }, [
+    isTopOver,
+    positionAndSize,
+    setTopNodeRef,
+    isHorizontal,
+    targetRef,
+    elementId,
+    category,
+  ]);
 
   const BottomOverlay = useMemo(() => {
     return () =>
@@ -123,7 +147,15 @@ function useOverlay2(
         />,
         document.body
       );
-  }, [isBottomOver, positionAndSize, setBottomNodeRef]);
+  }, [
+    isBottomOver,
+    positionAndSize,
+    setBottomNodeRef,
+    isHorizontal,
+    targetRef,
+    elementId,
+    category,
+  ]);
 
   return { TopOverlay, BottomOverlay };
 }

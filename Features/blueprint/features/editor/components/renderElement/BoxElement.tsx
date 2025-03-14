@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import useOverlay from "../../../../hooks/useSibingOverlay";
 import useSelectedElement from "../../../../hooks/useSelectedElement";
+import { getIsHorizontalChild } from "../../utils/utils";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -50,7 +51,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
 }) => {
   const extractedStyles = styles?.[elements.id];
   const elementStyles = transformStyleToStyleComponent(extractedStyles);
-
+  const isHorizontalChild = getIsHorizontalChild(extractedStyles);
   const { isOver, setNodeRef: setDropNodeRef } = useDroppable({
     id: "droppable-" + elements.id,
     data: { isDropElement: true, id: elements.id, category: elements.category },
@@ -119,7 +120,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
                 element={element}
                 styles={styles}
                 isLastElm={isLastChildElm}
-                isHorizontal={isHorizontal}
+                isHorizontal={isHorizontalChild}
                 isRootElement={false}
               />
             );

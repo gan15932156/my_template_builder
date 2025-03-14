@@ -18,19 +18,11 @@ const RenderElement: React.FC = () => {
     const isLastElm = Array.isArray(currentElement.element.content)
       ? currentElement.element.content.length == 1
       : true;
-    const parentStyles = currentElement.styles?.[currentElement.element.id];
-    let isHorizontal = true;
-    if (parentStyles) {
-      isHorizontal =
-        parentStyles.normal["display"] != "flex" ||
-        parentStyles.normal["flex-direction"] != "row";
-    }
     return (
       <SwitchCaseElement
         element={currentElement.element}
         styles={currentElement.styles}
         isLastElm={isLastElm}
-        isHorizontal={isHorizontal}
         isRootElement={true}
       />
     );

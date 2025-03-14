@@ -1,7 +1,11 @@
 import { nanoid } from "nanoid";
-import { TBlueprint, TBlueprintElement, TStyle } from "../../blockManager/type";
+import {
+  DynamicPseudoStyles,
+  TBlueprint,
+  TBlueprintElement,
+  TStyle,
+} from "../../blockManager/type";
 import { ID_LENGTH } from "@/Features/blueprint/constants";
-import { findAndRemove } from "./handleDragDropEvent";
 
 export function copyBlueprint(element: TBlueprint): TBlueprint {
   const newStyles: TStyle = {};
@@ -117,4 +121,31 @@ export function deleteElement(
     element: updatedElement ? { ...updatedElement } : undefined,
   };
   return tempElement;
+}
+
+export function getIsHorizontalChild(
+  styles: DynamicPseudoStyles | undefined
+): boolean {
+  let result = true;
+  if (!styles) {
+    result = true;
+  } else {
+    if (styles.hasOwnProperty("normal")) {
+      if (
+        styles["normal"]?.["display"] &&
+        styles["normal"]["display"] == "flex"
+      ) {
+        if (
+          styles["normal"]?.["flex-direction"] &&
+          styles["normal"]["flex-direction"] == "column"
+        ) {
+          result = true;
+        } else {
+          result = false;
+        }
+      }
+    }
+  }
+
+  return result;
 }

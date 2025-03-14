@@ -3,7 +3,6 @@
 import { useDraggable } from "@dnd-kit/core";
 import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { RenderElementProps } from "./SwitchCaseElement";
-import useOverlay from "@/Features/blueprint/hooks/useSibingOverlay";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { MouseEvent, useRef } from "react";
@@ -19,6 +18,8 @@ const Input = styled.input<{
 }>`
   position: relative;
   outline: 1px dashed ${editorStyle.primary500};
+  /* pointer-events:none; */
+  user-select: none;
   &:hover {
     outline: 1px solid ${editorStyle.primary500};
   }
