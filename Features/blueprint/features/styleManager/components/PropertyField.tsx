@@ -12,7 +12,7 @@ import {
 import { FiX } from "react-icons/fi";
 import styled from "styled-components";
 
-const FormControl = styled.div`
+export const FormControl = styled.div`
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -35,7 +35,7 @@ const DeleteButton = styled.button`
     border: 1px solid ${editorStyle.primary500};
   }
 `;
-const InputField = styled.input`
+export const InputField = styled.input`
   border: 1px solid ${editorStyle.secondary500};
   background-color: ${editorStyle.primary500};
   color: ${editorStyle.secondary500};

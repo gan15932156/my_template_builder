@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 
-const Select = styled.select`
+export const Select = styled.select`
   appearance: none;
   // Additional resets for further consistency
   background-color: ${editorStyle.secondary500};

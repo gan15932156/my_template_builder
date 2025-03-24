@@ -10,7 +10,11 @@ import {
 } from "@/Features/blueprint/slice/elementSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { useMemo } from "react";
-import { deleteElement, findElement } from "../features/editor/utils/utils";
+import {
+  deleteElement,
+  findElement,
+  updateElementAttr,
+} from "../features/editor/utils/utils";
 
 const useSelectedElement = () => {
   const selectedElementId = useAppSelector(selectSelectedElementId);
@@ -30,6 +34,21 @@ const useSelectedElement = () => {
       dispatch(updateElement(result));
     }
   };
+  const handleUpdateElementAttr = (
+    elementId: string,
+    name: string,
+    values: string | string[]
+  ) => {
+    if (currentBlueprint?.element) {
+      const result = updateElementAttr(
+        elementId,
+        name,
+        values,
+        currentBlueprint
+      );
+      dispatch(updateElement(result));
+    }
+  };
   const handleSetSelectedElementId = (elementId: string) => {
     dispatch(setSelectedElement(elementId));
   };
@@ -40,6 +59,7 @@ const useSelectedElement = () => {
     handleDeleteElement,
     handleSetSelectedElementId,
     handleSetlayoutSelectedElementId,
+    handleUpdateElementAttr,
     selectedElementId,
     layoutSelectedElementId,
     selectedElement,

@@ -50,6 +50,7 @@ export type TBlueprintElement2 = {
   attributes?: Record<string, string | string[]>;
   content: Array<TBlueprintElement2 | TBlueprintRefElement> | string; // Nested content
 };
+export type Attributes = Record<string, string | string[]>;
 export type TBlueprintElement = {
   id: string; // Unique ID
   category: string; // Element category
@@ -57,7 +58,7 @@ export type TBlueprintElement = {
   tag: string;
   isListing: boolean;
   isRand: boolean;
-  attributes?: Record<string, string | string[]>;
+  attributes?: Attributes;
   content: Array<TBlueprintElement> | string;
 };
 

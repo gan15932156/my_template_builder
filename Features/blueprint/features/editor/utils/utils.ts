@@ -122,7 +122,46 @@ export function deleteElement(
   };
   return tempElement;
 }
+export function updateElementAttr(
+  elementId: string,
+  name: string,
+  values: string | string[],
+  currentBlueprint: TBlueprint
+): TBlueprint {
+  function findAndUpdate(
+    element: TBlueprintElement,
+    targetId: string,
+    name: string,
+    values: string | string[]
+  ): TBlueprintElement {
+    if (element.id === targetId) {
+      return {
+        ...element,
+        attributes: { ...element.attributes, [name]: values },
+      };
+    }
 
+    return {
+      ...element,
+      content: Array.isArray(element.content)
+        ? element.content.map((item) =>
+            findAndUpdate(item, targetId, name, values)
+          )
+        : element.content,
+    };
+  }
+  let tempElement: TBlueprint | undefined;
+  try {
+    tempElement = structuredClone(currentBlueprint);
+  } catch {
+    tempElement = JSON.parse(JSON.stringify(currentBlueprint));
+  }
+  if (!tempElement?.element) return currentBlueprint;
+  return {
+    ...currentBlueprint,
+    element: findAndUpdate(tempElement?.element, elementId, name, values),
+  };
+}
 export function getIsHorizontalChild(
   styles: DynamicPseudoStyles | undefined
 ): boolean {

@@ -9,7 +9,7 @@ import {
 } from "./styledComponents";
 import { IoColorPaletteOutline, IoSaveOutline } from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
-import { AiOutlineLayout } from "react-icons/ai";
+import { FaBuffer, FaCircleInfo } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
   changePanel,
@@ -85,7 +85,7 @@ const TopPanel = () => {
           onClick={() => handleClick("layout")}
           $isActive={currentPanel == "layout"}
         >
-          <AiOutlineLayout size={ICON_SIZE} />
+          <FaBuffer size={ICON_SIZE} />
         </NavButton>
         <NavButton
           title="Attribute manager"
@@ -93,7 +93,7 @@ const TopPanel = () => {
           onClick={() => handleClick("attr")}
           $isActive={currentPanel == "attr"}
         >
-          <AiOutlineLayout size={ICON_SIZE} />
+          <FaCircleInfo size={ICON_SIZE} />
         </NavButton>
         <NavButton
           title="Style manager"
