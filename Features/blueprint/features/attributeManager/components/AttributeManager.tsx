@@ -17,7 +17,7 @@ const AttributeManager = () => {
   if (!selectedElement) return null;
   return (
     <Form>
-      {selectedElement.elmType == "input" && (
+      {selectedElement.elmType === "input" && (
         <>
           {selectedElement.attributes &&
             selectedElement.attributes.hasOwnProperty("type") && (
@@ -44,6 +44,11 @@ const AttributeManager = () => {
                 elementId={selectedElement.id}
               />
             )}
+        </>
+      )}
+      {selectedElement.elmType === "select" && (
+        <>
+          <p>select</p>
         </>
       )}
     </Form>

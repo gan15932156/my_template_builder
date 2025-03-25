@@ -93,6 +93,11 @@ const InputElement: React.FC<RenderElementProps> = ({
           targetRef.current = node;
           setDragNodeRef(node);
         }}
+        placeholder={
+          (element.attributes?.placeholder as string) ?? "placeholder"
+        }
+        name={(element.attributes?.name as string) ?? element.id}
+        type={(element.attributes?.type as string) ?? "text"}
         $style={elementStyles}
         $isDragging={isDragging}
         $isSelected={
