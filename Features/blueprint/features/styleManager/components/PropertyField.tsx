@@ -18,7 +18,7 @@ export const FormControl = styled.div`
   gap: 0.2rem;
   font-size: 0.8rem;
 `;
-const DeleteButton = styled.button`
+export const DeleteButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;

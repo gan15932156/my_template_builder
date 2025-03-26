@@ -4,6 +4,7 @@ import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import AttrInputField from "./AttrInputField";
 import AttrSelectbox from "./AttrSelectbox";
 import styled from "styled-components";
+import AttrSelectOptionManager from "./AttrSelectOptionManager";
 const Form = styled.div`
   padding: 0.2rem;
   display: flex;
@@ -29,26 +30,59 @@ const AttributeManager = () => {
               />
             )}
           {selectedElement.attributes &&
-            selectedElement.attributes.hasOwnProperty("name") && (
-              <AttrInputField
-                name={"name"}
-                value={selectedElement.attributes.name as string}
-                elementId={selectedElement.id}
-              />
-            )}
+          selectedElement.attributes.hasOwnProperty("name") ? (
+            <AttrInputField
+              name={"name"}
+              value={selectedElement.attributes.name as string}
+              elementId={selectedElement.id}
+            />
+          ) : (
+            <AttrInputField
+              name={"name"}
+              value={""}
+              elementId={selectedElement.id}
+            />
+          )}
           {selectedElement.attributes &&
-            selectedElement.attributes.hasOwnProperty("placeholder") && (
-              <AttrInputField
-                name={"placeholder"}
-                value={selectedElement.attributes.placeholder as string}
-                elementId={selectedElement.id}
-              />
-            )}
+          selectedElement.attributes.hasOwnProperty("placeholder") ? (
+            <AttrInputField
+              name={"placeholder"}
+              value={selectedElement.attributes.placeholder as string}
+              elementId={selectedElement.id}
+            />
+          ) : (
+            <AttrInputField
+              name={"placeholder"}
+              value={""}
+              elementId={selectedElement.id}
+            />
+          )}
         </>
       )}
       {selectedElement.elmType === "select" && (
         <>
-          <p>select</p>
+          {selectedElement.attributes &&
+          selectedElement.attributes.hasOwnProperty("name") ? (
+            <AttrInputField
+              name={"name"}
+              value={selectedElement.attributes.name as string}
+              elementId={selectedElement.id}
+            />
+          ) : (
+            <AttrInputField
+              name={"name"}
+              value={""}
+              elementId={selectedElement.id}
+            />
+          )}
+          {selectedElement.attributes &&
+            selectedElement.attributes.hasOwnProperty("options") && (
+              <AttrSelectOptionManager
+                name={"options"}
+                elementId={selectedElement.id}
+                values={selectedElement.attributes.options as string[]}
+              />
+            )}
         </>
       )}
     </Form>

@@ -31,6 +31,7 @@ const SelectElement: React.FC<RenderElementProps> = ({
       <select
         name="testName"
         value={"test"}
+        onChange={() => {}}
         onClick={(e) => handleElementClick(e, element.id)}
       >
         <option value="TR1">TR1</option>
