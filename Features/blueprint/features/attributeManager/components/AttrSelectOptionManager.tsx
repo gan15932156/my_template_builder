@@ -4,7 +4,7 @@ import { ID_LENGTH } from "@/Features/blueprint/constants";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { nanoid } from "nanoid";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   DeleteButton,
@@ -93,6 +93,9 @@ const AttrSelectOptionManager: React.FC<Props> = ({
     const rel = transformSetValues(options);
     handleUpdateElementAttr(elementId, name, rel);
   };
+  useEffect(() => {
+    setOptions(transformValues(values));
+  }, [elementId]);
   return (
     <Wrapper>
       <p>options</p>

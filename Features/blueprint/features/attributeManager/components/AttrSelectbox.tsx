@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { FormControl } from "../../styleManager/components/PropertyField";
 import { Select } from "../../styleManager/components/StyleManager";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
@@ -11,7 +11,7 @@ interface Props {
   elementId: string;
   type: "INPUT_TYPE" | "NA";
 }
-const INPUT_TYPE = ["text", "password", "email"];
+const INPUT_TYPE = ["text", "password", "email", "radio", "checkbox"];
 const AttrSelectbox: React.FC<Props> = ({ name, value, elementId, type }) => {
   const { handleUpdateElementAttr } = useSelectedElement();
   const [currentValue, setCurrentValue] = useState(value);
@@ -19,6 +19,9 @@ const AttrSelectbox: React.FC<Props> = ({ name, value, elementId, type }) => {
     setCurrentValue(event.target.value);
     handleUpdateElementAttr(elementId, name, event.target.value);
   };
+  useEffect(() => {
+    setCurrentValue(value);
+  }, [elementId]);
   return (
     <FormControl>
       <label htmlFor={name}>{name}</label>

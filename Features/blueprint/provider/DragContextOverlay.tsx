@@ -70,7 +70,7 @@ const DragContextOverlay = () => {
       if (blueprint) {
         // console.log(blueprint);
         Node = (
-          <Block>
+          <Block $dragType="OVERLAY">
             <img
               src={blueprint.imageUrl}
               alt={blueprint.name}
@@ -88,7 +88,7 @@ const DragContextOverlay = () => {
     const block = blockCategories?.[activeCategory]?.[activeId];
     if (block) {
       Node = (
-        <Block>
+        <Block $dragType="OVERLAY">
           {block.icon && blockIconMap[block.icon]}
           <p style={{ textAlign: "center" }}>{block.name}</p>
         </Block>

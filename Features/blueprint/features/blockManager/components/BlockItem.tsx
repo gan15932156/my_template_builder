@@ -41,6 +41,7 @@ const BlockItem: React.FC<Props> = ({ block }) => {
         {...listeners}
         {...attributes}
         $isDragging={isDragging}
+        $dragType="BLOCK_MANAGER"
       >
         <img
           src={blueprint.imageUrl}
@@ -60,6 +61,7 @@ const BlockItem: React.FC<Props> = ({ block }) => {
         {...listeners}
         {...attributes}
         $isDragging={isDragging}
+        $dragType="BLOCK_MANAGER"
       >
         {basicBlock.icon && blockIconMap[basicBlock.icon]}
         <p style={{ textAlign: "center" }}>{basicBlock.name}</p>

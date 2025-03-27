@@ -10,15 +10,14 @@ const overlayHeight = 4;
 const overalyPaadding = 2;
 const OverlayBase = styled.div<{ $isOver: boolean }>`
   position: absolute;
-  background-color: ${editorStyle.primary500};
-  z-index: 999;
+  background-color: transparent;
   padding: ${overalyPaadding};
 
-  /* ${(props) =>
+  ${(props) =>
     props.$isOver &&
     css`
       background-color: ${editorStyle.primary500};
-    `} */
+    `}
 `;
 
 const TopOverlayStyled = styled(OverlayBase)<{
@@ -72,6 +71,7 @@ function useOverlay2(
   const currentBlueprint = useAppSelector(selectBlueprint);
   const [currentDragElement, setCurrentDragElement] = useState<Active>();
   const overlayHeight = 10; // Fixed: Ensure overlayHeight is defined
+  const overlayGap = 4;
   useDndMonitor({
     onDragStart: (event) => {
       setCurrentDragElement(event.active);
@@ -88,18 +88,27 @@ function useOverlay2(
       const target = targetRef.current;
       const rect = target.getBoundingClientRect();
 
-      const leftTopElm = `${rect.left + window.scrollX}px`;
-      const topTopElm = `${rect.top + window.scrollY}px`;
-
-      const leftBottomElm = `${rect.left + window.scrollX}px`;
-      const topBottomElm = `${rect.bottom + window.scrollY}px`;
+      const left = rect.left + window.scrollX;
+      const right = rect.right + window.scrollX;
+      const top = rect.top + window.scrollY;
+      const bottom = rect.bottom + window.scrollY;
 
       const width = isHorizontal ? `${rect.width}px` : `${overlayHeight}px`;
       const height = isHorizontal ? `${overlayHeight}px` : `${rect.height}px`;
 
       setPositionAndSize({
-        topElm: { top: topTopElm, left: leftTopElm, width, height },
-        bottomElm: { top: topBottomElm, left: leftBottomElm, width, height },
+        topElm: {
+          top: isHorizontal ? `${top - overlayGap}px` : `${top}px`,
+          left: isHorizontal ? `${left}px` : `${left - overlayGap}px`,
+          width,
+          height,
+        },
+        bottomElm: {
+          top: isHorizontal ? `${bottom}px` : `${top}px`,
+          left: isHorizontal ? `${left}px` : `${right - overlayGap}px`,
+          width,
+          height,
+        },
       });
     }
   }, [

@@ -162,6 +162,44 @@ export function updateElementAttr(
     element: findAndUpdate(tempElement?.element, elementId, name, values),
   };
 }
+export function updateElementProperty<T>(
+  elementId: string,
+  name: string,
+  values: T,
+  currentBlueprint: TBlueprint
+): TBlueprint {
+  function findAndUpdate<T>(
+    element: TBlueprintElement,
+    targetId: string,
+    name: string,
+    values: T
+  ): TBlueprintElement {
+    if (element.id === targetId) {
+      // update here
+      return { ...element, [name]: values };
+    }
+
+    return {
+      ...element,
+      content: Array.isArray(element.content)
+        ? element.content.map((item) =>
+            findAndUpdate(item, targetId, name, values)
+          )
+        : element.content,
+    };
+  }
+  let tempElement: TBlueprint | undefined;
+  try {
+    tempElement = structuredClone(currentBlueprint);
+  } catch {
+    tempElement = JSON.parse(JSON.stringify(currentBlueprint));
+  }
+  if (!tempElement?.element) return currentBlueprint;
+  return {
+    ...currentBlueprint,
+    element: findAndUpdate(tempElement?.element, elementId, name, values),
+  };
+}
 export function getIsHorizontalChild(
   styles: DynamicPseudoStyles | undefined
 ): boolean {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FocusEvent, useState } from "react";
+import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
 import {
   FormControl,
   InputField,
@@ -11,18 +11,28 @@ interface Props {
   name: string; // attr name
   value: string; // attr value
   elementId: string;
+  valueType: "ATTR" | "PROPERTY";
 }
-const AttrInputField: React.FC<Props> = ({ name, value, elementId }) => {
+const AttrInputField: React.FC<Props> = ({
+  name,
+  value,
+  elementId,
+  valueType,
+}) => {
   const [propertyValue, setPropertyValue] = useState(value);
   const { handleUpdateElementAttr } = useSelectedElement();
   const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    handleUpdateElementAttr(elementId, name, propertyValue);
+    if (valueType === "ATTR")
+      handleUpdateElementAttr(elementId, name, propertyValue);
   };
   const handleOnFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     setPropertyValue(event.target.value);
   };
+  useEffect(() => {
+    setPropertyValue(value);
+  }, [elementId]);
   return (
     <FormControl>
       <label htmlFor={name}>{name}</label>

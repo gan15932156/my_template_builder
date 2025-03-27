@@ -14,6 +14,7 @@ import {
   deleteElement,
   findElement,
   updateElementAttr,
+  updateElementProperty,
 } from "../features/editor/utils/utils";
 
 const useSelectedElement = () => {
@@ -49,6 +50,21 @@ const useSelectedElement = () => {
       dispatch(updateElement(result));
     }
   };
+  const handleUpdateElementProperty = <T>(
+    elementId: string,
+    name: string,
+    values: T
+  ) => {
+    if (currentBlueprint?.element) {
+      const result = updateElementProperty(
+        elementId,
+        name,
+        values,
+        currentBlueprint
+      );
+      dispatch(updateElement(result));
+    }
+  };
   const handleSetSelectedElementId = (elementId: string) => {
     dispatch(setSelectedElement(elementId));
   };
@@ -60,6 +76,7 @@ const useSelectedElement = () => {
     handleSetSelectedElementId,
     handleSetlayoutSelectedElementId,
     handleUpdateElementAttr,
+    handleUpdateElementProperty,
     selectedElementId,
     layoutSelectedElementId,
     selectedElement,

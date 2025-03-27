@@ -12,6 +12,7 @@ import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import useOverlay from "../../../../hooks/useSibingOverlay";
 import useSelectedElement from "../../../../hooks/useSelectedElement";
 import { getIsHorizontalChild } from "../../utils/utils";
+import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -52,20 +53,14 @@ const BoxElement: React.FC<RenderElementProps> = ({
   const extractedStyles = styles?.[elements.id];
   const elementStyles = transformStyleToStyleComponent(extractedStyles);
   const isHorizontalChild = getIsHorizontalChild(extractedStyles);
-  const { isOver, setNodeRef: setDropNodeRef } = useDroppable({
-    id: "droppable-" + elements.id,
-    data: { isDropElement: true, id: elements.id, category: elements.category },
-    // disabled: elements.content.length > 0,
-  });
   const {
+    setDropNodeRef,
+    setDragNodeRef,
     attributes,
+    isOver,
     listeners,
     isDragging,
-    setNodeRef: setDragNodeRef,
-  } = useDraggable({
-    id: "draggable-" + elements.id,
-    data: { isDragElement: true, id: elements.id, category: elements.category },
-  });
+  } = useDndFunc(elements);
   const { TopOverlay, BottomOverlay } = useOverlay(
     isHorizontal,
     elements.id,

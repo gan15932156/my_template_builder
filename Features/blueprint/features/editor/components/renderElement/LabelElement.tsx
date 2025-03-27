@@ -1,23 +1,24 @@
 "use client";
-
-import { MouseEvent, useRef } from "react";
+import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
+import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { RenderElementProps } from "./SwitchCaseElement";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
+import { MouseEvent, useMemo, useRef } from "react";
+import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
-import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
-import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import Tooltip from "../tooltip/Tooltip";
-const Select = styled.select<{
+const Label = styled.label<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isDragging: boolean;
 }>`
   position: relative;
   outline: 1px dashed ${editorStyle.primary500};
+  /* pointer-events:none; */
+  user-select: none;
   &:hover {
     outline: 1px solid ${editorStyle.primary500};
   }
@@ -39,29 +40,40 @@ const Select = styled.select<{
       `}
   }
 `;
-const SelectElement: React.FC<RenderElementProps> = ({
+const LabelElement: React.FC<RenderElementProps> = ({
   element,
   styles,
   isLastElm = false,
   isHorizontal = true,
   isRootElement,
 }) => {
+  const relLabelText = useMemo(() => {
+    if (element.attributes && element.attributes.hasOwnProperty("labelText")) {
+      if (
+        !Array.isArray(element.attributes.labelText) &&
+        element.attributes.labelText.length > 0
+      ) {
+        return element.attributes.labelText;
+      }
+    }
+    return "for input";
+  }, [element]);
   const extractedStyles = styles?.[element.id];
   const elementStyles = transformStyleToStyleComponent(extractedStyles);
-  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
   const { setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
-  const targetRef = useRef<HTMLSelectElement | null>(null);
+
+  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
+  const dispatch = useAppDispatch();
+  const targetRef = useRef<HTMLLabelElement | null>(null);
   const { BottomOverlay, TopOverlay } = useOverlay2(
     isHorizontal,
     targetRef,
     element.id,
     element.category
   );
-
-  const dispatch = useAppDispatch();
   const handleElementClick = (
-    event: MouseEvent<HTMLSelectElement>,
+    event: MouseEvent<HTMLLabelElement>,
     elementId: string
   ) => {
     event.stopPropagation();
@@ -77,20 +89,13 @@ const SelectElement: React.FC<RenderElementProps> = ({
       <Tooltip
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />{" "}
+      />
       {!isRootElement && <TopOverlay />}
-      <Select
+      <Label
         ref={(node) => {
           targetRef.current = node;
           setDragNodeRef(node);
         }}
-        name="testName"
-        value={
-          (element.attributes?.options && element.attributes?.options[0]) ??
-          "option"
-        }
-        onChange={() => {}}
-        onClick={(e) => handleElementClick(e, element.id)}
         $style={elementStyles}
         $isDragging={isDragging}
         $isSelected={
@@ -99,22 +104,13 @@ const SelectElement: React.FC<RenderElementProps> = ({
         }
         {...listeners}
         {...attributes}
+        onClick={(e) => handleElementClick(e, element.id)}
       >
-        {element.attributes?.options &&
-        Array.isArray(element.attributes?.options) &&
-        element.attributes?.options.length > 0 ? (
-          element.attributes.options.map((item, index) => (
-            <option key={index} value={item}>
-              {item}
-            </option>
-          ))
-        ) : (
-          <option value="option">option</option>
-        )}
-      </Select>
+        {relLabelText}
+      </Label>
       {!isRootElement && isLastElm && <BottomOverlay />}
     </>
   );
 };
 
-export default SelectElement;
+export default LabelElement;

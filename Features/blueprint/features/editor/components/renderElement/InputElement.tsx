@@ -11,6 +11,7 @@ import Tooltip from "../tooltip/Tooltip";
 import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
+import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 const Input = styled.input<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -50,15 +51,8 @@ const InputElement: React.FC<RenderElementProps> = ({
 }) => {
   const extractedStyles = styles?.[element.id];
   const elementStyles = transformStyleToStyleComponent(extractedStyles);
-  const {
-    attributes,
-    listeners,
-    isDragging,
-    setNodeRef: setDragNodeRef,
-  } = useDraggable({
-    id: "draggable-" + element.id,
-    data: { isDragElement: true, id: element.id, category: element.category },
-  });
+  const { setDragNodeRef, attributes, listeners, isDragging } =
+    useDndFunc(element);
 
   const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
   const dispatch = useAppDispatch();

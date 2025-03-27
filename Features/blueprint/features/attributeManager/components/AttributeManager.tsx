@@ -5,6 +5,7 @@ import AttrInputField from "./AttrInputField";
 import AttrSelectbox from "./AttrSelectbox";
 import styled from "styled-components";
 import AttrSelectOptionManager from "./AttrSelectOptionManager";
+import AttrCheckboxField from "./AttrCheckboxField";
 const Form = styled.div`
   padding: 0.2rem;
   display: flex;
@@ -32,12 +33,14 @@ const AttributeManager = () => {
           {selectedElement.attributes &&
           selectedElement.attributes.hasOwnProperty("name") ? (
             <AttrInputField
+              valueType="ATTR"
               name={"name"}
               value={selectedElement.attributes.name as string}
               elementId={selectedElement.id}
             />
           ) : (
             <AttrInputField
+              valueType="ATTR"
               name={"name"}
               value={""}
               elementId={selectedElement.id}
@@ -46,12 +49,14 @@ const AttributeManager = () => {
           {selectedElement.attributes &&
           selectedElement.attributes.hasOwnProperty("placeholder") ? (
             <AttrInputField
+              valueType="ATTR"
               name={"placeholder"}
               value={selectedElement.attributes.placeholder as string}
               elementId={selectedElement.id}
             />
           ) : (
             <AttrInputField
+              valueType="ATTR"
               name={"placeholder"}
               value={""}
               elementId={selectedElement.id}
@@ -64,12 +69,14 @@ const AttributeManager = () => {
           {selectedElement.attributes &&
           selectedElement.attributes.hasOwnProperty("name") ? (
             <AttrInputField
+              valueType="ATTR"
               name={"name"}
               value={selectedElement.attributes.name as string}
               elementId={selectedElement.id}
             />
           ) : (
             <AttrInputField
+              valueType="ATTR"
               name={"name"}
               value={""}
               elementId={selectedElement.id}
@@ -84,6 +91,35 @@ const AttributeManager = () => {
               />
             )}
         </>
+      )}
+      {selectedElement.elmType === "label" && (
+        <>
+          {selectedElement.attributes &&
+          selectedElement.attributes.hasOwnProperty("labelText") ? (
+            <AttrInputField
+              valueType="ATTR"
+              name={"labelText"}
+              value={selectedElement.attributes.labelText as string}
+              elementId={selectedElement.id}
+            />
+          ) : (
+            <AttrInputField
+              valueType="ATTR"
+              name={"labelText"}
+              value={""}
+              elementId={selectedElement.id}
+            />
+          )}
+        </>
+      )}
+
+      {selectedElement.elmType === "box" && (
+        <AttrCheckboxField
+          valueType="PROPERTY"
+          name={"isListing"}
+          value={selectedElement.isListing}
+          elementId={selectedElement.id}
+        />
       )}
     </Form>
   );

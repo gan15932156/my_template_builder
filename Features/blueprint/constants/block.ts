@@ -97,6 +97,9 @@ inputBlocks["labelInput"] = {
   element: {
     elmType: "label",
     content: "",
+    attributes: {
+      labelText: "for input",
+    },
   },
 };
 inputBlocks["textInput"] = {

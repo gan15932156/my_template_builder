@@ -3,7 +3,10 @@
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import styled, { css } from "styled-components";
 
-const Block = styled.div<{ $isDragging?: boolean }>`
+const Block = styled.div<{
+  $isDragging?: boolean;
+  $dragType: "OVERLAY" | "BLOCK_MANAGER";
+}>`
   display: flex;
   font-size: 1rem;
   border-radius: 0.4rem;
@@ -20,6 +23,11 @@ const Block = styled.div<{ $isDragging?: boolean }>`
     props.$isDragging &&
     css`
       filter: brightness(0.7);
+    `}
+  ${(props) =>
+    props.$dragType === "OVERLAY" &&
+    css`
+      opacity: 0.9;
     `}
   &:hover {
     filter: brightness(0.7);
