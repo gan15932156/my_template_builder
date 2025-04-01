@@ -12,7 +12,6 @@ interface Props {
   elementId: string;
   type: "INPUT_TYPE" | "NA";
 }
-const INPUT_TYPE = ["text", "password", "email", "radio", "checkbox"];
 const AttrSelectbox: React.FC<Props> = ({ name, value, elementId, type }) => {
   const { handleUpdateElementAttr } = useSelectedElement();
   const [currentValue, setCurrentValue] = useState(value);

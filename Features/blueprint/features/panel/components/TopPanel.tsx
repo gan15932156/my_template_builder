@@ -16,9 +16,7 @@ import {
   selectCurrentPanel,
 } from "@/Features/blueprint/slice/panelSlice";
 import { selectBlueprint } from "@/Features/blueprint/slice/elementSlice";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiResponse } from "@/types/types";
-import { TBlueprint } from "../../blockManager/type";
+import useSaveBlueprint from "@/Features/blueprint/hooks/useSaveBlueprint";
 const ICON_SIZE = 18;
 const Wrapper = styled.div`
   ${getBgTextStyle}
@@ -29,26 +27,13 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 0.2rem;
 `;
-const saveBlueprint = (
-  blueprint: TBlueprint
-): Promise<ApiResponse<TBlueprint>> =>
-  fetch(`/api/blueprint/${blueprint.id}`, {
-    method: "PATCH",
-    body: JSON.stringify(blueprint),
-  }).then((response) => response.json());
 const TopPanel = () => {
-  const queryClient = useQueryClient();
   const currentBlueprint = useAppSelector(selectBlueprint);
   const currentPanel = useAppSelector(selectCurrentPanel);
   const dispatch = useAppDispatch();
-  const { mutate, isPending } = useMutation({
-    mutationFn: saveBlueprint,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: ["blueprint-editor", data.data?.id],
-      });
-    },
-  });
+  const {
+    blueprintMutate: { mutate, isPending },
+  } = useSaveBlueprint();
   const handleClick = (newPanel: string) => {
     dispatch(changePanel(newPanel));
   };

@@ -40,6 +40,10 @@ export const InputField = styled.input`
   background-color: ${editorStyle.primary500};
   color: ${editorStyle.secondary500};
   padding-inline: 0.2rem;
+  &:disabled {
+    filter: brightness(0.4);
+    cursor: not-allowed;
+  }
 `;
 interface Props {
   currentStyleState: string;
