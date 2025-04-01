@@ -7,7 +7,6 @@ function useDndFunc(element: TBlueprintElement) {
   const { isOver, setNodeRef: setDropNodeRef } = useDroppable({
     id: "droppable-" + element.id,
     data: { isDropElement: true, id: element.id, category: element.category },
-    // disabled: elements.content.length > 0,
   });
   const {
     attributes,

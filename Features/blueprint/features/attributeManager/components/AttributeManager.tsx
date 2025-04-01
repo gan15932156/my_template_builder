@@ -6,6 +6,9 @@ import AttrSelectbox from "./AttrSelectbox";
 import styled from "styled-components";
 import AttrSelectOptionManager from "./AttrSelectOptionManager";
 import AttrCheckboxField from "./AttrCheckboxField";
+import { dragElementRule } from "@/Features/blueprint/constants/dragElementRule";
+import AttrSelectTag from "./AttrSelectTag";
+import AttrElementContentEditField from "./AttrElementContentEditField";
 const Form = styled.div`
   padding: 0.2rem;
   display: flex;
@@ -19,6 +22,24 @@ const AttributeManager = () => {
   if (!selectedElement) return null;
   return (
     <Form>
+      {(selectedElement.elmType === "text" ||
+        selectedElement.elmType === "button") && (
+        <AttrElementContentEditField
+          value={selectedElement.content as string}
+          elementId={selectedElement.id}
+        />
+      )}
+      {(selectedElement.elmType === "box" ||
+        selectedElement.elmType === "text") && (
+        <>
+          <AttrSelectTag
+            name={"tag"}
+            value={selectedElement.tag}
+            elementId={selectedElement.id}
+            tags={dragElementRule[selectedElement.elmType].tag}
+          />
+        </>
+      )}
       {selectedElement.elmType === "input" && (
         <>
           {selectedElement.attributes &&
@@ -112,7 +133,6 @@ const AttributeManager = () => {
           )}
         </>
       )}
-
       {selectedElement.elmType === "box" && (
         <AttrCheckboxField
           valueType="PROPERTY"
@@ -121,6 +141,13 @@ const AttributeManager = () => {
           elementId={selectedElement.id}
         />
       )}
+
+      <AttrCheckboxField
+        valueType="PROPERTY"
+        name={"isRand"}
+        value={selectedElement.isRand}
+        elementId={selectedElement.id}
+      />
     </Form>
   );
 };

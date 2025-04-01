@@ -2,10 +2,14 @@
 
 import { TBlueprintElement, TStyle } from "../../../blockManager/type";
 import BoxElement from "./BoxElement";
+import ButtonElement from "./ButtonElement";
+import FormElement from "./FormElement";
 import ImageElement from "./ImageElement";
 import InputElement from "./InputElement";
 import LabelElement from "./LabelElement";
+import LinkElement from "./LinkElement";
 import SelectElement from "./SelectElement";
+import TextElement from "./TextElement";
 
 export interface RenderElementProps {
   element: TBlueprintElement;
@@ -27,6 +31,16 @@ const SwitchCaseElement: React.FC<RenderElementProps> = ({
   }
 
   switch (element.elmType) {
+    case "text":
+      return (
+        <TextElement
+          element={element}
+          styles={styles}
+          isLastElm={isLastElm}
+          isHorizontal={isHorizontal}
+          isRootElement={isRootElement}
+        />
+      );
     case "box":
       return (
         <BoxElement
@@ -67,16 +81,46 @@ const SwitchCaseElement: React.FC<RenderElementProps> = ({
           isRootElement={isRootElement}
         />
       );
-    // case "image":
-    //   return (
-    //     <ImageElement
-    //       element={element}
-    //       styles={styles}
-    //       isRootElement={isRootElement}
-    //     />
-    //   );
-    // case "text":
-    //   return <div>Text Element</div>;
+    case "form":
+      return (
+        <FormElement
+          element={element}
+          styles={styles}
+          isLastElm={isLastElm}
+          isHorizontal={isHorizontal}
+          isRootElement={isRootElement}
+        />
+      );
+    case "button":
+      return (
+        <ButtonElement
+          element={element}
+          styles={styles}
+          isLastElm={isLastElm}
+          isHorizontal={isHorizontal}
+          isRootElement={isRootElement}
+        />
+      );
+    case "link":
+      return (
+        <LinkElement
+          element={element}
+          styles={styles}
+          isLastElm={isLastElm}
+          isHorizontal={isHorizontal}
+          isRootElement={isRootElement}
+        />
+      );
+    case "image":
+      return (
+        <ImageElement
+          element={element}
+          styles={styles}
+          isLastElm={isLastElm}
+          isHorizontal={isHorizontal}
+          isRootElement={isRootElement}
+        />
+      );
     default:
       return <div>Unsupported element type: {element.elmType}</div>;
   }

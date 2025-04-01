@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { FormControl } from "../../styleManager/components/PropertyField";
 import { Select } from "../../styleManager/components/StyleManager";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
+import { dragElementRule } from "@/Features/blueprint/constants/dragElementRule";
 
 interface Props {
   name: string; // attr name
@@ -27,7 +28,7 @@ const AttrSelectbox: React.FC<Props> = ({ name, value, elementId, type }) => {
       <label htmlFor={name}>{name}</label>
       <Select name={name} value={currentValue} onChange={handleStateChange}>
         {type === "INPUT_TYPE" &&
-          INPUT_TYPE.map((type, index) => (
+          dragElementRule.input?.attributes?.type.map((type, index) => (
             <option value={type} key={index}>
               {type}
             </option>

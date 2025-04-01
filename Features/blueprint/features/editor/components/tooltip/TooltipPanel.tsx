@@ -13,6 +13,13 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+const BadgesWrapper = styled.div`
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+`;
 const ElementTypeBadge = styled.p`
   padding-inline: 0.2rem;
   border-radius: 0.2rem;
@@ -42,13 +49,16 @@ const TooltipPanel = () => {
   };
   return (
     <Wrapper>
-      <div>
-        <ElementTypeBadge title="Delete element">
+      <BadgesWrapper>
+        <ElementTypeBadge title="Element type.">
           {selectedElement?.elmType || "n/a"}
         </ElementTypeBadge>
-      </div>
+        <ElementTypeBadge title="Element tag.">
+          {selectedElement?.tag}
+        </ElementTypeBadge>
+      </BadgesWrapper>
       <div>
-        <DeleteButton title="Delete element" onClick={(e) => handleClick(e)}>
+        <DeleteButton title="Delete element." onClick={(e) => handleClick(e)}>
           <FiX />
         </DeleteButton>
       </div>

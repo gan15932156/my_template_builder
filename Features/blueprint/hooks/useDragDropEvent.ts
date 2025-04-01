@@ -44,6 +44,12 @@ function useDragDropEvent() {
       const isDropInElement = overData?.isDropElement;
       const isDropInTopElement = overData?.isTopDropArea;
       // console.log({ isDropInElement, isDragElement, activeId, activeCategory });
+      if (
+        activeCategory === "form" &&
+        overData?.category === "form" &&
+        isDropInTopElement == undefined
+      )
+        return;
       if (activeId && activeCategory) {
         if (isDragElement) {
           if (isDropInElement && currentBlueprint.element) {

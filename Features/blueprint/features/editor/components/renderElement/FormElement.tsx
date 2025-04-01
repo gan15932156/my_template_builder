@@ -1,20 +1,20 @@
 "use client";
 
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import styled, { css } from "styled-components";
 import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { transformStyleToStyleComponent } from "../../utils/transformData";
-import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { useDraggable, useDroppable } from "@dnd-kit/core";
-import React, { MouseEvent, useRef } from "react";
-import Tooltip from "../tooltip/Tooltip";
-import { useAppDispatch } from "@/hooks/reduxHooks";
-import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
-import useOverlay from "../../../../hooks/useSibingOverlay";
-import useSelectedElement from "../../../../hooks/useSelectedElement";
 import { getIsHorizontalChild } from "../../utils/utils";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
+import useOverlay from "@/Features/blueprint/hooks/useSibingOverlay";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
-const Box = styled.div<{
+import React, { MouseEvent, useRef } from "react";
+import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
+import Tooltip from "../tooltip/Tooltip";
+
+const Form = styled.form<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isOver: boolean;
@@ -44,7 +44,7 @@ const Box = styled.div<{
       `}
   }
 `;
-const BoxElement: React.FC<RenderElementProps> = ({
+const FormElement: React.FC<RenderElementProps> = ({
   element: elements,
   styles,
   isLastElm = false,
@@ -62,7 +62,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
     listeners,
     isDragging,
   } = useDndFunc(elements);
-  const targetRef = useRef<HTMLDivElement | null>(null);
+  const targetRef = useRef<HTMLFormElement | null>(null);
   const { TopOverlay, BottomOverlay } = useOverlay2(
     isHorizontal,
     targetRef,
@@ -71,9 +71,8 @@ const BoxElement: React.FC<RenderElementProps> = ({
   );
   const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
   const dispatch = useAppDispatch();
-
   const handleElementClick = (
-    event: MouseEvent<HTMLDivElement>,
+    event: MouseEvent<HTMLFormElement>,
     elementId: string
   ) => {
     event.stopPropagation();
@@ -87,14 +86,13 @@ const BoxElement: React.FC<RenderElementProps> = ({
   if (Array.isArray(elements.content)) {
     if (elements.content.length > 0) {
       return (
-        <Box
+        <Form
           ref={(node) => {
             targetRef.current = node;
             setDropNodeRef(node);
             setDragNodeRef(node);
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
-          as={elements.tag}
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
@@ -147,18 +145,17 @@ const BoxElement: React.FC<RenderElementProps> = ({
                 );
               })}
           {!isRootElement && isLastElm && <BottomOverlay />}
-        </Box>
+        </Form>
       );
     } else {
       return (
-        <Box
+        <Form
           ref={(node) => {
             targetRef.current = node;
             setDropNodeRef(node);
             setDragNodeRef(node);
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
-          as={elements.tag}
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
@@ -176,19 +173,18 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {!isRootElement && <TopOverlay />}
           <p>{elements.elmType}</p>
           {!isRootElement && isLastElm && <BottomOverlay />}
-        </Box>
+        </Form>
       );
     }
   } else {
     return (
-      <Box
+      <Form
         ref={(node) => {
           targetRef.current = node;
           setDropNodeRef(node);
           setDragNodeRef(node);
         }}
         onClick={(e) => handleElementClick(e, elements.id)}
-        as={elements.tag}
         $isOver={isOver}
         $style={elementStyles}
         $isDragging={isDragging}
@@ -204,9 +200,9 @@ const BoxElement: React.FC<RenderElementProps> = ({
           targetRef={targetRef}
         />
         {elements.content}
-      </Box>
+      </Form>
     );
   }
 };
 
-export default BoxElement;
+export default FormElement;

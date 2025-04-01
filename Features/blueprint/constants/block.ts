@@ -1,6 +1,7 @@
 import { HashMap, TBasicBlock } from "../features/blockManager/type";
 const basicBlocks: HashMap<TBasicBlock> = {};
-
+const inputBlocks: HashMap<TBasicBlock> = {};
+const formBlocks: HashMap<TBasicBlock> = {};
 basicBlocks["basicText"] = {
   id: "basicText",
   icon: "FiType",
@@ -19,7 +20,7 @@ basicBlocks["basicParagraph"] = {
   category: "basic",
   isBlueprint: false,
   element: {
-    elmType: "paragraph",
+    elmType: "text",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel tellus massa. Morbi a mi sit amet massa viverra lacinia. Sed scelerisque consequat felis mollis molestie. Suspendisse potenti. Quisque lobortis imperdiet elit non bibendum.",
   },
@@ -78,17 +79,7 @@ basicBlocks["basicImage"] = {
     },
   },
 };
-const inputBlocks: HashMap<TBasicBlock> = {};
-inputBlocks["formInput"] = {
-  id: "formInput",
-  name: "Form",
-  category: "input",
-  isBlueprint: false,
-  element: {
-    elmType: "form",
-    content: [],
-  },
-};
+
 inputBlocks["labelInput"] = {
   id: "labelInput",
   name: "Label",
@@ -160,9 +151,22 @@ inputBlocks["selectInput"] = {
     },
   },
 };
-
+formBlocks["formInput"] = {
+  id: "formInput",
+  name: "Form",
+  category: "form",
+  isBlueprint: false,
+  element: {
+    elmType: "form",
+    content: [],
+  },
+  styles: {
+    normal: { padding: "1rem" },
+  },
+};
 const blockCategories: HashMap<HashMap<TBasicBlock>> = {};
 blockCategories["basic"] = basicBlocks;
+blockCategories["form"] = formBlocks;
 blockCategories["input"] = inputBlocks;
 
 export { blockCategories };

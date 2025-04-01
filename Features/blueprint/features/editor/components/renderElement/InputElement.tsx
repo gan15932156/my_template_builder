@@ -1,6 +1,5 @@
 "use client";
 
-import { useDraggable } from "@dnd-kit/core";
 import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { RenderElementProps } from "./SwitchCaseElement";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";

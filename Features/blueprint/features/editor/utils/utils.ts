@@ -200,6 +200,40 @@ export function updateElementProperty<T>(
     element: findAndUpdate(tempElement?.element, elementId, name, values),
   };
 }
+export function updateElementContent(
+  elementId: string,
+  value: string,
+  currentBlueprint: TBlueprint
+): TBlueprint {
+  function findAndUpdate<T>(
+    element: TBlueprintElement,
+    targetId: string,
+    value: string
+  ): TBlueprintElement {
+    if (element.id === targetId) {
+      // update here
+      return { ...element, content: value };
+    }
+
+    return {
+      ...element,
+      content: Array.isArray(element.content)
+        ? element.content.map((item) => findAndUpdate(item, targetId, value))
+        : element.content,
+    };
+  }
+  let tempElement: TBlueprint | undefined;
+  try {
+    tempElement = structuredClone(currentBlueprint);
+  } catch {
+    tempElement = JSON.parse(JSON.stringify(currentBlueprint));
+  }
+  if (!tempElement?.element) return currentBlueprint;
+  return {
+    ...currentBlueprint,
+    element: findAndUpdate(tempElement?.element, elementId, value),
+  };
+}
 export function getIsHorizontalChild(
   styles: DynamicPseudoStyles | undefined
 ): boolean {

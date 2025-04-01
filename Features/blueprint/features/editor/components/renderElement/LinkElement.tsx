@@ -1,17 +1,15 @@
-"use client";
-
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
+import React, { MouseEvent, useRef } from "react";
 import styled, { css } from "styled-components";
 import { RenderElementProps } from "./SwitchCaseElement";
-import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { transformStyleToStyleComponent } from "../../utils/transformData";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
-import { MouseEvent, useRef } from "react";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
-import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import Tooltip from "../tooltip/Tooltip";
-const Image = styled.img<{
+import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
+const Link = styled.a<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isDragging: boolean;
@@ -41,7 +39,7 @@ const Image = styled.img<{
       `}
   }
 `;
-const ImageElement: React.FC<RenderElementProps> = ({
+const LinkElement: React.FC<RenderElementProps> = ({
   element,
   styles,
   isLastElm = false,
@@ -55,7 +53,7 @@ const ImageElement: React.FC<RenderElementProps> = ({
 
   const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
   const dispatch = useAppDispatch();
-  const targetRef = useRef<HTMLImageElement | null>(null);
+  const targetRef = useRef<HTMLAnchorElement | null>(null);
   const { BottomOverlay, TopOverlay } = useOverlay2(
     isHorizontal,
     targetRef,
@@ -63,7 +61,7 @@ const ImageElement: React.FC<RenderElementProps> = ({
     element.category
   );
   const handleElementClick = (
-    event: MouseEvent<HTMLImageElement>,
+    event: MouseEvent<HTMLAnchorElement>,
     elementId: string
   ) => {
     event.stopPropagation();
@@ -81,15 +79,12 @@ const ImageElement: React.FC<RenderElementProps> = ({
         targetRef={targetRef}
       />
       {!isRootElement && <TopOverlay />}
-      <Image
+      <Link
         ref={(node) => {
           targetRef.current = node;
           setDragNodeRef(node);
         }}
-        src={
-          (element.attributes?.src as string) ?? "https://placehold.co/600x400"
-        }
-        alt={(element.attributes?.alt as string) ?? "Image"}
+        href="#"
         $style={elementStyles}
         $isDragging={isDragging}
         $isSelected={
@@ -99,10 +94,12 @@ const ImageElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
         onClick={(e) => handleElementClick(e, element.id)}
-      />
+      >
+        {!Array.isArray(element.content) && element.content}
+      </Link>
       {!isRootElement && isLastElm && <BottomOverlay />}
     </>
   );
 };
 
-export default ImageElement;
+export default LinkElement;
