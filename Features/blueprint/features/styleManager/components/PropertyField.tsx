@@ -7,16 +7,20 @@ import {
   FocusEvent,
   MouseEvent,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { FiX } from "react-icons/fi";
 import styled from "styled-components";
+import ColorVarDropdown from "./ColorVarDropdown";
 
 export const FormControl = styled.div`
   display: flex;
   align-items: center;
   gap: 0.2rem;
   font-size: 0.8rem;
+  position: relative;
+  width: 100%;
 `;
 export const DeleteButton = styled.button`
   display: flex;
@@ -35,7 +39,23 @@ export const DeleteButton = styled.button`
     border: 1px solid ${editorStyle.primary500};
   }
 `;
+const FieldWrapper = styled.div`
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+`;
+const LabelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
 export const InputField = styled.input`
+  /* flex-grow: 1; */
   border: 1px solid ${editorStyle.secondary500};
   background-color: ${editorStyle.primary500};
   color: ${editorStyle.secondary500};
@@ -44,6 +64,9 @@ export const InputField = styled.input`
     filter: brightness(0.4);
     cursor: not-allowed;
   }
+`;
+const Label = styled.label`
+  /* flex-shrink: 0; */
 `;
 interface Props {
   currentStyleState: string;
@@ -54,9 +77,10 @@ const PropertyField: React.FC<Props> = ({
   currentStyleState,
   propertyName,
 }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
   const { styles, handleUpdateStyle, handleClearStyleProperty } =
     useSelectedStyle();
-
   const getInitialValue = () =>
     styles?.[currentStyleState]?.[propertyName] ?? "";
 
@@ -73,8 +97,10 @@ const PropertyField: React.FC<Props> = ({
   };
   const handleClearProperty = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    // handleUpdateStyle(currentStyleState, propertyName, "");
     handleClearStyleProperty(currentStyleState, propertyName);
+  };
+  const handleShowDropdown = () => {
+    setShowDropdown((prev) => !prev);
   };
   useEffect(() => {
     setPropertyValue((prev) => {
@@ -82,10 +108,28 @@ const PropertyField: React.FC<Props> = ({
       return prev !== newValue ? newValue : prev;
     });
   }, [currentStyleState, styles, propertyName]);
-
+  useEffect(() => {
+    function handleClickOutside(event: globalThis.MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
-    <FormControl>
-      <label htmlFor={propertyName}>{propertyName}</label>
+    <FieldWrapper ref={wrapperRef}>
+      <LabelWrapper>
+        <Label htmlFor={propertyName}>{propertyName}</Label>
+        {propertyValue != "" && (
+          <DeleteButton type="button" onClick={handleClearProperty}>
+            <FiX />
+          </DeleteButton>
+        )}
+      </LabelWrapper>
       <InputField
         type="text"
         name={propertyName}
@@ -93,13 +137,20 @@ const PropertyField: React.FC<Props> = ({
         value={propertyValue}
         onBlur={handleOnFieldBlur}
         onChange={handleOnFieldChange}
+        onFocus={() => setShowDropdown(true)}
       />
-      {propertyValue != "" && (
-        <DeleteButton type="button" onClick={handleClearProperty}>
-          <FiX />
-        </DeleteButton>
-      )}
-    </FormControl>
+      {showDropdown &&
+        (propertyName == "color" ||
+          propertyName == "background-color" ||
+          propertyName == "border-color") && (
+          <ColorVarDropdown
+            propertyName={propertyName}
+            propertyValue={propertyValue}
+            currentStyleState={currentStyleState}
+            closeDropdown={handleShowDropdown}
+          />
+        )}
+    </FieldWrapper>
   );
 };
 

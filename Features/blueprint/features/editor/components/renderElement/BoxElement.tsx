@@ -2,18 +2,15 @@
 
 import styled, { css } from "styled-components";
 import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { useDraggable, useDroppable } from "@dnd-kit/core";
 import React, { MouseEvent, useRef } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
-import useOverlay from "../../../../hooks/useSibingOverlay";
 import useSelectedElement from "../../../../hooks/useSelectedElement";
-import { getIsHorizontalChild } from "../../utils/utils";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -51,9 +48,10 @@ const BoxElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
-  const extractedStyles = styles?.[elements.id];
-  const elementStyles = transformStyleToStyleComponent(extractedStyles);
-  const isHorizontalChild = getIsHorizontalChild(extractedStyles);
+  const { elementStyles, isHorizontalChild } = useParseElementStyle(
+    elements.id,
+    styles
+  );
   const {
     setDropNodeRef,
     setDragNodeRef,

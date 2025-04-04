@@ -2,7 +2,6 @@
 
 import styled from "styled-components";
 import { LeftWrapper, RightWrapper, ContentWrapper } from "./ColorVarManager";
-import { InputField } from "../../styleManager/components/PropertyField";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
 import chroma from "chroma-js";
@@ -21,7 +20,15 @@ const FormWrapper = styled.div`
   gap: 0.4rem;
 `;
 
-const Input = styled(InputField)`
+const Input = styled.input`
+  border: 1px solid ${editorStyle.secondary500};
+  background-color: ${editorStyle.primary500};
+  color: ${editorStyle.secondary500};
+  padding-inline: 0.2rem;
+  &:disabled {
+    filter: brightness(0.4);
+    cursor: not-allowed;
+  }
   &::placeholder {
     color: ${editorStyle.secondary500};
   }

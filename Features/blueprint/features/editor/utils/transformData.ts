@@ -85,20 +85,47 @@ function transformToTBlueprint(data: {
   };
 }
 
-function transformStyleToStyleComponent(styles?: DynamicPseudoStyles) {
+function transformStyleToStyleComponent(
+  colorVars: ColorVar,
+  styles?: DynamicPseudoStyles
+) {
   if (!styles) return {};
 
   // Extract normal styles directly
   const newStyles: Record<string, any> = { ...styles.normal };
 
-  // Iterate through keys to handle pseudo-styles
-  Object.keys(styles).forEach((key) => {
-    if (key !== "normal" && styles[key]) {
-      newStyles[`&:${key}`] = styles[key];
+  // Handle pseudo-styles
+  Object.entries(styles).forEach(([key, value]) => {
+    if (key !== "normal" && value) {
+      newStyles[`&:${key}`] = value;
+    }
+  });
+
+  return parseColorVariableToValue(newStyles, colorVars);
+}
+
+function parseColorVariableToValue(
+  styles: Record<string, any>,
+  colorVars: ColorVar
+): Record<string, any> {
+  const newStyles: Record<string, any> = {};
+
+  Object.entries(styles).forEach(([state, value]) => {
+    if (typeof value === "object") {
+      newStyles[state] = parseColorVariableToValue(value, colorVars);
+    } else if (value && value.startsWith("@")) {
+      const parsedValue = parseColorVariable(value, colorVars);
+      if (parsedValue) newStyles[state] = parsedValue;
+    } else {
+      newStyles[state] = value;
     }
   });
 
   return newStyles;
 }
 
+function parseColorVariable(value: string, colorVars: ColorVar): string | null {
+  const [colorName, level] = value.slice(1).split(".");
+  return colorVars?.[colorName]?.[Number(level)] ?? null;
+}
 export { transformToTBlueprint, transformStyleToStyleComponent };

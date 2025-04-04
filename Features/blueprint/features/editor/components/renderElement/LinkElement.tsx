@@ -2,13 +2,13 @@ import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import React, { MouseEvent, useRef } from "react";
 import styled, { css } from "styled-components";
 import { RenderElementProps } from "./SwitchCaseElement";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import Tooltip from "../tooltip/Tooltip";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 const Link = styled.a<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -46,8 +46,7 @@ const LinkElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
-  const extractedStyles = styles?.[element.id];
-  const elementStyles = transformStyleToStyleComponent(extractedStyles);
+  const { elementStyles } = useParseElementStyle(element.id, styles);
   const { setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
 

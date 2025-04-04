@@ -97,9 +97,12 @@ const ColorPaletteList = () => {
           colorVars[currentColorVar] &&
           Object.keys(colorVars[currentColorVar]).map((color, index) => {
             const textColor =
-              chroma.contrast(color, "white") > 4.5
-                ? editorStyle.primary500
-                : editorStyle.secondary500;
+              chroma.contrast(
+                colorVars[currentColorVar][Number(color)],
+                "white"
+              ) > 4.5
+                ? editorStyle.secondary500
+                : editorStyle.primary500;
             return (
               <ColorCard
                 key={index}

@@ -1,6 +1,5 @@
 "use client";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
 import { RenderElementProps } from "./SwitchCaseElement";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
@@ -10,6 +9,7 @@ import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import Tooltip from "../tooltip/Tooltip";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 const Label = styled.label<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -58,8 +58,7 @@ const LabelElement: React.FC<RenderElementProps> = ({
     }
     return "for input";
   }, [element]);
-  const extractedStyles = styles?.[element.id];
-  const elementStyles = transformStyleToStyleComponent(extractedStyles);
+  const { elementStyles } = useParseElementStyle(element.id, styles);
   const { setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
 

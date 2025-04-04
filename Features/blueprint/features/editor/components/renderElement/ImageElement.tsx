@@ -3,7 +3,6 @@
 import styled, { css } from "styled-components";
 import { RenderElementProps } from "./SwitchCaseElement";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
@@ -11,6 +10,7 @@ import { MouseEvent, useRef } from "react";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import Tooltip from "../tooltip/Tooltip";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 const Image = styled.img<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -48,8 +48,7 @@ const ImageElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
-  const extractedStyles = styles?.[element.id];
-  const elementStyles = transformStyleToStyleComponent(extractedStyles);
+  const { elementStyles } = useParseElementStyle(element.id, styles);
   const { setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
 

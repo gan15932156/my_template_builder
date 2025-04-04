@@ -7,10 +7,10 @@ import { useAppDispatch } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import Tooltip from "../tooltip/Tooltip";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 const Select = styled.select<{
   $style: Record<string, any>;
   $isSelected: boolean;
@@ -46,8 +46,7 @@ const SelectElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
-  const extractedStyles = styles?.[element.id];
-  const elementStyles = transformStyleToStyleComponent(extractedStyles);
+  const { elementStyles } = useParseElementStyle(element.id, styles);
   const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
   const { setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);

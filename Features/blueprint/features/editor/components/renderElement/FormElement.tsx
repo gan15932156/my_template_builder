@@ -3,16 +3,14 @@
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import styled, { css } from "styled-components";
 import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
-import { transformStyleToStyleComponent } from "../../utils/transformData";
-import { getIsHorizontalChild } from "../../utils/utils";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
-import useOverlay from "@/Features/blueprint/hooks/useSibingOverlay";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import React, { MouseEvent, useRef } from "react";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { useAppDispatch } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import Tooltip from "../tooltip/Tooltip";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 
 const Form = styled.form<{
   $style: Record<string, any>;
@@ -51,9 +49,10 @@ const FormElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
-  const extractedStyles = styles?.[elements.id];
-  const elementStyles = transformStyleToStyleComponent(extractedStyles);
-  const isHorizontalChild = getIsHorizontalChild(extractedStyles);
+  const { elementStyles, isHorizontalChild } = useParseElementStyle(
+    elements.id,
+    styles
+  );
   const {
     setDropNodeRef,
     setDragNodeRef,
