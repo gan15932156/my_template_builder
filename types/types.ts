@@ -40,5 +40,6 @@ export type TBlueprint = {
 export type TBlueprintWithElement = TBlueprint & {
   styles: object;
   element: object;
+  colorVars: object;
   updatedAt: string;
 };

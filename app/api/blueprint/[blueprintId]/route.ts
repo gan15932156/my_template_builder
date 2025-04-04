@@ -73,6 +73,7 @@ export async function PATCH(
       createdAt,
       status,
       updatedAt,
+      colorVars,
       styles,
       element,
       ...rest
@@ -83,8 +84,9 @@ export async function PATCH(
       },
       data: {
         ...rest,
-        element: element,
-        styles: styles,
+        colorVars,
+        element,
+        styles,
       },
     });
     if (res) {

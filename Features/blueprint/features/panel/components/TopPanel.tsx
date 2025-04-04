@@ -9,6 +9,7 @@ import {
 } from "./styledComponents";
 import { IoColorPaletteOutline, IoSaveOutline } from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
+import { BiCustomize } from "react-icons/bi";
 import { FaBuffer, FaCircleInfo } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
@@ -73,20 +74,28 @@ const TopPanel = () => {
           <FaBuffer size={ICON_SIZE} />
         </NavButton>
         <NavButton
-          title="Attribute manager"
-          disabled={isPending}
-          onClick={() => handleClick("attr")}
-          $isActive={currentPanel == "attr"}
-        >
-          <FaCircleInfo size={ICON_SIZE} />
-        </NavButton>
-        <NavButton
           title="Style manager"
           disabled={isPending}
           onClick={() => handleClick("style")}
           $isActive={currentPanel == "style"}
         >
           <IoColorPaletteOutline size={ICON_SIZE} />
+        </NavButton>
+        <NavButton
+          title="Color variable manager"
+          disabled={isPending}
+          onClick={() => handleClick("colorVar")}
+          $isActive={currentPanel == "colorVar"}
+        >
+          <BiCustomize size={ICON_SIZE} />
+        </NavButton>
+        <NavButton
+          title="Attribute manager"
+          disabled={isPending}
+          onClick={() => handleClick("attr")}
+          $isActive={currentPanel == "attr"}
+        >
+          <FaCircleInfo size={ICON_SIZE} />
         </NavButton>
       </NavItemContainer>
     </Wrapper>

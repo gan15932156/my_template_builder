@@ -30,27 +30,8 @@ export type TBasicBlock = TBaseBlock & {
   };
 };
 
-// Blueprint reference element definition
-export type TBlueprintRefElement = {
-  type: "refElement"; // Discriminant
-  id: string; // Unique ID
-  isShowElm: boolean; // Visibility flag
-  refId: string; // Reference ID
-  isUseRef: boolean; // Whether to use the reference
-  category: string;
-};
-
-// Blueprint element definition
-export type TBlueprintElement2 = {
-  type: "element"; // Discriminant
-  id: string; // Unique ID
-  category: string; // Element category
-  elmType: string; // Element type
-  tag: string;
-  attributes?: Record<string, string | string[]>;
-  content: Array<TBlueprintElement2 | TBlueprintRefElement> | string; // Nested content
-};
 export type Attributes = Record<string, string | string[]>;
+
 export type TBlueprintElement = {
   id: string; // Unique ID
   category: string; // Element category
@@ -62,28 +43,31 @@ export type TBlueprintElement = {
   content: Array<TBlueprintElement> | string;
 };
 
+export type ColorVar = {
+  [colorName: string]: {
+    [level: number]: string;
+  };
+};
+
 export type TBlueprintElementWithStyle = TBlueprintElement & {
   styles?: TStyle;
 };
 
-// Blueprint definition
-export type TBlueprint2 = TBaseBlock & {
-  imageUrl?: string; // URL of the blueprint image
-  styles?: TStyle; // Optional styles
-  element?: TBlueprintElement | TBlueprintRefElement; // Element or reference element
-};
 export type TBlueprint = TBaseBlock & {
   imageUrl?: string; // URL of the blueprint image
   styles?: TStyle; // Optional styles
   element?: TBlueprintElement; // Element
+  colorVars?: ColorVar;
 };
 
 export type TBlueprintWithoutElement = TBaseBlock & {
   imageUrl?: string; // URL of the blueprint image
 };
+
 export interface HashMap<T> {
   [key: string]: T;
 }
+
 export const mockData: TBlueprint = {
   id: "blueprint1",
   name: "Example Blueprint",
@@ -129,6 +113,7 @@ export const mockData: TBlueprint = {
     ],
   },
 };
+
 export const mockData2 = {
   id: "cm55a32680000gwwhmjw0utv7",
   name: "card2",

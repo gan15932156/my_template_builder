@@ -59,7 +59,8 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
     if (blueprintData) {
       const { createdAt, status, updatedAt, ...rest } = blueprintData;
       const isBlueprint = true;
-      if (rest.element && rest.styles) {
+      // if (rest.element && rest.styles) {
+      if (rest.element) {
         try {
           const blueprint = transformToTBlueprint({ ...rest, isBlueprint });
           dispatch(updateElement(blueprint));
@@ -73,21 +74,12 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
             isBlueprint: true,
             element: undefined,
             styles: undefined,
+            colorVars: undefined,
           })
         );
       }
     }
-    // console.log(blueprintData);
   }, [blueprintData]);
-  // useEffect(() => {
-  //   try {
-  //     const blueprint = transformToTBlueprint(mockData);
-  //     dispatch(updateElement(blueprint));
-  //     console.log("Transformed Blueprint:", blueprint);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, []);
   if (blueprintIsLoading && blueprintBlockIsLoading)
     return (
       <Wrapper>

@@ -1,7 +1,7 @@
 "use client";
 
 import { ApiResponse } from "@/types/types";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useAppSelector } from "@/hooks/reduxHooks";

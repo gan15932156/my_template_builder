@@ -51,6 +51,7 @@ model Blueprint{
   imageUrl      String?
   styles        Json?
   element       Json?
+  colorVars     Json?
   status        ProjectStatus @default(ACTIVE)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

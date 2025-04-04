@@ -7,10 +7,7 @@ export async function GET() {
       select: {
         id: true,
         name: true,
-        imageUrl: true,
         category: true,
-        status: true,
-        createdAt: true,
       },
     });
     blueprints.forEach((blueprint) => {

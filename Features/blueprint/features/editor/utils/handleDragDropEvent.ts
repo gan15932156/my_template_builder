@@ -4,8 +4,6 @@ import {
   TBlueprint,
   TBlueprintElement,
   TBlueprintElementWithStyle,
-  TBlueprintRefElement,
-  TStyle,
 } from "../../blockManager/type";
 import { nanoid } from "nanoid";
 import { ID_LENGTH } from "@/Features/blueprint/constants";
