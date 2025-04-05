@@ -104,7 +104,7 @@ function transformStyleToStyleComponent(
   return parseColorVariableToValue(newStyles, colorVars);
 }
 
-function parseColorVariableToValue(
+export function parseColorVariableToValue(
   styles: Record<string, any>,
   colorVars: ColorVar
 ): Record<string, any> {

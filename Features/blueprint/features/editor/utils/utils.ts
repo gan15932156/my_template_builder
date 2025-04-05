@@ -6,17 +6,27 @@ import {
   TStyle,
 } from "../../blockManager/type";
 import { ID_LENGTH } from "@/Features/blueprint/constants";
+import { parseColorVariableToValue } from "./transformData";
 
-export function copyBlueprint(element: TBlueprint): TBlueprint {
+export function copyBlueprint(blueprint: TBlueprint): TBlueprint {
   const newStyles: TStyle = {};
-  let tempStyles: TStyle = { ...element.styles };
+  let tempStyles: TStyle = { ...blueprint.styles };
   function travelAllElement(element: TBlueprintElement): TBlueprintElement {
     let newElementId = nanoid(ID_LENGTH);
     const newContent = Array.isArray(element.content)
       ? element.content.map((item) => travelAllElement(item))
       : element.content;
     if (tempStyles[element.id]) {
-      newStyles[newElementId] = tempStyles[element.id];
+      if (blueprint.colorVars) {
+        const rel = parseColorVariableToValue(
+          tempStyles[element.id],
+          blueprint.colorVars
+        );
+        // console.log("blueprint.colorVars", tempStyles[element.id]);
+        newStyles[newElementId] = rel;
+      } else {
+        newStyles[newElementId] = tempStyles[element.id];
+      }
     }
     return {
       id: newElementId,
@@ -29,14 +39,14 @@ export function copyBlueprint(element: TBlueprint): TBlueprint {
       isRand: element.isRand,
     };
   }
-  if (element.element) {
-    const copiedElement = travelAllElement(element.element);
+  if (blueprint.element) {
+    const copiedElement = travelAllElement(blueprint.element);
     return {
-      id: element.id,
-      name: element.name,
-      category: element.category,
-      isBlueprint: element.isBlueprint,
-      imageUrl: element.imageUrl,
+      id: blueprint.id,
+      name: blueprint.name,
+      category: blueprint.category,
+      isBlueprint: blueprint.isBlueprint,
+      imageUrl: blueprint.imageUrl,
       styles: newStyles,
       element: copiedElement,
     };
