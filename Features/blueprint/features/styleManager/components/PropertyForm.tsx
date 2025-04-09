@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import FormAccordion from "./FormAccordion";
 import PropertyField from "./PropertyField";
 import { readStylePropertyFromJSON } from "@/Features/blueprint/actions/styleProperty";
-type StylePropertieType = {
+export type StylePropertieType = {
   [category: string]: string[];
 };
 interface Props {

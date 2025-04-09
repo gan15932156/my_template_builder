@@ -43,3 +43,14 @@ export type TBlueprintWithElement = TBlueprint & {
   colorVars: object;
   updatedAt: string;
 };
+
+export type TTheme = {
+  id: string;
+  name?: string;
+  createdAt: string;
+};
+export type TThemeWithElement = TTheme & {
+  styles?: object;
+  colorVars?: object;
+  updatedAt: string;
+};

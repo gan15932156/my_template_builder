@@ -4,6 +4,7 @@ import "./globals.css";
 import TanStackQueryProvider from "@/providers/TanStackQueryProvider";
 import Layout from "./components/Layout";
 import StyledComponentsRegistry from "@/libs/registry";
+import StoreProvider from "@/providers/StoreProvider";
 
 const roboto = Roboto_Mono({
   weight: ["400", "500", "600", "700"],
@@ -24,7 +25,9 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <Layout>
-            <TanStackQueryProvider>{children}</TanStackQueryProvider>
+            <StoreProvider>
+              <TanStackQueryProvider>{children}</TanStackQueryProvider>
+            </StoreProvider>
           </Layout>
         </StyledComponentsRegistry>
       </body>

@@ -56,3 +56,13 @@ model Blueprint{
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
+
+model Theme{
+  id            String          @id @default(cuid())
+  name          String?
+  styles        Json?
+  colorVars     Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+

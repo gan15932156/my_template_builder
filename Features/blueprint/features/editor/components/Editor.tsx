@@ -59,7 +59,6 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
     if (blueprintData) {
       const { createdAt, status, updatedAt, ...rest } = blueprintData;
       const isBlueprint = true;
-      // if (rest.element && rest.styles) {
       if (rest.element) {
         try {
           const blueprint = transformToTBlueprint({ ...rest, isBlueprint });

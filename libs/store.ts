@@ -1,10 +1,12 @@
 import panelReducer from "@/Features/blueprint/slice/panelSlice";
 import elementReducer from "@/Features/blueprint/slice/elementSlice";
+import themeReducer from "@/Features/blueprint/slice/themeSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
+      theme: themeReducer,
       element: elementReducer,
       panel: panelReducer,
     },

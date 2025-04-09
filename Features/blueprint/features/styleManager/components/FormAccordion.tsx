@@ -25,7 +25,7 @@ const ContentWrapper = styled.div`
   padding: 0.2rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   justify-content: center;
   gap: 0.2rem;
 `;

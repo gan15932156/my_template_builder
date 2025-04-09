@@ -3,33 +3,33 @@
 import { ApiResponse } from "@/types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import styles from "@/Features/componentEditor/CreateButton.module.css";
-const apiPath = "/api/blueprint";
-const createProject = (): Promise<ApiResponse<string>> =>
+import StyledCreateButton from "./StyledCreateButton";
+
+const apiPath = "/api/theme";
+const createTheme = (): Promise<ApiResponse<string>> =>
   fetch(apiPath, { method: "POST" }).then((response) => response.json());
-const CreateButton: React.FC = () => {
+const CreateThemeButton = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
-    mutationFn: createProject,
+    mutationFn: createTheme,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["blueprints"] });
-      router.push(`/editor/${data.data}`);
+      queryClient.invalidateQueries({ queryKey: ["themes"] });
+      //   router.push(`/editor/${data.data}`);
     },
   });
   const handleOnClick = () => {
     mutate();
   };
   return (
-    <button
-      className={styles.button}
+    <StyledCreateButton
       disabled={isPending}
       onClick={handleOnClick}
       type="button"
     >
-      Create blueprint
-    </button>
+      Create theme
+    </StyledCreateButton>
   );
 };
 
-export default CreateButton;
+export default CreateThemeButton;

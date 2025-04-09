@@ -55,7 +55,6 @@ const LabelWrapper = styled.div`
   width: 100%;
 `;
 export const InputField = styled.input`
-  /* flex-grow: 1; */
   border: 1px solid ${editorStyle.secondary500};
   background-color: ${editorStyle.primary500};
   color: ${editorStyle.secondary500};
@@ -65,9 +64,8 @@ export const InputField = styled.input`
     cursor: not-allowed;
   }
 `;
-const Label = styled.label`
-  /* flex-shrink: 0; */
-`;
+const Label = styled.label``;
+
 interface Props {
   currentStyleState: string;
   propertyName: string;

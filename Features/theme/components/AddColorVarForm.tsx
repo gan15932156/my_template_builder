@@ -1,17 +1,32 @@
 "use client";
-
-import styled from "styled-components";
-import { LeftWrapper, RightWrapper, ContentWrapper } from "./ColorVarManager";
+import chroma from "chroma-js";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
-import chroma from "chroma-js";
-import { ColorCard } from "./ColorPaletteList";
-import useColorVar from "@/Features/blueprint/hooks/useColorVar";
+import styled from "styled-components";
+import useManageTheme from "../hooks/useManageTheme";
+import { ColorCard } from "@/Features/blueprint/features/styleManager/components/ColorVarDropdown";
 
 interface Props {
   backToList: () => void;
 }
+export const LeftWrapper = styled.div`
+  background-color: ${editorStyle.secondary300};
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+`;
 
+export const RightWrapper = styled.div`
+  background-color: ${editorStyle.secondary300};
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+`;
+export const ContentWrapper = styled.div`
+  grid-column: 1/-1;
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: subgrid;
+  word-break: break-all;
+`;
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,16 +36,16 @@ const FormWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  border: 1px solid ${editorStyle.secondary500};
-  background-color: ${editorStyle.primary500};
-  color: ${editorStyle.secondary500};
+  border: 1px solid ${editorStyle.primary500};
+  background-color: ${editorStyle.secondary500};
+  color: ${editorStyle.primary500};
   padding-inline: 0.2rem;
   &:disabled {
     filter: brightness(0.4);
     cursor: not-allowed;
   }
   &::placeholder {
-    color: ${editorStyle.secondary500};
+    color: ${editorStyle.primary500};
   }
 `;
 
@@ -51,24 +66,14 @@ const Button = styled.button`
     filter: brightness(0.8);
   }
 `;
-
-const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
+const AddColorVarForm: React.FC<Props> = ({ backToList }) => {
   const [color, setColor] = useState({
     name: "",
     color: chroma.random().hex(),
     isColorShade: false,
   });
-  const { handleAddColor } = useColorVar();
   const [colorList, setColorList] = useState<string[]>([]);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setColor((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-  };
-
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setColor((prev) => ({ ...prev, isColorShade: event.target.checked }));
-  };
-
+  const { handleAddColor } = useManageTheme();
   const calculateNewColors = (newColor: string = color.color) => {
     if (color.isColorShade) {
       const colors100_500 = chroma
@@ -86,11 +91,16 @@ const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
       setColorList([newColor]);
     }
   };
-
   const handleOnColorBlur = (event: FocusEvent<HTMLInputElement>) => {
     calculateNewColors(event.target.value);
   };
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setColor((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  };
 
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setColor((prev) => ({ ...prev, isColorShade: event.target.checked }));
+  };
   const handleAdd = () => {
     if (color.name && color.color) {
       handleAddColor(color, colorList);
@@ -154,4 +164,4 @@ const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
   );
 };
 
-export default AddColorPaletteForm;
+export default AddColorVarForm;

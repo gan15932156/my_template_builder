@@ -23,6 +23,14 @@ function Layout({ children }: { children: React.ReactNode }) {
           Component
         </Link>
         <Link
+          href={"/theme"}
+          className={`${styles.link} ${
+            pathName === "/theme" ? styles.active : ""
+          }`}
+        >
+          Theme(In progess)
+        </Link>
+        <Link
           href={"/blueprint"}
           className={`${styles.link} ${
             pathName === "/blueprint" ? styles.active : ""

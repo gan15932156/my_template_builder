@@ -23,14 +23,6 @@ const useColorVar = () => {
     dispatch(updateElement({ ...currentBlueprint, colorVars: tempColor }));
   };
 
-  const generateColorVar = (colors: string[], isColorShade: boolean) => {
-    return isColorShade
-      ? Object.fromEntries(
-          colors.map((color, index) => [(index + 1) * 100, color])
-        )
-      : { 500: colors[0] };
-  };
-
   const handleAddColor = (
     colorObject: { name: string; color: string; isColorShade: boolean },
     colors: string[]
@@ -49,3 +41,11 @@ const useColorVar = () => {
 };
 
 export default useColorVar;
+
+export const generateColorVar = (colors: string[], isColorShade: boolean) => {
+  return isColorShade
+    ? Object.fromEntries(
+        colors.map((color, index) => [(index + 1) * 100, color])
+      )
+    : { 500: colors[0] };
+};
