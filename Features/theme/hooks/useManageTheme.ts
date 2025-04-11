@@ -72,6 +72,7 @@ const useManageTheme = () => {
     );
   };
   return {
+    currentTheme,
     styles,
     colorVars,
     handleDeleteColor,

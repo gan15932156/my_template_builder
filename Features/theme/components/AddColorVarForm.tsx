@@ -4,7 +4,7 @@ import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import useManageTheme from "../hooks/useManageTheme";
-import { ColorCard } from "@/Features/blueprint/features/styleManager/components/ColorVarDropdown";
+import { ColorCard } from "@/Features/blueprint/features/colorVarManager/components/ColorPaletteList";
 
 interface Props {
   backToList: () => void;
@@ -35,7 +35,7 @@ const FormWrapper = styled.div`
   gap: 0.4rem;
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   border: 1px solid ${editorStyle.primary500};
   background-color: ${editorStyle.secondary500};
   color: ${editorStyle.primary500};
@@ -43,9 +43,6 @@ const Input = styled.input`
   &:disabled {
     filter: brightness(0.4);
     cursor: not-allowed;
-  }
-  &::placeholder {
-    color: ${editorStyle.primary500};
   }
 `;
 

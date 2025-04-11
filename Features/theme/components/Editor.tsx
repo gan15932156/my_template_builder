@@ -8,19 +8,30 @@ import { updateTheme } from "@/Features/blueprint/slice/themeSlice";
 import useThemeData from "../hooks/useThemeData";
 import { useEffect } from "react";
 import { TTheme } from "../types";
+import ShowcasePage from "./showcase/ShowcasePage";
 
-interface Props {
+export interface Props {
   themeId: string;
 }
 const GridWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.4fr;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
   gap: 0.2rem;
   min-height: 90vh;
+  width: 100%;
 `;
 const GridItemWrapper = styled.div`
   padding: 0.1rem;
   border: 1px solid ${editorStyle.primary300};
+  width: 100%;
+  flex-grow: 1;
+`;
+const LeftItemWrapper = styled.div`
+  padding: 0.1rem;
+  border: 1px solid ${editorStyle.primary300};
+  width: 100%;
+  flex-basis: 28rem;
 `;
 const Editor: React.FC<Props> = ({ themeId }) => {
   const dispatch = useAppDispatch();
@@ -45,14 +56,11 @@ const Editor: React.FC<Props> = ({ themeId }) => {
     );
   return (
     <GridWrapper>
+      <LeftItemWrapper>
+        <ThemeForm themeId={themeId} />
+      </LeftItemWrapper>
       <GridItemWrapper>
-        <ThemeForm />
-      </GridItemWrapper>
-      <GridItemWrapper>
-        Possimus molestiae ipsum, et libero nesciunt repellendus consequuntur
-        incidunt in voluptate reprehenderit doloribus architecto, fuga minima
-        recusandae, assumenda inventore facilis pariatur! Quasi inventore dolore
-        minima magni ducimus quia impedit natus?
+        <ShowcasePage />
       </GridItemWrapper>
     </GridWrapper>
   );

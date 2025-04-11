@@ -11,6 +11,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 0.6rem;
+  place-items: center;
 `;
 const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state }) => {
   const [styleProperty, setStyleProperty] = useState<StylePropertieType | null>(
@@ -31,13 +32,17 @@ const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state }) => {
         Object.keys(styleProperty).map((style, index) => (
           <FormAccordion key={index + style} text={style}>
             <Grid>
-              {styleProperty[style].map((property, index2) => (
-                <Field
-                  key={index + index2 + property}
-                  styleInfo={{ elmType, state }}
-                  propertyName={property}
-                />
-              ))}
+              {styleProperty[style].map((property, index2) =>
+                !["color", "background-color", "border-color"].includes(
+                  property
+                ) ? (
+                  <Field
+                    key={index + index2 + property}
+                    styleInfo={{ elmType, state }}
+                    propertyName={property}
+                  />
+                ) : null
+              )}
             </Grid>
           </FormAccordion>
         ))}

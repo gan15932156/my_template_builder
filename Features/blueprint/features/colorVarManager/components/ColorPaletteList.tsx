@@ -54,6 +54,7 @@ export const ColorCard = styled.div<{
   padding-inline: 0.8rem;
   background-color: ${(props) => props.$backgroundColor};
   color: ${(props) => props.$textColor};
+  word-break: keep-all;
 `;
 const ColorPaletteList = () => {
   const { colorVars, handleDeleteColor } = useColorVar();
