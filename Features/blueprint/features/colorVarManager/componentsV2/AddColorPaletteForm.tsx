@@ -1,12 +1,16 @@
 "use client";
 
 import styled from "styled-components";
-import { LeftWrapper, RightWrapper, ContentWrapper } from "./ColorVarManager";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
 import chroma from "chroma-js";
-import { ColorCard } from "./ColorPaletteList";
 import useColorVar from "@/Features/blueprint/hooks/useColorVar";
+import {
+  ColorCard,
+  ContentWrapper,
+  LeftWrapper,
+  RightWrapper,
+} from "./StyledComponents";
 
 interface Props {
   backToList: () => void;
@@ -56,7 +60,6 @@ const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
   const [color, setColor] = useState({
     name: "",
     color: chroma.random().hex(),
-    isColorShade: false,
   });
   const { handleAddColor } = useColorVar();
   const [colorList, setColorList] = useState<string[]>([]);
@@ -69,37 +72,37 @@ const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
     setColor((prev) => ({ ...prev, isColorShade: event.target.checked }));
   };
 
-  const calculateNewColors = (newColor: string = color.color) => {
-    if (color.isColorShade) {
-      const colors100_500 = chroma
-        .scale(["#ffffff", newColor])
-        .mode("lch")
-        .colors(6)
-        .slice(1);
-      const colors500_1000 = chroma
-        .scale([newColor, "#000000"])
-        .mode("lch")
-        .colors(6)
-        .slice(1, -1);
-      setColorList([...colors100_500, ...colors500_1000]);
-    } else {
-      setColorList([newColor]);
-    }
-  };
+  // const calculateNewColors = (newColor: string = color.color) => {
+  //   if (color.isColorShade) {
+  //     const colors100_500 = chroma
+  //       .scale(["#ffffff", newColor])
+  //       .mode("lch")
+  //       .colors(6)
+  //       .slice(1);
+  //     const colors500_1000 = chroma
+  //       .scale([newColor, "#000000"])
+  //       .mode("lch")
+  //       .colors(6)
+  //       .slice(1, -1);
+  //     setColorList([...colors100_500, ...colors500_1000]);
+  //   } else {
+  //     setColorList([newColor]);
+  //   }
+  // };
 
   const handleOnColorBlur = (event: FocusEvent<HTMLInputElement>) => {
-    calculateNewColors(event.target.value);
+    // calculateNewColors(event.target.value);
   };
 
   const handleAdd = () => {
     if (color.name && color.color) {
-      handleAddColor(color, colorList);
-      backToList();
+      // handleAddColor(color, colorList);
+      // backToList();
     }
   };
-  useEffect(() => {
-    calculateNewColors();
-  }, [color.isColorShade]);
+  // useEffect(() => {
+  //   calculateNewColors();
+  // }, [color.isColorShade]);
 
   return (
     <ContentWrapper>
@@ -119,16 +122,6 @@ const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
             onChange={handleChange}
             value={color.color}
           />
-          <CheckboxWrapper>
-            <label htmlFor="isColorShade">Use color shade?</label>
-            <input
-              type="checkbox"
-              id="isColorShade"
-              name="isColorShade"
-              checked={color.isColorShade}
-              onChange={handleCheckboxChange}
-            />
-          </CheckboxWrapper>
           <Button onClick={handleAdd}>Add</Button>
         </FormWrapper>
       </LeftWrapper>
@@ -143,9 +136,7 @@ const AddColorPaletteForm: React.FC<Props> = ({ backToList }) => {
                 : editorStyle.primary500
             }
           >
-            <span>
-              {color.isColorShade ? (index + 1) * 100 : (index + 5) * 100}
-            </span>
+            <span>{(index + 1) * 100}</span>
             <span>{colorCode}</span>
           </ColorCard>
         ))}

@@ -13,6 +13,7 @@ import { transformToTBlueprint } from "../utils/transformData";
 import RenderElement from "./renderElement/RenderElement";
 import useDragDropEvent from "../../../hooks/useDragDropEvent";
 import useBlueprintData from "../../../hooks/useGetBlueprint";
+import { ColorVar } from "../../blockManager/type";
 
 const Wrapper = styled.div`
   grid-column: 1 / 3;
@@ -73,7 +74,7 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
             isBlueprint: true,
             element: undefined,
             styles: undefined,
-            colorVars: undefined,
+            colorVars: rest.colorVars as ColorVar,
           })
         );
       }
