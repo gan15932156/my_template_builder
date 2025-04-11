@@ -112,3 +112,54 @@ export async function PATCH(
     await db.$disconnect();
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const themeId = (await params).id;
+  if (!themeId) {
+    return Response.json(
+      {
+        success: false,
+        data: {},
+        message: "Fail to load theme",
+      },
+      { status: 404 }
+    );
+  }
+  try {
+    const res = await db.theme.delete({ where: { id: themeId } });
+    if (res) {
+      return Response.json(
+        {
+          success: true,
+          data: res,
+          message: "Success",
+        },
+        { status: 200 }
+      );
+    } else {
+      return Response.json(
+        {
+          success: true,
+          data: {},
+          message: "Success",
+        },
+        { status: 200 }
+      );
+    }
+  } catch (error) {
+    console.error("Error on delete theme", error);
+    return Response.json(
+      {
+        success: false,
+        message: "Fail to delete theme",
+        data: {},
+      },
+      { status: 500 }
+    );
+  } finally {
+    await db.$disconnect();
+  }
+}

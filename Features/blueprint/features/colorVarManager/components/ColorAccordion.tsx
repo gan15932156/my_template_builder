@@ -15,11 +15,13 @@ const Heading = styled.div`
   justify-content: space-between;
   width: 100%;
   cursor: pointer;
-  padding-inline: 0.2rem;
+  padding: 0.2rem;
   user-select: none;
   background-color: ${editorStyle.secondary500};
   color: ${editorStyle.primary500};
-
+  & > span {
+    font-weight: bold;
+  }
   &:not(:last-of-type) {
     border-bottom: 1px solid ${editorStyle.primary500};
   }
@@ -29,9 +31,6 @@ const ColorNameWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
-  & > span {
-    font-weight: bold;
-  }
 `;
 const Content = styled.div<{ $isActive: boolean }>`
   display: ${(props) => (props.$isActive ? "initial" : "none")};
@@ -62,7 +61,6 @@ const ColorAccordion = <K extends keyof ColorVar>({
     <Wrapper>
       <Heading onClick={() => toggle(colorName)}>
         <span>{colorName}</span>
-
         <ColorNameWrapper>
           <ColorBadges colors={colors[colorName]} />
           <FiChevronDown

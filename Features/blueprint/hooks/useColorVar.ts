@@ -5,14 +5,12 @@ import { selectBlueprint, updateElement } from "../slice/elementSlice";
 import { useMemo } from "react";
 import { ColorVar } from "../features/blockManager/type";
 import { updateColorPalette } from "../features/colorVarManager/utils";
-import { defaultColor } from "../features/colorVarManager/defaultColors";
-
 const useColorVar = () => {
   const dispatch = useAppDispatch();
   const currentBlueprint = useAppSelector(selectBlueprint);
 
   const colorVars = useMemo(
-    () => currentBlueprint?.colorVars || defaultColor,
+    () => currentBlueprint?.colorVars || null,
     [currentBlueprint]
   );
 
@@ -29,6 +27,11 @@ const useColorVar = () => {
       colorName,
       colorKey,
     });
+    if (currentBlueprint) {
+      dispatch(
+        updateElement({ ...currentBlueprint, colorVars: updatedColors })
+      );
+    }
   }
   return { colorVars, handleChangeColor };
 };

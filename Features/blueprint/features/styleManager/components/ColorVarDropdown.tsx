@@ -24,6 +24,9 @@ const Wrapper = styled.div`
   gap: 0.2rem;
   z-index: 999;
   min-width: 16rem;
+  height: 20rem;
+  /* max-height: 24rem; */
+  overflow-y: scroll;
 `;
 const ColorPaletteWrapper = styled.div`
   border-radius: 0.2rem;
@@ -74,33 +77,33 @@ const ColorVarDropdown: React.FC<Props> = ({
   };
   return (
     <Wrapper>
-      {Object.keys(colorVars).map((colorName, index) => (
-        <ColorPaletteWrapper key={index}>
-          <ColorName>{colorName}</ColorName>
-          <ColorListWrapper>
-            {Object.keys(colorVars[colorName]).map((level, index2) => {
-              const textColor =
-                chroma.contrast(colorVars[colorName][Number(level)], "white") >
-                4.5
-                  ? editorStyle.secondary500
-                  : editorStyle.primary500;
-              const colorVal = "@" + colorName + "." + level;
-              return (
-                <ColorCard
-                  onClick={() => handleAddColor(colorVal, propertyName)}
-                  key={index2}
-                  $backgroundColor={colorVars[colorName][Number(level)]}
-                  $textColor={textColor}
-                  $isSelected={colorVal == propertyValue}
-                >
-                  <span>{level}</span>
-                  <span>{colorVars[colorName][Number(level)]}</span>
-                </ColorCard>
-              );
-            })}
-          </ColorListWrapper>
-        </ColorPaletteWrapper>
-      ))}
+      {colorVars &&
+        Object.entries(colorVars).map(([groupName, groupColors]) => (
+          <ColorPaletteWrapper key={groupName}>
+            <ColorName>{groupName}</ColorName>
+            <ColorListWrapper>
+              {Object.entries(groupColors).map(([colorKey, colorValue]) => {
+                const textColor =
+                  chroma.contrast(colorValue, "white") > 4.5
+                    ? editorStyle.secondary500
+                    : editorStyle.primary500;
+                const colorVal = "@" + groupName + "." + colorKey;
+                return (
+                  <ColorCard
+                    onClick={() => handleAddColor(colorVal, propertyName)}
+                    key={colorKey}
+                    $backgroundColor={colorValue}
+                    $textColor={textColor}
+                    $isSelected={colorVal == propertyValue}
+                  >
+                    <span>{colorKey}</span>
+                    <span>{colorValue}</span>
+                  </ColorCard>
+                );
+              })}
+            </ColorListWrapper>
+          </ColorPaletteWrapper>
+        ))}
     </Wrapper>
   );
 };

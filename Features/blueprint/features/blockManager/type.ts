@@ -93,6 +93,7 @@ export type ColorVar = {
     divider: string;
   };
 };
+
 export type ColorVarV2 = {
   [colorName: string]: {
     [name: string]: string;

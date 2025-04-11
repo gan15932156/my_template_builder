@@ -1,5 +1,5 @@
 import db from "@/config/prisma";
-import defaultColor from "@/Features/blueprint/features/colorVarManager/defaultColors";
+import { defaultColor } from "@/Features/blueprint/features/colorVarManager/defaultColors";
 import { NextRequest } from "next/server";
 
 export async function POST() {

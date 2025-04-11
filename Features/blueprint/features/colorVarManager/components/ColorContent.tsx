@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import styled from "styled-components";
 import { ColorVar } from "../../blockManager/type";
 import ColorField from "./ColorField";
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 
 interface Props<K extends keyof ColorVar = keyof ColorVar> {
   colorName: K;
@@ -14,6 +15,10 @@ interface Props<K extends keyof ColorVar = keyof ColorVar> {
   ) => void;
 }
 
+const Wrapper = styled.div`
+  background-color: ${editorStyle.primary600};
+  padding: 0.2rem;
+`;
 const ColorContent = <K extends keyof ColorVar>({
   colorName,
   colors,
@@ -21,19 +26,21 @@ const ColorContent = <K extends keyof ColorVar>({
 }: Props<K>) => {
   const colorGroup = colors[colorName];
   return (
-    <div>
+    <Wrapper>
       {(Object.keys(colorGroup) as Array<keyof typeof colorGroup>).map(
-        (key) => (
-          <ColorField
-            key={String(key)}
-            colorName={colorName}
-            colorKey={key as keyof ColorVar[K]}
-            value={String(colorGroup[key])}
-            updateColor={updateColor}
-          />
-        )
+        (key, index) => {
+          return (
+            <ColorField
+              key={index}
+              colorName={colorName}
+              colorKey={key as keyof ColorVar[K]}
+              value={String(colorGroup[key])}
+              updateColor={updateColor}
+            />
+          );
+        }
       )}
-    </div>
+    </Wrapper>
   );
 };
 

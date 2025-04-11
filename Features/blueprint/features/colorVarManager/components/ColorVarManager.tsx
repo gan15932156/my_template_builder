@@ -8,14 +8,22 @@ const Wrapper = styled.div`
   font-size: 0.8rem;
 `;
 const ColorVarManager = () => {
-  const { colorVars } = useColorVar();
+  const { colorVars, handleChangeColor } = useColorVar();
   const handleUpdateColor = <K extends keyof ColorVar>(
     newColor: string,
     colorName: K,
     colorKey: keyof ColorVar[K]
   ) => {
-    console.log({ newColor, colorName, colorKey });
+    if (colorVars) {
+      handleChangeColor({
+        colors: colorVars,
+        colorKey,
+        colorName,
+        newColor,
+      });
+    }
   };
+  if (!colorVars) return null;
   return (
     <Wrapper>
       <ColorPaletteList

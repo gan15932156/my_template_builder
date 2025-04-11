@@ -126,6 +126,7 @@ export function parseColorVariableToValue(
 
 function parseColorVariable(value: string, colorVars: ColorVar): string | null {
   const [colorName, level] = value.slice(1).split(".");
-  return colorVars?.[colorName]?.[Number(level)] ?? null;
+  // return colorVars?.[colorName]?.[Number(level)] ?? null;
+  return "#d1d1d1";
 }
 export { transformToTBlueprint, transformStyleToStyleComponent };
