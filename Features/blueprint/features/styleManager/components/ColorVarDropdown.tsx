@@ -12,8 +12,8 @@ interface Props {
   closeDropdown: () => void;
 }
 const Wrapper = styled.div`
-  top: 100%;
-  position: absolute;
+  /* top: 100%;
+  position: absolute; */
   background-color: ${editorStyle.primary600};
   border-radius: 0.2rem;
   padding: 0.2rem;
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   grid-template-rows: 1fr;
   grid-auto-rows: 1fr;
   gap: 0.2rem;
-  z-index: 999;
+  /* z-index: 999; */
   min-width: 16rem;
   height: 20rem;
   /* max-height: 24rem; */

@@ -11,6 +11,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   row-gap: 0.6rem;
+  column-gap: 0.2rem;
   place-items: center;
 `;
 const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state }) => {

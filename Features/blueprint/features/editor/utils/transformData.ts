@@ -125,8 +125,27 @@ export function parseColorVariableToValue(
 }
 
 function parseColorVariable(value: string, colorVars: ColorVar): string | null {
-  const [colorName, level] = value.slice(1).split(".");
-  // return colorVars?.[colorName]?.[Number(level)] ?? null;
-  return "#d1d1d1";
+  // const [colorName, key] = value.slice(1).split(".");
+  // console.log(colorVars?.[colorName]);
+  // // return colorVars?.[colorName]?.[Number(level)] ?? null;
+  // return "#d1d1d1";
+  if (!value.startsWith("@")) return null;
+
+  const [group, key] = value.slice(1).split(".");
+
+  if (!group || !key) return null;
+
+  // Make sure group exists
+  if (!(group in colorVars)) return null;
+
+  const groupColors = colorVars[group as keyof ColorVar] as Record<
+    string,
+    string
+  >;
+
+  // Make sure key exists in group
+  if (!(key in groupColors)) return null;
+
+  return groupColors[key] ?? null;
 }
 export { transformToTBlueprint, transformStyleToStyleComponent };

@@ -29,7 +29,7 @@ const LabelWrapper = styled.div`
 const Label = styled.label``;
 const InputField = styled.input`
   border: 1px solid ${editorStyle.secondary500};
-  background-color: ${editorStyle.primary500};
+  background-color: ${editorStyle.secondary300};
   color: ${editorStyle.secondary500};
   padding-inline: 0.2rem;
   &:disabled {

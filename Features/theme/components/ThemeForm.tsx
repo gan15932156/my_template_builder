@@ -5,7 +5,6 @@ import styled from "styled-components";
 import ColorVarForm from "./ColorVarForm";
 import { IoSaveOutline } from "react-icons/io5";
 import StyleForm from "./StyleForm";
-import { Input } from "./AddColorVarForm";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import useManageTheme from "../hooks/useManageTheme";
 import useThemeData from "../hooks/useThemeData";
@@ -15,6 +14,16 @@ const GridWrapper = styled.div`
   grid-template-rows: repeat(3, max-content);
   gap: 0.2rem;
   font-size: 0.8rem;
+`;
+const InputField = styled.input`
+  border: 1px solid ${editorStyle.secondary500};
+  background-color: ${editorStyle.secondary300};
+  color: ${editorStyle.primary500};
+  padding-inline: 0.2rem;
+  &:disabled {
+    filter: brightness(0.4);
+    cursor: not-allowed;
+  }
 `;
 const GridItemWrapper = styled.div`
   padding: 0.1rem;
@@ -37,8 +46,8 @@ const SaveButton = styled.button`
   cursor: pointer;
   border-radius: 0.2rem;
   border: 1px solid transparent;
-  color: ${editorStyle.secondary500};
-  background-color: ${editorStyle.primary500};
+  color: ${editorStyle.primary500};
+  background-color: ${editorStyle.secondary500};
   display: flex;
   align-items: center;
   padding: 0.2rem 0.8rem;
@@ -46,8 +55,6 @@ const SaveButton = styled.button`
   transition: all 0.2s ease;
   &:hover {
     border: 1px solid ${editorStyle.primary500};
-    background-color: ${editorStyle.secondary500};
-    color: ${editorStyle.primary500};
   }
   &:disabled {
     filter: brightness(0.4);
@@ -85,7 +92,7 @@ const ThemeForm: React.FC<Props> = ({ themeId }) => {
           {!themeMutate.isError ? (
             <NameFormWrapper>
               <label htmlFor="name">Name</label>
-              <Input
+              <InputField
                 type="text"
                 id="name"
                 name="name"

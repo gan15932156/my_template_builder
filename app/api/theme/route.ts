@@ -1,9 +1,12 @@
 import db from "@/config/prisma";
+import { defaultColor } from "@/Features/blueprint/features/colorVarManager/defaultColors";
 import { NextRequest } from "next/server";
 
 export async function POST() {
   try {
-    const res = await db.theme.create({ data: {} });
+    const res = await db.theme.create({
+      data: { colorVars: JSON.parse(JSON.stringify(defaultColor)) },
+    });
     if (res) {
       return Response.json(
         {

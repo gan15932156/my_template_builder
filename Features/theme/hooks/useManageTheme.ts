@@ -2,7 +2,7 @@
 
 import { TElmType, TStyleState } from "@/Features/blueprint/constants";
 import { ColorVar } from "@/Features/blueprint/features/blockManager/type";
-import { generateColorVar } from "@/Features/blueprint/hooks/useColorVar";
+import { updateColorPalette } from "@/Features/blueprint/features/colorVarManager/utils";
 import {
   clearStyleProperty,
   selectTheme,
@@ -20,32 +20,28 @@ const useManageTheme = () => {
   const currentTheme = useAppSelector(selectTheme);
 
   const colorVars = useMemo(
-    () => currentTheme?.colorVars || {},
+    () => currentTheme?.colorVars || null,
     [currentTheme]
   );
   const styles = useMemo(() => currentTheme?.styles || {}, [currentTheme]);
-  const handleDeleteColor = (colorName: string) => {
-    if (!currentTheme?.colorVars) return;
 
-    const tempColor = { ...currentTheme.colorVars };
-    delete tempColor[colorName];
-
-    dispatch(updateTheme({ ...currentTheme, colorVars: tempColor }));
-  };
-  const handleAddColor = (
-    colorObject: { name: string; color: string; isColorShade: boolean },
-    colors: string[]
-  ) => {
-    if (!currentTheme) return;
-
-    const tempColor: ColorVar = {
-      ...currentTheme.colorVars,
-      [colorObject.name]: generateColorVar(colors, colorObject.isColorShade),
-    };
-
-    dispatch(updateTheme({ ...currentTheme, colorVars: tempColor }));
-  };
-
+  function handleChangeColor<K extends keyof ColorVar>(params: {
+    colors: ColorVar;
+    newColor: string;
+    colorName: K;
+    colorKey: keyof ColorVar[K];
+  }) {
+    const { colors, newColor, colorName, colorKey } = params;
+    const updatedColors = updateColorPalette({
+      colors,
+      newColor,
+      colorName,
+      colorKey,
+    });
+    if (currentTheme) {
+      dispatch(updateTheme({ ...currentTheme, colorVars: updatedColors }));
+    }
+  }
   const handleUpdateStyle = (
     styleState: StyleInfo,
     property: string,
@@ -75,9 +71,8 @@ const useManageTheme = () => {
     currentTheme,
     styles,
     colorVars,
-    handleDeleteColor,
-    handleAddColor,
     handleUpdateStyle,
+    handleChangeColor,
     handleClearStyleProperty,
   };
 };

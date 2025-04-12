@@ -1,68 +1,38 @@
 "use client";
 
-import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { useState } from "react";
-import { FiPlus } from "react-icons/fi";
-import { RiArrowGoBackFill } from "react-icons/ri";
 import styled from "styled-components";
-import ColorVarList from "./ColorVarList";
-import AddColorVarForm from "./AddColorVarForm";
+import ColorPaletteList from "@/Features/blueprint/features/colorVarManager/components/ColorPaletteList";
+import useManageTheme from "../hooks/useManageTheme";
+import { ColorVar } from "@/Features/blueprint/features/blockManager/type";
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  grid-template-rows: auto 1fr;
-  gap: 0.4rem;
   font-size: 0.8rem;
-  padding: 1rem 0.2rem;
-`;
-const ControlWrapper = styled.div`
-  grid-column: 1/2;
-  grid-row: 1/2;
-  border-radius: 0.2rem;
-  background-color: ${editorStyle.secondary500};
-  color: ${editorStyle.primary500};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const ControlButton = styled.button`
-  cursor: pointer;
-  border: 2px solid transparent;
-  background-color: transparent;
-  display: flex;
-  color: inherit;
-  align-items: center;
-  padding: 0.2rem;
-  justify-content: center;
-  border-radius: 2rem;
-  transition: all 0.2s ease;
-  &:hover {
-    border: 2px solid ${editorStyle.primary500};
-  }
 `;
 
 const ColorVarForm = () => {
-  const [isAddColor, setIsAddColor] = useState(false);
-  const handleControlClick = () => {
-    setIsAddColor((prev) => !prev);
+  const { colorVars, handleChangeColor } = useManageTheme();
+  const handleUpdateColor = <K extends keyof ColorVar>(
+    newColor: string,
+    colorName: K,
+    colorKey: keyof ColorVar[K]
+  ) => {
+    if (colorVars) {
+      handleChangeColor({
+        colors: colorVars,
+        colorKey,
+        colorName,
+        newColor,
+      });
+    }
   };
-
+  if (!colorVars) return null;
   return (
     <Wrapper>
-      <ControlWrapper>
-        <ControlButton
-          onClick={handleControlClick}
-          title={isAddColor ? "Back to color list" : "Add new color"}
-        >
-          {isAddColor ? <RiArrowGoBackFill size={24} /> : <FiPlus size={24} />}
-        </ControlButton>
-      </ControlWrapper>
-      {isAddColor ? (
-        <AddColorVarForm backToList={handleControlClick} />
-      ) : (
-        <ColorVarList />
-      )}
+      <ColorPaletteList
+        colorPalette={colorVars}
+        theme="light"
+        updateColor={handleUpdateColor}
+      />
     </Wrapper>
   );
 };

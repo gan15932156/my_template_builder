@@ -34,7 +34,6 @@ import { FaArrowRight, FaStar } from "react-icons/fa6";
 
 const ShowcasePage = () => {
   const { currentTheme } = useManageTheme();
-  console.log(currentTheme);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <Container>

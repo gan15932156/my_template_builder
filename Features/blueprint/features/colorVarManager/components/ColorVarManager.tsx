@@ -28,7 +28,7 @@ const ColorVarManager = () => {
     <Wrapper>
       <ColorPaletteList
         colorPalette={colorVars}
-        theme="light"
+        theme="dark"
         updateColor={handleUpdateColor}
       />
     </Wrapper>

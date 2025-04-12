@@ -13,6 +13,7 @@ import {
 import { FiX } from "react-icons/fi";
 import styled from "styled-components";
 import ColorVarDropdown from "./ColorVarDropdown";
+import Dropdown from "./Dropdown";
 
 export const FormControl = styled.div`
   display: flex;
@@ -120,34 +121,46 @@ const PropertyField: React.FC<Props> = ({
   }, []);
   return (
     <FieldWrapper ref={wrapperRef}>
-      <LabelWrapper>
-        <Label htmlFor={propertyName}>{propertyName}</Label>
-        {propertyValue != "" && (
-          <DeleteButton type="button" onClick={handleClearProperty}>
-            <FiX />
-          </DeleteButton>
-        )}
-      </LabelWrapper>
-      <InputField
-        type="text"
-        name={propertyName}
-        id={propertyName}
-        value={propertyValue}
-        onBlur={handleOnFieldBlur}
-        onChange={handleOnFieldChange}
-        onFocus={() => setShowDropdown(true)}
-      />
-      {showDropdown &&
-        (propertyName == "color" ||
-          propertyName == "background-color" ||
-          propertyName == "border-color") && (
+      <Dropdown
+        showDropdown={showDropdown}
+        content={
           <ColorVarDropdown
             propertyName={propertyName}
             propertyValue={propertyValue}
             currentStyleState={currentStyleState}
             closeDropdown={handleShowDropdown}
           />
-        )}
+        }
+      >
+        <LabelWrapper>
+          <Label htmlFor={propertyName}>{propertyName}</Label>
+          {propertyValue != "" && (
+            <DeleteButton type="button" onClick={handleClearProperty}>
+              <FiX />
+            </DeleteButton>
+          )}
+        </LabelWrapper>
+        <InputField
+          type="text"
+          name={propertyName}
+          id={propertyName}
+          value={propertyValue}
+          onBlur={handleOnFieldBlur}
+          onChange={handleOnFieldChange}
+          onFocus={() => setShowDropdown(true)}
+        />
+        {/* {showDropdown &&
+        (propertyName == "color" ||
+          propertyName == "background-color" ||
+          propertyName == "border-color") && (
+            <ColorVarDropdown
+            propertyName={propertyName}
+            propertyValue={propertyValue}
+            currentStyleState={currentStyleState}
+            closeDropdown={handleShowDropdown}
+            />
+          )} */}
+      </Dropdown>
     </FieldWrapper>
   );
 };

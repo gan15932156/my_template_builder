@@ -76,6 +76,7 @@ const ColorAccordion = <K extends keyof ColorVar>({
           colorName={colorName}
           colors={colors}
           updateColor={updateColor}
+          theme={theme}
         />
       </Content>
     </Wrapper>
