@@ -5,11 +5,13 @@ import { RootState } from "@/libs/store";
 interface BlueprintState {
   blueprint: TBlueprint | null; // Explicitly define as `null` if it can be empty
   selectedElementId: string;
+  duplicateElementId: string | null;
   layoutSelectedElementId: string;
 }
 const initialState: BlueprintState = {
   blueprint: null, // Ensures it's defined
   selectedElementId: "",
+  duplicateElementId: null,
   layoutSelectedElementId: "",
 };
 
@@ -62,6 +64,9 @@ export const ElementlSlice = createSlice({
     setSelectedElement: (state, action: PayloadAction<string>) => {
       state.selectedElementId = action.payload;
     },
+    setDuplicateElementId: (state, action: PayloadAction<string | null>) => {
+      state.duplicateElementId = action.payload;
+    },
     setLayoutSelectedElement: (state, action: PayloadAction<string>) => {
       state.layoutSelectedElementId = action.payload;
     },
@@ -73,10 +78,13 @@ export const {
   updateStyle,
   clearStyleProperty,
   setSelectedElement,
+  setDuplicateElementId,
   setLayoutSelectedElement,
 } = ElementlSlice.actions;
 export const selectBlueprint = (state: RootState) => state.element.blueprint;
 export const selectSelectedElementId = (state: RootState) =>
   state.element.selectedElementId;
+export const selectDuplicateElementId = (state: RootState) =>
+  state.element.duplicateElementId;
 export const selectLayoutSelectedElementId = (state: RootState) =>
   state.element.layoutSelectedElementId;

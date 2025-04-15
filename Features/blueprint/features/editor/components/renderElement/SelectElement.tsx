@@ -3,7 +3,7 @@
 import { MouseEvent, useRef } from "react";
 import { RenderElementProps } from "./SwitchCaseElement";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
@@ -11,16 +11,22 @@ import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import Tooltip from "../tooltip/Tooltip";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Select = styled.select<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isDragging: boolean;
+  $isUseBorder: boolean;
 }>`
   position: relative;
-  outline: 1px dashed ${editorStyle.primary500};
-  &:hover {
-    outline: 1px solid ${editorStyle.primary500};
-  }
+  ${(props) =>
+    props.$isUseBorder &&
+    css`
+      outline: 1px dashed ${editorStyle.primary500};
+      &:hover {
+        outline: 1px solid ${editorStyle.primary500};
+      }
+    `}
   && {
     ${(props) =>
       props.$style &&
@@ -57,7 +63,7 @@ const SelectElement: React.FC<RenderElementProps> = ({
     element.id,
     element.category
   );
-
+  const isUseBorder = useAppSelector(selectIsUseBorder);
   const dispatch = useAppDispatch();
   const handleElementClick = (
     event: MouseEvent<HTMLSelectElement>,
@@ -74,9 +80,10 @@ const SelectElement: React.FC<RenderElementProps> = ({
   return (
     <>
       <Tooltip
+        isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />{" "}
+      />
       {!isRootElement && <TopOverlay />}
       <Select
         ref={(node) => {
@@ -90,6 +97,7 @@ const SelectElement: React.FC<RenderElementProps> = ({
         }
         onChange={() => {}}
         onClick={(e) => handleElementClick(e, element.id)}
+        $isUseBorder={isUseBorder}
         $style={elementStyles}
         $isDragging={isDragging}
         $isSelected={

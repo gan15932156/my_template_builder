@@ -10,11 +10,13 @@ import {
 import { IoColorPaletteOutline, IoSaveOutline } from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
 import { BiCustomize } from "react-icons/bi";
-import { FaBuffer, FaCircleInfo } from "react-icons/fa6";
+import { FaBorderNone, FaBuffer, FaCircleInfo } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
   changePanel,
   selectCurrentPanel,
+  selectIsUseBorder,
+  toggleIsUseBorder,
 } from "@/Features/blueprint/slice/panelSlice";
 import { selectBlueprint } from "@/Features/blueprint/slice/elementSlice";
 import useSaveBlueprint from "@/Features/blueprint/hooks/useSaveBlueprint";
@@ -30,6 +32,7 @@ const Wrapper = styled.div`
 `;
 const TopPanel = () => {
   const currentBlueprint = useAppSelector(selectBlueprint);
+  const isUseBorder = useAppSelector(selectIsUseBorder);
   const currentPanel = useAppSelector(selectCurrentPanel);
   const dispatch = useAppDispatch();
   const {
@@ -38,7 +41,9 @@ const TopPanel = () => {
   const handleClick = (newPanel: string) => {
     dispatch(changePanel(newPanel));
   };
-
+  const handleToggleHideShowBorder = () => {
+    dispatch(toggleIsUseBorder());
+  };
   const handleSave = () => {
     if (currentBlueprint) {
       mutate(currentBlueprint);
@@ -54,6 +59,14 @@ const TopPanel = () => {
           onClick={handleSave}
         >
           <IoSaveOutline size={ICON_SIZE} />
+        </ActionNavButton>
+        <ActionNavButton
+          title="Toggle hide/show border element"
+          disabled={isPending}
+          onClick={handleToggleHideShowBorder}
+          $isActive={isUseBorder}
+        >
+          <FaBorderNone size={ICON_SIZE} />
         </ActionNavButton>
       </NavItemContainer>
       <NavItemContainer>

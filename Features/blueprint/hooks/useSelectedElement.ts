@@ -2,8 +2,10 @@
 
 import {
   selectBlueprint,
+  selectDuplicateElementId,
   selectLayoutSelectedElementId,
   selectSelectedElementId,
+  setDuplicateElementId,
   setLayoutSelectedElement,
   setSelectedElement,
   updateElement,
@@ -12,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { useMemo } from "react";
 import {
   deleteElement,
+  duplicateElement,
   findElement,
   updateElementAttr,
   updateElementContent,
@@ -20,6 +23,7 @@ import {
 
 const useSelectedElement = () => {
   const selectedElementId = useAppSelector(selectSelectedElementId);
+  const duplicateElementId = useAppSelector(selectDuplicateElementId);
   const layoutSelectedElementId = useAppSelector(selectLayoutSelectedElementId);
   const currentBlueprint = useAppSelector(selectBlueprint);
   const dispatch = useAppDispatch();
@@ -31,7 +35,9 @@ const useSelectedElement = () => {
   const handleDeleteElement = (elementId: string) => {
     if (currentBlueprint?.element) {
       const result = deleteElement(elementId, currentBlueprint);
-
+      if (duplicateElementId === elementId) {
+        dispatch(setDuplicateElementId(null));
+      }
       dispatch(setSelectedElement(""));
       dispatch(updateElement(result));
     }
@@ -66,7 +72,7 @@ const useSelectedElement = () => {
       dispatch(updateElement(result));
     }
   };
-  const handleUpdateElementContent = <T>(elementId: string, value: string) => {
+  const handleUpdateElementContent = (elementId: string, value: string) => {
     if (currentBlueprint?.element) {
       const result = updateElementContent(elementId, value, currentBlueprint);
       dispatch(updateElement(result));
@@ -78,14 +84,30 @@ const useSelectedElement = () => {
   const handleSetlayoutSelectedElementId = (elementId: string) => {
     dispatch(setLayoutSelectedElement(elementId));
   };
+  const handleSetDuplicateElementId = (elementId: string | null) => {
+    dispatch(setDuplicateElementId(elementId));
+  };
+  const handleDuplicateElement = (elementId: string) => {
+    if (currentBlueprint?.element && selectedElement) {
+      const result = duplicateElement(
+        currentBlueprint,
+        selectedElement,
+        elementId
+      );
+      dispatch(updateElement(result));
+    }
+  };
   return {
     handleDeleteElement,
     handleSetSelectedElementId,
     handleSetlayoutSelectedElementId,
+    handleSetDuplicateElementId,
     handleUpdateElementAttr,
+    handleDuplicateElement,
     handleUpdateElementProperty,
     handleUpdateElementContent,
     selectedElementId,
+    duplicateElementId,
     layoutSelectedElementId,
     selectedElement,
   };

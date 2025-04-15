@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PanelState {
   currentPanel: string;
+  isUseBorder: boolean;
 }
 
 const initialState: PanelState = {
   currentPanel: "block",
+  isUseBorder: true,
 };
 
 export const panelSlice = createSlice({
@@ -16,10 +18,14 @@ export const panelSlice = createSlice({
     changePanel: (state, action: PayloadAction<string>) => {
       state.currentPanel = action.payload;
     },
+    toggleIsUseBorder: (state) => {
+      state.isUseBorder = !state.isUseBorder;
+    },
   },
 });
 
 export default panelSlice.reducer;
-export const { changePanel } = panelSlice.actions;
+export const { changePanel, toggleIsUseBorder } = panelSlice.actions;
 export const selectCurrentPanel = (state: RootState) =>
   state.panel.currentPanel;
+export const selectIsUseBorder = (state: RootState) => state.panel.isUseBorder;

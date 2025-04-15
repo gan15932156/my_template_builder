@@ -2,7 +2,7 @@
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import { RenderElementProps } from "./SwitchCaseElement";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { MouseEvent, useMemo, useRef } from "react";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
@@ -10,15 +10,23 @@ import styled, { css } from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import Tooltip from "../tooltip/Tooltip";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Label = styled.label<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isDragging: boolean;
+  $isUseBorder: boolean;
 }>`
   position: relative;
-  outline: 1px dashed ${editorStyle.primary500};
-  /* pointer-events:none; */
   user-select: none;
+  ${(props) =>
+    props.$isUseBorder &&
+    css`
+      outline: 1px dashed ${editorStyle.primary500};
+      &:hover {
+        outline: 1px solid ${editorStyle.primary500};
+      }
+    `}
   &:hover {
     outline: 1px solid ${editorStyle.primary500};
   }
@@ -47,6 +55,7 @@ const LabelElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
+  const isUseBorder = useAppSelector(selectIsUseBorder);
   const relLabelText = useMemo(() => {
     if (element.attributes && element.attributes.hasOwnProperty("labelText")) {
       if (
@@ -86,6 +95,7 @@ const LabelElement: React.FC<RenderElementProps> = ({
   return (
     <>
       <Tooltip
+        isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
       />
@@ -95,6 +105,7 @@ const LabelElement: React.FC<RenderElementProps> = ({
           targetRef.current = node;
           setDragNodeRef(node);
         }}
+        $isUseBorder={isUseBorder}
         $style={elementStyles}
         $isDragging={isDragging}
         $isSelected={

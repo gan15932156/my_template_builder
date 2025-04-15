@@ -140,6 +140,7 @@ const CTASection = styled(Section)`
   color: ${({ theme }) => theme.primary.contrastText};
   border-radius: 24px;
   text-align: center;
+  margin-bottom: 2rem;
 `;
 
 const Footer = styled.footer`
@@ -148,6 +149,37 @@ const Footer = styled.footer`
   color: ${({ theme }) => theme.text.hint};
   font-size: 0.9rem;
   border-top: 1px solid ${({ theme }) => theme.divider.divider};
+`;
+const FooterContainer = styled.footer`
+  padding: 3rem 2rem;
+  background-color: ${({ theme }) => theme.primary.dark};
+  color: ${({ theme }) => theme.primary.contrastText};
+  text-align: center;
+  font-size: 0.95rem;
+
+  a {
+    color: ${({ theme }) => theme.primary.contrastText};
+    margin: 0 1rem;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid ${({ theme }) => theme.divider.divider};
+    margin: 1.5rem auto;
+    width: 80%;
+  }
+
+  .footer-bottom {
+    margin-top: 1rem;
+    color: ${({ theme }) => theme.text.disabled};
+    font-size: 0.85rem;
+  }
 `;
 const ExampleLandingPage = () => {
   const { colorVars } = useManageTheme();
@@ -242,10 +274,17 @@ const ExampleLandingPage = () => {
         </CTASection>
 
         {/* Footer */}
-        <Footer>
-          © {new Date().getFullYear()} ThemedUI. Built with ❤️ and
-          styled-components.
-        </Footer>
+        <FooterContainer>
+          <div>
+            <a href="#features">Features</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#get-started">Get Started</a>
+          </div>
+          <div className="footer-bottom">
+            © {new Date().getFullYear()} ThemedUI. Made with ❤️ using
+            styled-components.
+          </div>
+        </FooterContainer>
       </Page>
     </ThemeProvider>
   );

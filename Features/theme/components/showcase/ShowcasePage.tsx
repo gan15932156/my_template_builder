@@ -1,14 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import useManageTheme from "../../hooks/useManageTheme";
-
 import { ThemeProvider } from "styled-components";
 import {
   Alert,
   Badge,
   Button,
-  Code,
   ColorPreview,
   Header,
   PageContainer,
@@ -48,8 +45,7 @@ export const flattenTheme = (
   }, {});
 };
 const ShowcasePage = () => {
-  const { currentTheme, colorVars } = useManageTheme();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { colorVars } = useManageTheme();
   if (!colorVars) return;
   const flat = flattenTheme(colorVars);
 

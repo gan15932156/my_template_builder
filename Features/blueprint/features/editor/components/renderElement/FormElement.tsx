@@ -7,23 +7,28 @@ import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import React, { MouseEvent, useRef } from "react";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import Tooltip from "../tooltip/Tooltip";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 
 const Form = styled.form<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isOver: boolean;
   $isDragging: boolean;
+  $isUseBorder: boolean;
 }>`
   position: relative;
-  outline: 1px dashed ${editorStyle.primary500};
-
-  &:hover {
-    outline: 1px solid ${editorStyle.primary500};
-  }
+  ${(props) =>
+    props.$isUseBorder &&
+    css`
+      outline: 1px dashed ${editorStyle.primary500};
+      &:hover {
+        outline: 1px solid ${editorStyle.primary500};
+      }
+    `}
   && {
     ${(props) =>
       props.$style &&
@@ -49,6 +54,7 @@ const FormElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
+  const isUseBorder = useAppSelector(selectIsUseBorder);
   const { elementStyles, isHorizontalChild } = useParseElementStyle(
     elements.id,
     styles
@@ -92,6 +98,7 @@ const FormElement: React.FC<RenderElementProps> = ({
             setDragNodeRef(node);
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
+          $isUseBorder={isUseBorder}
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
@@ -103,6 +110,7 @@ const FormElement: React.FC<RenderElementProps> = ({
           {...attributes}
         >
           <Tooltip
+            isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
           />
@@ -155,6 +163,7 @@ const FormElement: React.FC<RenderElementProps> = ({
             setDragNodeRef(node);
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
+          $isUseBorder={isUseBorder}
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
@@ -166,6 +175,7 @@ const FormElement: React.FC<RenderElementProps> = ({
           {...attributes}
         >
           <Tooltip
+            isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
           />
@@ -184,6 +194,7 @@ const FormElement: React.FC<RenderElementProps> = ({
           setDragNodeRef(node);
         }}
         onClick={(e) => handleElementClick(e, elements.id)}
+        $isUseBorder={isUseBorder}
         $isOver={isOver}
         $style={elementStyles}
         $isDragging={isDragging}
@@ -195,6 +206,7 @@ const FormElement: React.FC<RenderElementProps> = ({
         {...attributes}
       >
         <Tooltip
+          isCanPasteElement={true}
           isActive={selectedElementId == elements.id}
           targetRef={targetRef}
         />

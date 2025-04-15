@@ -5,25 +5,31 @@ import styled, { css } from "styled-components";
 import { RenderElementProps } from "./SwitchCaseElement";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { MouseEvent, useRef } from "react";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import Tooltip from "../tooltip/Tooltip";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 
 const Button = styled.button<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isDragging: boolean;
+  $isUseBorder: boolean;
 }>`
   position: relative;
-  outline: 1px dashed ${editorStyle.primary500};
-  /* pointer-events:none; */
+
   user-select: none;
-  &:hover {
-    outline: 1px solid ${editorStyle.primary500};
-  }
+  ${(props) =>
+    props.$isUseBorder &&
+    css`
+      outline: 1px dashed ${editorStyle.primary500};
+      &:hover {
+        outline: 1px solid ${editorStyle.primary500};
+      }
+    `}
   && {
     ${(props) =>
       props.$style &&
@@ -49,6 +55,7 @@ const ButtonElement: React.FC<RenderElementProps> = ({
   isHorizontal = true,
   isRootElement,
 }) => {
+  const isUseBorder = useAppSelector(selectIsUseBorder);
   const { elementStyles } = useParseElementStyle(element.id, styles);
   const { setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
@@ -77,6 +84,7 @@ const ButtonElement: React.FC<RenderElementProps> = ({
   return (
     <>
       <Tooltip
+        isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
       />
@@ -86,6 +94,7 @@ const ButtonElement: React.FC<RenderElementProps> = ({
           targetRef.current = node;
           setDragNodeRef(node);
         }}
+        $isUseBorder={isUseBorder}
         $style={elementStyles}
         $isDragging={isDragging}
         $isSelected={

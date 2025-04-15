@@ -10,6 +10,7 @@ import { Active, useDndMonitor } from "@dnd-kit/core";
 interface TooltipProps {
   targetRef: React.RefObject<HTMLElement>;
   isActive: boolean;
+  isCanPasteElement: boolean;
 }
 const TooltipContainer = styled.div<{ $top: number; $left: number }>`
   position: absolute;
@@ -23,7 +24,11 @@ const TooltipContainer = styled.div<{ $top: number; $left: number }>`
   z-index: 1000;
   transform: translate(-50%, -100%); /* Center horizontally */
 `;
-const Tooltip: React.FC<TooltipProps> = ({ targetRef, isActive }) => {
+const Tooltip: React.FC<TooltipProps> = ({
+  targetRef,
+  isActive,
+  isCanPasteElement,
+}) => {
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const currentBlueprint = useAppSelector(selectBlueprint);
   const [currentDragElement, setCurrentDragElement] = useState<Active>();
@@ -52,7 +57,7 @@ const Tooltip: React.FC<TooltipProps> = ({ targetRef, isActive }) => {
   return isActive
     ? createPortal(
         <TooltipContainer $top={position.top} $left={position.left}>
-          <TooltipPanel />
+          <TooltipPanel isCanPasteElement={isCanPasteElement} />
         </TooltipContainer>,
         document.body
       )

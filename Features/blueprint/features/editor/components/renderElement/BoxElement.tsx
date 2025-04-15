@@ -5,24 +5,29 @@ import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import React, { MouseEvent, useRef } from "react";
 import Tooltip from "../tooltip/Tooltip";
-import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import useSelectedElement from "../../../../hooks/useSelectedElement";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Box = styled.div<{
   $style: Record<string, any>;
   $isSelected: boolean;
   $isOver: boolean;
   $isDragging: boolean;
+  $isUseBorder: boolean;
 }>`
   position: relative;
-  outline: 1px dashed ${editorStyle.primary500};
-
-  &:hover {
-    outline: 1px solid ${editorStyle.primary500};
-  }
+  ${(props) =>
+    props.$isUseBorder &&
+    css`
+      outline: 1px dashed ${editorStyle.primary500};
+      &:hover {
+        outline: 1px solid ${editorStyle.primary500};
+      }
+    `}
   && {
     ${(props) =>
       props.$style &&
@@ -69,7 +74,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
   );
   const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
   const dispatch = useAppDispatch();
-
+  const isUseBorder = useAppSelector(selectIsUseBorder);
   const handleElementClick = (
     event: MouseEvent<HTMLDivElement>,
     elementId: string
@@ -93,6 +98,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
           as={elements.tag}
+          $isUseBorder={isUseBorder}
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
@@ -104,6 +110,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...attributes}
         >
           <Tooltip
+            isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
           />
@@ -157,6 +164,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
           as={elements.tag}
+          $isUseBorder={isUseBorder}
           $isOver={isOver}
           $style={elementStyles}
           $isDragging={isDragging}
@@ -168,6 +176,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...attributes}
         >
           <Tooltip
+            isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
           />
@@ -187,6 +196,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
         }}
         onClick={(e) => handleElementClick(e, elements.id)}
         as={elements.tag}
+        $isUseBorder={isUseBorder}
         $isOver={isOver}
         $style={elementStyles}
         $isDragging={isDragging}
@@ -198,6 +208,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
         {...attributes}
       >
         <Tooltip
+          isCanPasteElement={true}
           isActive={selectedElementId == elements.id}
           targetRef={targetRef}
         />

@@ -22,7 +22,6 @@ export function copyBlueprint(blueprint: TBlueprint): TBlueprint {
           tempStyles[element.id],
           blueprint.colorVars
         );
-        // console.log("blueprint.colorVars", tempStyles[element.id]);
         newStyles[newElementId] = rel;
       } else {
         newStyles[newElementId] = tempStyles[element.id];
@@ -269,4 +268,72 @@ export function getIsHorizontalChild(
   }
 
   return result;
+}
+type TreeNode = TBlueprintElement;
+
+export function duplicateElement(
+  blueprint: TBlueprint,
+  selectedElement: TBlueprintElement,
+  duplicateElementId: string
+): TBlueprint {
+  const newStyles: TStyle = {};
+  let tempStyles: TStyle = { ...blueprint.styles };
+  function findAndInsert(
+    nodes: TreeNode[],
+    parentId: string,
+    element: TreeNode
+  ): boolean {
+    for (const node of nodes) {
+      if (node.id === parentId && Array.isArray(node.content)) {
+        node.content.push(element);
+        return true;
+      }
+      if (Array.isArray(node.content)) {
+        const inserted = findAndInsert(node.content, parentId, element);
+        if (inserted) return true;
+      }
+    }
+    return false;
+  }
+  function copyElement(element: TBlueprintElement): TBlueprintElement {
+    let newElementId = nanoid(ID_LENGTH);
+    const newContent = Array.isArray(element.content)
+      ? element.content.map((item) => copyElement(item))
+      : element.content;
+    if (tempStyles[element.id]) {
+      newStyles[newElementId] = tempStyles[element.id];
+    }
+    return {
+      id: newElementId,
+      category: element.category,
+      elmType: element.elmType,
+      tag: element.tag,
+      content: newContent,
+      attributes: element.attributes,
+      isListing: element.isListing,
+      isRand: element.isRand,
+    };
+  }
+
+  if (!blueprint?.element) return blueprint;
+  let tempElement: TBlueprint;
+  try {
+    tempElement = structuredClone(blueprint);
+  } catch {
+    tempElement = JSON.parse(JSON.stringify(blueprint));
+  }
+  const foundElement = findElement(duplicateElementId, tempElement.element);
+  if (!foundElement || !tempElement.element) return blueprint;
+  const copiedElement = copyElement(foundElement);
+  tempStyles = {
+    ...tempStyles,
+    ...newStyles,
+  };
+  if (findAndInsert([tempElement.element], selectedElement.id, copiedElement)) {
+    return {
+      ...tempElement,
+      styles: tempStyles,
+    };
+  }
+  return blueprint;
 }

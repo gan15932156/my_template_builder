@@ -11,6 +11,9 @@
     ],
     "flex": [
       "flex-direction",
+      "gap",
+      "row-gap",
+      "column-gap",
       "flex-wrap",
       "justify-content",
       "align-items",

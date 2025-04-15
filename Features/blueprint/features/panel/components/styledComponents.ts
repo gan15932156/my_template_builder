@@ -9,7 +9,7 @@ const NavItemContainer = styled.div`
   justify-content: center;
   gap: 0.2rem;
 `;
-const ActionNavButton = styled.button`
+const ActionNavButton = styled.button<{ $isActive?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,6 +30,13 @@ const ActionNavButton = styled.button`
     filter: brightness(0.4);
     cursor: not-allowed;
   }
+  ${(props) =>
+    props.$isActive &&
+    css`
+      border: 1px solid ${editorStyle.primary500};
+      color: ${editorStyle.primary500};
+      background-color: ${editorStyle.secondary500};
+    `}
 `;
 const NavButton = styled.button<{ $isActive: boolean }>`
   display: flex;
