@@ -124,12 +124,16 @@ const PropertyField: React.FC<Props> = ({
       <Dropdown
         showDropdown={showDropdown}
         content={
-          <ColorVarDropdown
-            propertyName={propertyName}
-            propertyValue={propertyValue}
-            currentStyleState={currentStyleState}
-            closeDropdown={handleShowDropdown}
-          />
+          (propertyName == "color" ||
+            propertyName == "background-color" ||
+            propertyName == "border-color") && (
+            <ColorVarDropdown
+              propertyName={propertyName}
+              propertyValue={propertyValue}
+              currentStyleState={currentStyleState}
+              closeDropdown={handleShowDropdown}
+            />
+          )
         }
       >
         <LabelWrapper>
