@@ -2,10 +2,11 @@
 
 import { ELM_TYPES, STYLE_STATE } from "@/Features/blueprint/constants";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import PropertyAccordion from "./propertyForm/PropertyAccordion";
 import { StyleInfo } from "../hooks/useManageTheme";
+import { dragElementRule } from "@/Features/blueprint/constants/dragElementRule";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,25 +30,50 @@ export const Select = styled.select`
 `;
 const StyleInfoWrapper = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  /* align-items: center; */
   justify-content: center;
-  gap: 1rem;
+  gap: 0.4rem;
 `;
-
+const Heading = styled.p`
+  color: ${editorStyle.secondary600};
+`;
 const StyleForm = () => {
   const [styleInfo, setStyleInfo] = useState<StyleInfo>({
     state: "normal",
-    elmType: "box",
+    elmType: "base",
+    tag: "",
   });
-
+  const [elementTags, setElementTags] = useState<string[]>([]);
   const handleStyleInfoChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setStyleInfo((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
+  useEffect(() => {
+    if (
+      styleInfo.elmType !== "base" &&
+      dragElementRule[styleInfo.elmType] &&
+      dragElementRule[styleInfo.elmType].tag.size > 0
+    ) {
+      const tags = Array.from(dragElementRule[styleInfo.elmType].tag);
+      setStyleInfo((prev) => ({
+        ...prev,
+        tag: "base",
+      }));
+      setElementTags(tags);
+    } else {
+      setStyleInfo((prev) => ({
+        ...prev,
+        tag: "",
+      }));
+      setElementTags([]);
+    }
+  }, [styleInfo.elmType]);
   return (
     <Wrapper>
+      <Heading>Apply style in element?</Heading>
       <StyleInfoWrapper>
         <div>
           <label htmlFor="state">State</label>
@@ -65,14 +91,13 @@ const StyleForm = () => {
           </Select>
         </div>
         <div>
-          <label htmlFor="elmType">Apply for element type</label>
+          <label htmlFor="elmType">Type</label>
           <Select
             name="elmType"
             id="elmType"
             value={styleInfo.elmType}
             onChange={handleStyleInfoChange}
           >
-            <option value="*">all</option>
             {ELM_TYPES.map((type, index) => (
               <option value={type} key={index}>
                 {type}
@@ -80,9 +105,30 @@ const StyleForm = () => {
             ))}
           </Select>
         </div>
+        {elementTags.length > 0 && (
+          <div>
+            <label htmlFor="tag">Tag</label>
+            <Select
+              name="tag"
+              id="tag"
+              value={styleInfo.tag}
+              onChange={handleStyleInfoChange}
+            >
+              <option value="base" key="base1231231eqwe">
+                base
+              </option>
+              {elementTags.map((tag, index) => (
+                <option value={tag} key={index}>
+                  {tag}
+                </option>
+              ))}
+            </Select>
+          </div>
+        )}
       </StyleInfoWrapper>
       <div>
         <PropertyAccordion
+          tag={styleInfo.tag}
           elmType={styleInfo.elmType}
           state={styleInfo.state}
         />

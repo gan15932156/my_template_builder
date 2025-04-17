@@ -13,7 +13,7 @@ import Tooltip from "../tooltip/Tooltip";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Select = styled.select<{
-  $style: Record<string, any>;
+  $style: Record<string, any> | null;
   $isSelected: boolean;
   $isDragging: boolean;
   $isUseBorder: boolean;

@@ -1,6 +1,6 @@
 import { ColorVar } from "../blockManager/type";
 import chroma from "chroma-js";
-const generateColors = (color: string) => {};
+
 function generateShades(mainColor: string) {
   const light = chroma(mainColor).tint(0.3).hex(); // lighter shade
   const dark = chroma(mainColor).shade(0.5).hex(); // darker shade

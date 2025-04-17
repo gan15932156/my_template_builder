@@ -14,7 +14,7 @@ import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyl
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 
 const Button = styled.button<{
-  $style: Record<string, any>;
+  $style: Record<string, any> | null;
   $isSelected: boolean;
   $isDragging: boolean;
   $isUseBorder: boolean;

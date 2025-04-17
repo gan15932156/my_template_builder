@@ -11,7 +11,7 @@ import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Link = styled.a<{
-  $style: Record<string, any>;
+  $style: Record<string, any> | null;
   $isSelected: boolean;
   $isDragging: boolean;
   $isUseBorder: boolean;

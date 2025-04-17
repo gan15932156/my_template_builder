@@ -1,6 +1,6 @@
 "use client";
 
-import styled, { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 import useManageTheme from "../../hooks/useManageTheme";
 import {
   FaHeadSideCoughSlash,
@@ -8,189 +8,57 @@ import {
   FaRocket,
   FaStar,
 } from "react-icons/fa6";
+import { useEffect, useMemo } from "react";
+import { parseStyles } from "./utils";
+import {
+  Center,
+  CTAButton,
+  CTASection,
+  FeatureCard,
+  FeaturesGrid,
+  FooterContainer,
+  HeroSection,
+  HeroSubtitle,
+  HeroTitle,
+  IconBox,
+  Logo,
+  Navbar,
+  NavLinks,
+  Page,
+  TestimonialCard,
+  TestimonialsGrid,
+} from "./StyledComponentExampleLandingPage";
+import { Section } from "./StyledComponents";
 
-// Theme-aware styling
-const Page = styled.div`
-  background: ${({ theme }) => theme.background.default};
-  color: ${({ theme }) => theme.text.primary};
-  font-family: "Segoe UI", sans-serif;
-`;
-
-// Navbar
-const Navbar = styled.nav`
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: ${({ theme }) => theme.primary.main};
-  color: ${({ theme }) => theme.primary.contrastText};
-`;
-
-const Logo = styled.h1`
-  font-size: 1.5rem;
-`;
-
-const NavLinks = styled.div`
-  display: flex;
-  gap: 1.5rem;
-
-  a {
-    color: inherit;
-    text-decoration: none;
-    font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-// Section layout
-const Section = styled.section`
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const Center = styled.div`
-  text-align: center;
-`;
-const HeroSection = styled.div`
-  padding-block-start: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-`;
-// Hero
-const HeroTitle = styled.h1`
-  font-size: 3rem;
-  color: ${({ theme }) => theme.primary.main};
-  margin-bottom: 1rem;
-`;
-
-const HeroSubtitle = styled.p`
-  font-size: 1.2rem;
-  color: ${({ theme }) => theme.text.secondary};
-  margin-bottom: 2rem;
-  max-width: 60ch;
-  margin: auto;
-  text-align: center;
-`;
-
-const CTAButton = styled.button`
-  background-color: ${({ theme }) => theme.secondary.main};
-  color: ${({ theme }) => theme.secondary.contrastText};
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.secondary.dark};
-  }
-`;
-
-// Features
-const FeaturesGrid = styled.div`
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-`;
-
-const FeatureCard = styled.div`
-  background: ${({ theme }) => theme.primary.light};
-  color: ${({ theme }) => theme.primary.contrastText};
-  padding: 2rem;
-  border-radius: 16px;
-  text-align: center;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: translateY(-5px);
-  }
-`;
-
-const IconBox = styled.div`
-  font-size: 2rem;
-  margin-bottom: 1rem;
-`;
-
-// Testimonials
-const TestimonialsGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
-`;
-
-const TestimonialCard = styled.div`
-  background: ${({ theme }) => theme.info.light};
-  color: ${({ theme }) => theme.info.contrastText};
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 300px;
-  font-size: 0.95rem;
-`;
-
-// CTA section
-const CTASection = styled(Section)`
-  background-color: ${({ theme }) => theme.primary.light};
-  color: ${({ theme }) => theme.primary.contrastText};
-  border-radius: 24px;
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const Footer = styled.footer`
-  padding: 2rem;
-  text-align: center;
-  color: ${({ theme }) => theme.text.hint};
-  font-size: 0.9rem;
-  border-top: 1px solid ${({ theme }) => theme.divider.divider};
-`;
-const FooterContainer = styled.footer`
-  padding: 3rem 2rem;
-  background-color: ${({ theme }) => theme.primary.dark};
-  color: ${({ theme }) => theme.primary.contrastText};
-  text-align: center;
-  font-size: 0.95rem;
-
-  a {
-    color: ${({ theme }) => theme.primary.contrastText};
-    margin: 0 1rem;
-    text-decoration: none;
-    font-weight: 500;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid ${({ theme }) => theme.divider.divider};
-    margin: 1.5rem auto;
-    width: 80%;
-  }
-
-  .footer-bottom {
-    margin-top: 1rem;
-    color: ${({ theme }) => theme.text.disabled};
-    font-size: 0.85rem;
-  }
-`;
 const ExampleLandingPage = () => {
-  const { colorVars } = useManageTheme();
+  const { colorVars, styles } = useManageTheme();
+  const parsedStyles = useMemo(() => parseStyles(styles), [styles]);
   if (!colorVars) return;
+
   return (
     <ThemeProvider theme={colorVars}>
-      <Page>
+      <Page $baseStyle={null} $style={null}>
         {/* Navbar */}
-        <Navbar>
-          <Logo>ThemedUI</Logo>
-          <NavLinks>
+        <Navbar
+          $baseStyle={
+            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          }
+          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+        >
+          <Logo
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+          >
+            ThemedUI
+          </Logo>
+          <NavLinks
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+          >
             <a href="#features">Features</a>
             <a href="#testimonials">Testimonials</a>
             <a href="#get-started">Get Started</a>
@@ -198,13 +66,43 @@ const ExampleLandingPage = () => {
         </Navbar>
 
         {/* Hero */}
-        <HeroSection>
-          <HeroTitle>Modern UI, Your Theme</HeroTitle>
-          <HeroSubtitle>
+        <HeroSection
+          $baseStyle={
+            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          }
+          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+        >
+          <HeroTitle
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={
+              parsedStyles && parsedStyles.text ? parsedStyles.text : null
+            }
+          >
+            Modern UI, Your Theme
+          </HeroTitle>
+          <HeroSubtitle
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={
+              parsedStyles && parsedStyles.text ? parsedStyles.text : null
+            }
+          >
             Build beautiful, customizable interfaces using your own theme
             system. React + styled-components = ❤️
           </HeroSubtitle>
-          <CTAButton>Explore Now</CTAButton>
+          <CTAButton
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={
+              parsedStyles && parsedStyles.button ? parsedStyles.button : null
+            }
+          >
+            Explore Now
+          </CTAButton>
         </HeroSection>
 
         {/* Features */}
@@ -212,9 +110,28 @@ const ExampleLandingPage = () => {
           <Center>
             <h2 style={{ marginBottom: "2rem" }}>Why Choose Us</h2>
           </Center>
-          <FeaturesGrid>
-            <FeatureCard>
-              <IconBox>
+          <FeaturesGrid
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+          >
+            <FeatureCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
+              <IconBox
+                $baseStyle={
+                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
+                }
+                $style={
+                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                }
+              >
                 <FaRocket />
               </IconBox>
               <h3>Fast Setup</h3>
@@ -222,8 +139,22 @@ const ExampleLandingPage = () => {
                 Plug and play in seconds. Just load your theme and start coding!
               </p>
             </FeatureCard>
-            <FeatureCard>
-              <IconBox>
+            <FeatureCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
+              <IconBox
+                $baseStyle={
+                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
+                }
+                $style={
+                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                }
+              >
                 <FaPalette />
               </IconBox>
               <h3>Fully Themed</h3>
@@ -231,15 +162,43 @@ const ExampleLandingPage = () => {
                 Your colors, your vibe. Every component respects your palette.
               </p>
             </FeatureCard>
-            <FeatureCard>
-              <IconBox>
+            <FeatureCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
+              <IconBox
+                $baseStyle={
+                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
+                }
+                $style={
+                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                }
+              >
                 <FaHeadSideCoughSlash />
               </IconBox>
               <h3>Built with React</h3>
               <p>Composable, typed, and scalable. Perfect for modern devs.</p>
             </FeatureCard>
-            <FeatureCard>
-              <IconBox>
+            <FeatureCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
+              <IconBox
+                $baseStyle={
+                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
+                }
+                $style={
+                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                }
+              >
                 <FaStar />
               </IconBox>
               <h3>Beautiful Design</h3>
@@ -253,15 +212,41 @@ const ExampleLandingPage = () => {
           <Center>
             <h2 style={{ marginBottom: "2rem" }}>What Users Say</h2>
           </Center>
-          <TestimonialsGrid>
-            <TestimonialCard>
+          <TestimonialsGrid
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+          >
+            <TestimonialCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
               “This saved me hours! The theme integration is seamless and the
               layout is stunning.”
             </TestimonialCard>
-            <TestimonialCard>
+            <TestimonialCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
               “Perfect for showcasing my design system. Everything just works.”
             </TestimonialCard>
-            <TestimonialCard>
+            <TestimonialCard
+              $baseStyle={
+                parsedStyles && parsedStyles.base ? parsedStyles.base : null
+              }
+              $style={
+                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+              }
+            >
               “Love how easy it is to drop into any React app. Theme support is
               🔥.”
             </TestimonialCard>
@@ -269,12 +254,32 @@ const ExampleLandingPage = () => {
         </Section>
 
         {/* CTA */}
-        <CTASection id="get-started">
-          <CTAButton>Start Your Journey Now</CTAButton>
+        <CTASection
+          id="get-started"
+          $baseStyle={
+            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          }
+          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+        >
+          <CTAButton
+            $baseStyle={
+              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            }
+            $style={
+              parsedStyles && parsedStyles.button ? parsedStyles.button : null
+            }
+          >
+            Start Your Journey Now
+          </CTAButton>
         </CTASection>
 
         {/* Footer */}
-        <FooterContainer>
+        <FooterContainer
+          $baseStyle={
+            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          }
+          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
+        >
           <div>
             <a href="#features">Features</a>
             <a href="#testimonials">Testimonials</a>

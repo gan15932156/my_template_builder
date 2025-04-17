@@ -13,7 +13,7 @@ import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Box = styled.div<{
-  $style: Record<string, any>;
+  $style: Record<string, any> | null;
   $isSelected: boolean;
   $isOver: boolean;
   $isDragging: boolean;

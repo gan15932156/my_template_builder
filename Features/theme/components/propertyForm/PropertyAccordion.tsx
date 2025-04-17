@@ -14,7 +14,7 @@ const Grid = styled.div`
   column-gap: 0.2rem;
   place-items: center;
 `;
-const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state }) => {
+const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state, tag }) => {
   const [styleProperty, setStyleProperty] = useState<StylePropertieType | null>(
     null
   );
@@ -39,7 +39,7 @@ const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state }) => {
                 ) ? (
                   <Field
                     key={index + index2 + property}
-                    styleInfo={{ elmType, state }}
+                    styleInfo={{ elmType, state, tag }}
                     propertyName={property}
                   />
                 ) : null

@@ -14,7 +14,7 @@ import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyl
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 
 const Form = styled.form<{
-  $style: Record<string, any>;
+  $style: Record<string, any> | null;
   $isSelected: boolean;
   $isOver: boolean;
   $isDragging: boolean;

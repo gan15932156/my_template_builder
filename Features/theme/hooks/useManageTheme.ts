@@ -14,6 +14,7 @@ import { useMemo } from "react";
 export interface StyleInfo {
   state: TStyleState;
   elmType: TElmType;
+  tag: string;
 }
 const useManageTheme = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,7 @@ const useManageTheme = () => {
     () => currentTheme?.colorVars || null,
     [currentTheme]
   );
-  const styles = useMemo(() => currentTheme?.styles || {}, [currentTheme]);
+  const styles = useMemo(() => currentTheme?.styles || null, [currentTheme]);
 
   function handleChangeColor<K extends keyof ColorVar>(params: {
     colors: ColorVar;

@@ -11,6 +11,7 @@ import useManageTheme, { StyleInfo } from "../../hooks/useManageTheme";
 import styled from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { FiX } from "react-icons/fi";
+import { getPropertyValue } from "../showcase/utils";
 const FieldWrapper = styled.div`
   font-size: 0.8rem;
   display: flex;
@@ -30,7 +31,7 @@ const Label = styled.label``;
 const InputField = styled.input`
   border: 1px solid ${editorStyle.secondary500};
   background-color: ${editorStyle.secondary300};
-  color: ${editorStyle.secondary500};
+  color: ${editorStyle.primary500};
   padding-inline: 0.2rem;
   &:disabled {
     filter: brightness(0.4);
@@ -61,9 +62,7 @@ interface Props {
 const Field: React.FC<Props> = ({ styleInfo, propertyName }) => {
   const { styles, handleClearStyleProperty, handleUpdateStyle } =
     useManageTheme();
-
-  const getInitialValue = () =>
-    styles?.[styleInfo.elmType]?.[styleInfo.state]?.[propertyName] ?? "";
+  const getInitialValue = getPropertyValue(styles, styleInfo, propertyName);
   const [propertyValue, setPropertyValue] = useState(getInitialValue);
   const handleClearProperty = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -71,18 +70,21 @@ const Field: React.FC<Props> = ({ styleInfo, propertyName }) => {
   };
   const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    handleUpdateStyle(styleInfo, propertyName, event.target.value);
+    if (event.target.value !== "") {
+      handleUpdateStyle(styleInfo, propertyName, event.target.value);
+    }
   };
   const handleOnFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.stopPropagation();
     setPropertyValue(event.target.value);
   };
+
   useEffect(() => {
     setPropertyValue((prev) => {
-      const newValue = getInitialValue();
+      const newValue = getPropertyValue(styles, styleInfo, propertyName);
       return prev !== newValue ? newValue : prev;
     });
-  }, [styleInfo.elmType, styleInfo.state, styles, propertyName]);
+  }, [styleInfo.elmType, styleInfo.state, styleInfo.tag, styles, propertyName]);
   return (
     <FieldWrapper>
       <LabelWrapper>

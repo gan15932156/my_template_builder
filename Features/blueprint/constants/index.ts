@@ -1,5 +1,6 @@
 export const ID_LENGTH = 12;
 export const ELM_TYPES = [
+  "base",
   "box",
   "text",
   "button",

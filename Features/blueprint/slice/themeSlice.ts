@@ -1,5 +1,5 @@
 import { StyleInfo } from "@/Features/theme/hooks/useManageTheme";
-import { TTheme } from "@/Features/theme/types";
+import { CSSProperties, TTheme } from "@/Features/theme/types";
 import { RootState } from "@/libs/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -30,15 +30,15 @@ export const ThemeSlice = createSlice({
       const { styleState, property, newValue } = action.payload;
       const styles = state.theme.styles ?? {};
 
-      if (!styles[styleState.elmType]) {
-        styles[styleState.elmType] = {};
-      }
-      if (!styles[styleState.elmType][styleState.state]) {
-        styles[styleState.elmType][styleState.state] = {};
-      }
+      // if (!styles[styleState.elmType]) {
+      //   styles[styleState.elmType] = {};
+      // }
+      // if (!styles[styleState.elmType][styleState.state]) {
+      //   styles[styleState.elmType][styleState.state] = {};
+      // }
 
-      styles[styleState.elmType][styleState.state][property] = newValue;
-      state.theme.styles = styles;
+      // styles[styleState.elmType][styleState.state][property] = newValue;
+      // state.theme.styles = styles;
     },
     clearStyleProperty: (
       state,
@@ -50,8 +50,15 @@ export const ThemeSlice = createSlice({
       if (!state.theme) return;
 
       const { styleState, property } = action.payload;
-      const styles = state.theme.styles ?? {};
-      delete styles[styleState.elmType][styleState.state][property];
+      const styles = state.theme.styles;
+      if (styleState.elmType === "base") {
+        delete styles?.base?.[styleState.state]?.[property];
+      } else {
+        const rel = styles?.[styleState.elmType]?.[styleState.tag]?.[
+          styleState.state
+        ] as CSSProperties;
+        delete rel[property];
+      }
       state.theme.styles = styles;
     },
   },

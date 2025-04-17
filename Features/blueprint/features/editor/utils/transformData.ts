@@ -88,7 +88,7 @@ function transformToTBlueprint(data: {
 function transformStyleToStyleComponent(
   colorVars: ColorVar,
   styles?: DynamicPseudoStyles
-) {
+): Record<string, any> | null {
   if (!styles) return {};
 
   // Extract normal styles directly
