@@ -28,8 +28,16 @@ export const ThemeSlice = createSlice({
       if (!state.theme) return;
 
       const { styleState, property, newValue } = action.payload;
-      const styles = state.theme.styles ?? {};
-
+      const styles = state.theme.styles;
+      if (styleState.elmType === "base") {
+        if (!styles?.base) {
+          styles?.base = {};
+        }
+        // if (!styles[styleState.elmType][styleState.state]) {
+        //   styles[styleState.elmType][styleState.state] = {};
+        // }
+        // styles[styleState.elmType][styleState.state][property] = newValue;
+      }
       // if (!styles[styleState.elmType]) {
       //   styles[styleState.elmType] = {};
       // }
