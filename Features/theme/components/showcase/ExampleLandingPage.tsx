@@ -8,8 +8,7 @@ import {
   FaRocket,
   FaStar,
 } from "react-icons/fa6";
-import { useEffect, useMemo } from "react";
-import { parseStyles } from "./utils";
+import { parseStyles2 } from "./utils";
 import {
   Center,
   CTAButton,
@@ -32,32 +31,33 @@ import { Section } from "./StyledComponents";
 
 const ExampleLandingPage = () => {
   const { colorVars, styles } = useManageTheme();
-  const parsedStyles = useMemo(() => parseStyles(styles), [styles]);
+
   if (!colorVars) return;
 
   return (
     <ThemeProvider theme={colorVars}>
-      <Page $baseStyle={null} $style={null}>
+      <Page
+        $style={
+          styles ? parseStyles2(styles, { tag: "div", type: "box" }) : null
+        }
+      >
         {/* Navbar */}
         <Navbar
-          $baseStyle={
-            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          $style={
+            styles ? parseStyles2(styles, { tag: "nav", type: "box" }) : null
           }
-          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
         >
           <Logo
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            $style={
+              styles ? parseStyles2(styles, { tag: "h1", type: "text" }) : null
             }
-            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
           >
             ThemedUI
           </Logo>
           <NavLinks
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            $style={
+              styles ? parseStyles2(styles, { tag: "div", type: "box" }) : null
             }
-            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
           >
             <a href="#features">Features</a>
             <a href="#testimonials">Testimonials</a>
@@ -67,38 +67,30 @@ const ExampleLandingPage = () => {
 
         {/* Hero */}
         <HeroSection
-          $baseStyle={
-            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          $style={
+            styles ? parseStyles2(styles, { tag: "div", type: "box" }) : null
           }
-          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
         >
           <HeroTitle
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
-            }
             $style={
-              parsedStyles && parsedStyles.text ? parsedStyles.text : null
+              styles ? parseStyles2(styles, { tag: "h1", type: "text" }) : null
             }
           >
             Modern UI, Your Theme
           </HeroTitle>
           <HeroSubtitle
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
-            }
             $style={
-              parsedStyles && parsedStyles.text ? parsedStyles.text : null
+              styles ? parseStyles2(styles, { tag: "p", type: "text" }) : null
             }
           >
             Build beautiful, customizable interfaces using your own theme
             system. React + styled-components = ❤️
           </HeroSubtitle>
           <CTAButton
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
-            }
             $style={
-              parsedStyles && parsedStyles.button ? parsedStyles.button : null
+              styles
+                ? parseStyles2(styles, { tag: "base", type: "button" })
+                : null
             }
           >
             Explore Now
@@ -111,25 +103,22 @@ const ExampleLandingPage = () => {
             <h2 style={{ marginBottom: "2rem" }}>Why Choose Us</h2>
           </Center>
           <FeaturesGrid
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            $style={
+              styles ? parseStyles2(styles, { tag: "div", type: "box" }) : null
             }
-            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
           >
             <FeatureCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               <IconBox
-                $baseStyle={
-                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
-                }
                 $style={
-                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                  styles
+                    ? parseStyles2(styles, { tag: "div", type: "box" })
+                    : null
                 }
               >
                 <FaRocket />
@@ -140,19 +129,17 @@ const ExampleLandingPage = () => {
               </p>
             </FeatureCard>
             <FeatureCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               <IconBox
-                $baseStyle={
-                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
-                }
                 $style={
-                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                  styles
+                    ? parseStyles2(styles, { tag: "div", type: "box" })
+                    : null
                 }
               >
                 <FaPalette />
@@ -163,19 +150,17 @@ const ExampleLandingPage = () => {
               </p>
             </FeatureCard>
             <FeatureCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               <IconBox
-                $baseStyle={
-                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
-                }
                 $style={
-                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                  styles
+                    ? parseStyles2(styles, { tag: "div", type: "box" })
+                    : null
                 }
               >
                 <FaHeadSideCoughSlash />
@@ -184,19 +169,17 @@ const ExampleLandingPage = () => {
               <p>Composable, typed, and scalable. Perfect for modern devs.</p>
             </FeatureCard>
             <FeatureCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               <IconBox
-                $baseStyle={
-                  parsedStyles && parsedStyles.base ? parsedStyles.base : null
-                }
                 $style={
-                  parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                  styles
+                    ? parseStyles2(styles, { tag: "div", type: "box" })
+                    : null
                 }
               >
                 <FaStar />
@@ -213,38 +196,34 @@ const ExampleLandingPage = () => {
             <h2 style={{ marginBottom: "2rem" }}>What Users Say</h2>
           </Center>
           <TestimonialsGrid
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
+            $style={
+              styles ? parseStyles2(styles, { tag: "div", type: "box" }) : null
             }
-            $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
           >
             <TestimonialCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               “This saved me hours! The theme integration is seamless and the
               layout is stunning.”
             </TestimonialCard>
             <TestimonialCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               “Perfect for showcasing my design system. Everything just works.”
             </TestimonialCard>
             <TestimonialCard
-              $baseStyle={
-                parsedStyles && parsedStyles.base ? parsedStyles.base : null
-              }
               $style={
-                parsedStyles && parsedStyles.box ? parsedStyles.box : null
+                styles
+                  ? parseStyles2(styles, { tag: "div", type: "box" })
+                  : null
               }
             >
               “Love how easy it is to drop into any React app. Theme support is
@@ -256,17 +235,17 @@ const ExampleLandingPage = () => {
         {/* CTA */}
         <CTASection
           id="get-started"
-          $baseStyle={
-            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          $style={
+            styles
+              ? parseStyles2(styles, { tag: "section", type: "box" })
+              : null
           }
-          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
         >
           <CTAButton
-            $baseStyle={
-              parsedStyles && parsedStyles.base ? parsedStyles.base : null
-            }
             $style={
-              parsedStyles && parsedStyles.button ? parsedStyles.button : null
+              styles
+                ? parseStyles2(styles, { tag: "base", type: "button" })
+                : null
             }
           >
             Start Your Journey Now
@@ -275,10 +254,9 @@ const ExampleLandingPage = () => {
 
         {/* Footer */}
         <FooterContainer
-          $baseStyle={
-            parsedStyles && parsedStyles.base ? parsedStyles.base : null
+          $style={
+            styles ? parseStyles2(styles, { tag: "footer", type: "box" }) : null
           }
-          $style={parsedStyles && parsedStyles.box ? parsedStyles.box : null}
         >
           <div>
             <a href="#features">Features</a>

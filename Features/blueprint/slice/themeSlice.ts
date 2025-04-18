@@ -1,5 +1,10 @@
 import { StyleInfo } from "@/Features/theme/hooks/useManageTheme";
-import { CSSProperties, TTheme } from "@/Features/theme/types";
+import {
+  CSSProperties,
+  ElementStyles,
+  TTheme,
+  VariantStyles,
+} from "@/Features/theme/types";
 import { RootState } from "@/libs/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -25,29 +30,49 @@ export const ThemeSlice = createSlice({
         newValue: string;
       }>
     ) => {
+      const { styleState, property, newValue } = action.payload;
       if (!state.theme) return;
 
-      const { styleState, property, newValue } = action.payload;
-      const styles = state.theme.styles;
-      if (styleState.elmType === "base") {
-        if (!styles?.base) {
-          styles?.base = {};
-        }
-        // if (!styles[styleState.elmType][styleState.state]) {
-        //   styles[styleState.elmType][styleState.state] = {};
-        // }
-        // styles[styleState.elmType][styleState.state][property] = newValue;
+      // Ensure `styles` exists
+      if (!state.theme.styles) {
+        state.theme.styles = {
+          base: {},
+        };
       }
-      // if (!styles[styleState.elmType]) {
-      //   styles[styleState.elmType] = {};
-      // }
-      // if (!styles[styleState.elmType][styleState.state]) {
-      //   styles[styleState.elmType][styleState.state] = {};
-      // }
 
-      // styles[styleState.elmType][styleState.state][property] = newValue;
-      // state.theme.styles = styles;
+      const styles = state.theme.styles;
+
+      if (!styles[styleState.elmType]) {
+        styles[styleState.elmType] =
+          styleState.elmType === "base" ? {} : { base: {} };
+      }
+
+      if (
+        styleState.elmType === "base" ||
+        !("base" in styles[styleState.elmType])
+      ) {
+        const variantStyles = styles[styleState.elmType] as VariantStyles;
+
+        if (!variantStyles[styleState.state]) {
+          variantStyles[styleState.state] = {};
+        }
+
+        variantStyles[styleState.state][property] = newValue;
+      } else {
+        const elementStyles = styles[styleState.elmType] as ElementStyles;
+
+        if (!elementStyles[styleState.tag]) {
+          elementStyles[styleState.tag] = {};
+        }
+
+        if (!elementStyles[styleState.tag][styleState.state]) {
+          elementStyles[styleState.tag][styleState.state] = {};
+        }
+
+        elementStyles[styleState.tag][styleState.state][property] = newValue;
+      }
     },
+
     clearStyleProperty: (
       state,
       action: PayloadAction<{

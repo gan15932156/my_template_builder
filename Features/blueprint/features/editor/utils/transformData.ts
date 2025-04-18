@@ -125,10 +125,6 @@ export function parseColorVariableToValue(
 }
 
 function parseColorVariable(value: string, colorVars: ColorVar): string | null {
-  // const [colorName, key] = value.slice(1).split(".");
-  // console.log(colorVars?.[colorName]);
-  // // return colorVars?.[colorName]?.[Number(level)] ?? null;
-  // return "#d1d1d1";
   if (!value.startsWith("@")) return null;
 
   const [group, key] = value.slice(1).split(".");

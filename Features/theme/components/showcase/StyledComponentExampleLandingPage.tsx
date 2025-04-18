@@ -4,7 +4,6 @@ import styled, { css } from "styled-components";
 
 // Theme-aware styling
 export const Page = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   background: ${({ theme }) => theme.background.default};
@@ -12,11 +11,6 @@ export const Page = styled.div<{
   font-family: "Segoe UI", sans-serif;
 
   && {
-    ${(props) =>
-      props.$baseStyle &&
-      css`
-        ${props.$baseStyle}
-      `}
     ${(props) =>
       props.$style &&
       css`
@@ -27,7 +21,6 @@ export const Page = styled.div<{
 
 // Navbar
 export const Navbar = styled.nav<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   padding: 1.5rem 2rem;
@@ -36,11 +29,6 @@ export const Navbar = styled.nav<{
   align-items: center;
   background: ${({ theme }) => theme.primary.main};
   color: ${({ theme }) => theme.primary.contrastText};
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -51,15 +39,9 @@ export const Navbar = styled.nav<{
 `;
 
 export const Logo = styled.h1<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   font-size: 1.5rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -70,16 +52,10 @@ export const Logo = styled.h1<{
 `;
 
 export const NavLinks = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   display: flex;
   gap: 1.5rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -101,19 +77,12 @@ export const NavLinks = styled.div<{
 
 // Section layout
 export const Section = styled.section<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   padding: 4rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
-
-  & {
-    ${(props) =>
-      props.$baseStyle &&
-      css`
-        ${props.$baseStyle}
-      `}
+  && {
     ${(props) =>
       props.$style &&
       css`
@@ -126,7 +95,6 @@ export const Center = styled.div`
   text-align: center;
 `;
 export const HeroSection = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   padding-block-start: 2rem;
@@ -135,11 +103,6 @@ export const HeroSection = styled.div<{
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -150,17 +113,11 @@ export const HeroSection = styled.div<{
 `;
 // Hero
 export const HeroTitle = styled.h1<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   font-size: 3rem;
   color: ${({ theme }) => theme.primary.main};
   margin-bottom: 1rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -171,7 +128,6 @@ export const HeroTitle = styled.h1<{
 `;
 
 export const HeroSubtitle = styled.p<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   font-size: 1.2rem;
@@ -180,11 +136,6 @@ export const HeroSubtitle = styled.p<{
   max-width: 60ch;
   margin: auto;
   text-align: center;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -195,7 +146,6 @@ export const HeroSubtitle = styled.p<{
 `;
 
 export const CTAButton = styled.button<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   background-color: ${({ theme }) => theme.secondary.main};
@@ -205,11 +155,6 @@ export const CTAButton = styled.button<{
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -225,17 +170,11 @@ export const CTAButton = styled.button<{
 
 // Features
 export const FeaturesGrid = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -246,7 +185,6 @@ export const FeaturesGrid = styled.div<{
 `;
 
 export const FeatureCard = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   background: ${({ theme }) => theme.primary.light};
@@ -255,11 +193,6 @@ export const FeatureCard = styled.div<{
   border-radius: 16px;
   text-align: center;
   transition: transform 0.3s ease;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -273,16 +206,10 @@ export const FeatureCard = styled.div<{
 `;
 
 export const IconBox = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   font-size: 2rem;
   margin-bottom: 1rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -294,18 +221,12 @@ export const IconBox = styled.div<{
 
 // Testimonials
 export const TestimonialsGrid = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -316,7 +237,6 @@ export const TestimonialsGrid = styled.div<{
 `;
 
 export const TestimonialCard = styled.div<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   background: ${({ theme }) => theme.info.light};
@@ -325,11 +245,6 @@ export const TestimonialCard = styled.div<{
   border-radius: 12px;
   max-width: 300px;
   font-size: 0.95rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -341,7 +256,6 @@ export const TestimonialCard = styled.div<{
 
 // CTA section
 export const CTASection = styled(Section)<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   background-color: ${({ theme }) => theme.primary.light};
@@ -349,11 +263,6 @@ export const CTASection = styled(Section)<{
   border-radius: 24px;
   text-align: center;
   margin-bottom: 2rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -364,7 +273,6 @@ export const CTASection = styled(Section)<{
 `;
 
 export const Footer = styled.footer<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   padding: 2rem;
@@ -372,11 +280,6 @@ export const Footer = styled.footer<{
   color: ${({ theme }) => theme.text.hint};
   font-size: 0.9rem;
   border-top: 1px solid ${({ theme }) => theme.divider.divider};
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
@@ -386,7 +289,6 @@ export const Footer = styled.footer<{
   }
 `;
 export const FooterContainer = styled.footer<{
-  $baseStyle: Record<string, any> | null;
   $style: Record<string, any> | null;
 }>`
   padding: 3rem 2rem;
@@ -394,11 +296,6 @@ export const FooterContainer = styled.footer<{
   color: ${({ theme }) => theme.primary.contrastText};
   text-align: center;
   font-size: 0.95rem;
-  ${(props) =>
-    props.$baseStyle &&
-    css`
-      ${props.$baseStyle}
-    `}
   && {
     ${(props) =>
       props.$style &&
