@@ -11,6 +11,7 @@ export const editorStyle = {
   secondary500: "#D8C4B6",
   secondary400: "#e0d0c5",
   secondary300: "#e8dcd3",
+  accent500: "#EF5D17",
 };
 
 export const getBgTextStyle = {

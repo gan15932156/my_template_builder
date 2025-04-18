@@ -46,6 +46,7 @@
       "font-family",
       "font-size",
       "font-weight",
+      "text-decoration",
       "letter-spacing",
       "color",
       "line-height",
@@ -63,7 +64,8 @@
       "border-style",
       "border-color",
       "box-shadow",
-      "object-fit"
+      "object-fit",
+      "cursor"
     ]
   }
 }

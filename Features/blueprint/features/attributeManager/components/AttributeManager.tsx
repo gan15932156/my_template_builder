@@ -42,6 +42,7 @@ const AttributeManager = () => {
           <Divider />
           <Heading>Element attributes</Heading>
           {(selectedElement.elmType === "text" ||
+            selectedElement.elmType === "link" ||
             selectedElement.elmType === "button") && (
             <AttrElementContentEditField
               value={selectedElement.content as string}

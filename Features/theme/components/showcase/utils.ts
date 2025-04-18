@@ -74,7 +74,19 @@ export function getPropertyValue(
     return rel && rel.hasOwnProperty(propertyName) ? rel[propertyName] : "";
   }
 }
-
+export function getStylesByTypeTagState(
+  styles: ThemeStyle2 | null,
+  styleInfo: StyleInfo
+) {
+  if (styleInfo.elmType === "base") {
+    return styles?.[styleInfo.elmType]?.[styleInfo.state] ?? {};
+  } else {
+    const rel = styles?.[styleInfo.elmType]?.[styleInfo.tag]?.[
+      styleInfo.state
+    ] as CSSProperties;
+    return rel;
+  }
+}
 // parse individual style each element
 export function parseStyles2(
   styles: ThemeStyle2,

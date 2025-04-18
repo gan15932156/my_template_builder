@@ -9,6 +9,7 @@ const Wrapepr = styled.div`
   border: 1px solid ${editorStyle.secondary500};
 `;
 const Heading = styled.p`
+  position: relative;
   font-weight: bold;
   font-size: 0.8rem;
   color: ${editorStyle.primary500};
@@ -21,6 +22,17 @@ const Heading = styled.p`
   text-transform: capitalize;
   cursor: pointer;
 `;
+const Hightlight = styled.span`
+  position: absolute;
+  background-color: ${editorStyle.secondary300};
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 2px solid ${editorStyle.accent500};
+  border-radius: 100vw;
+`;
 const ContentWrapper = styled.div`
   padding: 0.2rem;
   display: flex;
@@ -31,8 +43,9 @@ const ContentWrapper = styled.div`
 interface Props {
   text: string;
   children: React.ReactNode;
+  hasMatch: boolean;
 }
-const FormAccordion: React.FC<Props> = ({ text, children }) => {
+const FormAccordion: React.FC<Props> = ({ text, children, hasMatch }) => {
   const [isActive, setIsActive] = useState(false);
   const handeToggle = () => {
     setIsActive((prev) => !prev);
@@ -46,6 +59,7 @@ const FormAccordion: React.FC<Props> = ({ text, children }) => {
           }}
         />
         <span>{text}</span>
+        {hasMatch && <Hightlight></Hightlight>}
       </Heading>
       {isActive && <ContentWrapper>{children}</ContentWrapper>}
     </Wrapepr>
