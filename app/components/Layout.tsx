@@ -28,7 +28,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             pathName === "/theme" ? styles.active : ""
           }`}
         >
-          Theme(In progess)
+          Theme
         </Link>
         <Link
           href={"/blueprint"}
@@ -36,7 +36,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             pathName === "/blueprint" ? styles.active : ""
           }`}
         >
-          Blueprint(In progess)
+          Blueprint
         </Link>
       </nav>
       {children}

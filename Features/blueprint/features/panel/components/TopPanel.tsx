@@ -51,7 +51,7 @@ const TopPanel = () => {
   };
   return (
     <Wrapper>
-      <div>[NAV1]</div>
+      <div></div>
       <NavItemContainer>
         <ActionNavButton
           title="Save button"

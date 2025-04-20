@@ -35,10 +35,11 @@ const PropertyAccordion: React.FC<StyleInfo> = ({ elmType, state, tag }) => {
       {styleProperty &&
         Object.keys(styleProperty).map((style, index) => {
           const rel = getStylesByTypeTagState(styles, { elmType, state, tag });
+          const cleaned = _.pickBy(rel, (value) => value !== "");
           const hasMatch =
-            rel && Object.keys(rel).length > 0
-              ? _.intersection(Object.keys(rel), styleProperty[style]).length >
-                0
+            cleaned && Object.keys(cleaned).length > 0
+              ? _.intersection(Object.keys(cleaned), styleProperty[style])
+                  .length > 0
               : false;
           return (
             <FormAccordion key={index + style} text={style} hasMatch={hasMatch}>

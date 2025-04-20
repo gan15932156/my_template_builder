@@ -87,7 +87,9 @@ const PropertyField: React.FC<Props> = ({
 
   const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    handleUpdateStyle(currentStyleState, propertyName, event.target.value);
+    if (event.target.value !== "") {
+      handleUpdateStyle(currentStyleState, propertyName, event.target.value);
+    }
   };
 
   const handleOnFieldChange = (event: ChangeEvent<HTMLInputElement>) => {

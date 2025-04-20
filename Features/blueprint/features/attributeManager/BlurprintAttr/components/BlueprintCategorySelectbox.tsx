@@ -80,7 +80,11 @@ const BlueprintCategorySelectbox: React.FC = () => {
   const currentBlueprint = useAppSelector(selectBlueprint);
   const [isVisible, setIsVisible] = useState(false);
   const [newCategoryValue, setNewCategoryValue] = useState("");
-  const [value, setValue] = useState(currentBlueprint?.category ?? "other");
+  const [value, setValue] = useState(
+    currentBlueprint?.category && currentBlueprint.category.length > 0
+      ? currentBlueprint.category
+      : "other"
+  );
   const {
     blueprintMutate: { mutate, isPending },
   } = useSaveBlueprint();
@@ -94,9 +98,11 @@ const BlueprintCategorySelectbox: React.FC = () => {
   };
   const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    handleToggleSelect();
-    handleUpdateCategory(event.target.value);
-    setNewCategoryValue("");
+    if (event.target.value !== "") {
+      handleToggleSelect();
+      handleUpdateCategory(event.target.value);
+      setNewCategoryValue("");
+    }
   };
   const handleToggleSelect = () => setIsVisible((prev) => !prev);
   const handleItemClick = (
@@ -108,7 +114,13 @@ const BlueprintCategorySelectbox: React.FC = () => {
     handleUpdateCategory(newCategory);
   };
   useEffect(() => {
-    if (currentBlueprint) setValue(currentBlueprint?.category ?? "other");
+    if (currentBlueprint) {
+      setValue(
+        currentBlueprint?.category && currentBlueprint.category.length > 0
+          ? currentBlueprint.category
+          : "other"
+      );
+    }
   }, [currentBlueprint]);
   if (isLoading) return <div>Loading...</div>;
   return (

@@ -22,7 +22,7 @@ const Heading = styled.p`
   text-transform: capitalize;
   cursor: pointer;
 `;
-const Hightlight = styled.span`
+export const HightlightDot = styled.span`
   position: absolute;
   background-color: ${editorStyle.secondary300};
   top: 50%;
@@ -59,7 +59,7 @@ const FormAccordion: React.FC<Props> = ({ text, children, hasMatch }) => {
           }}
         />
         <span>{text}</span>
-        {hasMatch && <Hightlight></Hightlight>}
+        {hasMatch && <HightlightDot></HightlightDot>}
       </Heading>
       {isActive && <ContentWrapper>{children}</ContentWrapper>}
     </Wrapepr>

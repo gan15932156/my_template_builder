@@ -18,7 +18,6 @@ function transformToTBlueprint(data: {
   // Validate styles
   const validateStyles = (styles: object): TStyle => {
     const validatedStyles: TStyle = {};
-
     if (styles != null && Object.keys(styles).length > 0) {
       for (const [elementId, pseudoStyles] of Object.entries(styles)) {
         if (

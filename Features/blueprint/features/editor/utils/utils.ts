@@ -17,15 +17,16 @@ export function copyBlueprint(blueprint: TBlueprint): TBlueprint {
       ? element.content.map((item) => travelAllElement(item))
       : element.content;
     if (tempStyles[element.id]) {
-      if (blueprint.colorVars) {
-        const rel = parseColorVariableToValue(
-          tempStyles[element.id],
-          blueprint.colorVars
-        );
-        newStyles[newElementId] = rel;
-      } else {
-        newStyles[newElementId] = tempStyles[element.id];
-      }
+      // if (blueprint.colorVars) {
+      //   const rel = parseColorVariableToValue(
+      //     tempStyles[element.id],
+      //     blueprint.colorVars
+      //   );
+      //   newStyles[newElementId] = rel;
+      // } else {
+      //   newStyles[newElementId] = tempStyles[element.id];
+      // }
+      newStyles[newElementId] = tempStyles[element.id];
     }
     return {
       id: newElementId,
@@ -48,6 +49,7 @@ export function copyBlueprint(blueprint: TBlueprint): TBlueprint {
       imageUrl: blueprint.imageUrl,
       styles: newStyles,
       element: copiedElement,
+      colorVars: blueprint.colorVars,
     };
   }
   throw new Error("Blueprint element is missing");

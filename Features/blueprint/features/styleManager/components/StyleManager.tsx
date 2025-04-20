@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import { STYLE_STATE } from "@/Features/blueprint/constants";
-
 export const Select = styled.select`
   appearance: none;
 
@@ -30,6 +29,9 @@ const SelectWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 0.4rem;
+`;
+const Option = styled.option`
+  position: relative;
 `;
 const Wrapper = styled.div`
   width: 100%;
@@ -58,9 +60,9 @@ const StyleManager = () => {
           onChange={handleStateChange}
         >
           {STYLE_STATE.map((state, index) => (
-            <option value={state} key={index}>
+            <Option value={state} key={index}>
               {state}
-            </option>
+            </Option>
           ))}
         </Select>
       </SelectWrapper>
