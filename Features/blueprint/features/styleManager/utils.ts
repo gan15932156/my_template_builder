@@ -1,6 +1,13 @@
+import { ELM_TYPES } from "./../../constants/index";
 import { ThemeStyle2, VariantStyles } from "@/Features/theme/types";
-import { TBlueprint, TBlueprintElement, TStyle } from "../blockManager/type";
+import {
+  DynamicPseudoStyles,
+  TBlueprint,
+  TBlueprintElement,
+  TStyle,
+} from "../blockManager/type";
 import { TElmType } from "../../constants";
+import _ from "lodash";
 
 export function applyStyles(blueprint: TBlueprint, applyStyles: ThemeStyle2) {
   let bStyles: TStyle | undefined;
@@ -13,62 +20,65 @@ export function applyStyles(blueprint: TBlueprint, applyStyles: ThemeStyle2) {
     if (Array.isArray(element.content)) {
       element.content.forEach((item) => travelAllElement(item));
     }
-    console.log(
-      bStyles?.[element.id],
-      element.id,
-      element.elmType,
-      element.tag
-    );
+    const appiedStyles = parseStyles(applyStyles, {
+      type: element.elmType as TElmType,
+      id: element.id,
+      styles: bStyles?.[element.id],
+      tag: element.tag,
+    });
+    if (appiedStyles) {
+      bStyles = {
+        ...bStyles,
+        [element.id]: { ...appiedStyles },
+      };
+    }
+    // console.log(appiedStyles);
   }
   if (!blueprint.element) {
-    return null;
+    return undefined;
   }
   travelAllElement(blueprint.element);
+
+  return bStyles;
 }
 
 function parseStyles(
   themeStyles: ThemeStyle2,
   elementInfo: {
-    id: string;
     type: TElmType;
+    id: string;
     tag: string;
-    styles: TStyle | undefined;
+    styles: DynamicPseudoStyles | undefined;
   }
-): Record<string, any> | null {
+): DynamicPseudoStyles | undefined {
   const { type, tag, styles, id } = elementInfo;
   const { base: globalBase, ...typeStyles } = themeStyles;
 
-  let mergedStyles: Record<string, any> = {};
+  let mergedStyles: DynamicPseudoStyles | undefined = styles
+    ? JSON.parse(JSON.stringify(styles))
+    : undefined;
 
-  // Parse global base styles
   if (globalBase) {
-    const parsedGlobalBase = parseStyleObject(globalBase);
-    mergedStyles = _.merge({}, mergedStyles, parsedGlobalBase);
+    mergedStyles = _.merge({}, mergedStyles, globalBase);
   }
 
   const currentTypeStyles = typeStyles[type];
   if (!currentTypeStyles) {
-    console.warn("Type not found:", type);
     return mergedStyles;
   }
 
   const { base: typeBase, ...tagStyles } = currentTypeStyles;
 
-  // Parse type-level base styles
   if (typeBase) {
-    const parsedTypeBase = parseStyleObject(typeBase as VariantStyles);
-    mergedStyles = _.merge({}, mergedStyles, parsedTypeBase);
+    mergedStyles = _.merge({}, mergedStyles, typeBase);
   }
 
   const tagSpecificStyles = tagStyles[tag];
   if (!tagSpecificStyles) {
-    console.warn("Tag not found:", tag);
     return mergedStyles;
   }
 
-  // Parse tag-specific styles
-  const parsedTagStyles = parseStyleObject(tagSpecificStyles as VariantStyles);
-  mergedStyles = _.merge({}, mergedStyles, parsedTagStyles);
+  mergedStyles = _.merge({}, mergedStyles, tagSpecificStyles);
 
   return mergedStyles;
 }

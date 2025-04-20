@@ -32,12 +32,18 @@ const BlueprintThemeChooser: React.FC<Props> = ({ onClose }) => {
     }
     if (theme.styles && tempElement) {
       const rel = applyStyles(tempElement, theme.styles);
+      if (rel) {
+        tempElement = {
+          ...tempElement,
+          styles: rel,
+        };
+      }
     }
     if (tempElement) {
       dispatch(updateElement(tempElement));
     }
   };
-  if (isLoading) return <div>Laoding...</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (isError)
     return (
       <div>

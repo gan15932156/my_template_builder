@@ -1,13 +1,16 @@
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import {
+  ColorVar,
   DynamicPseudoStyles,
+  StyleProperties,
   TBlueprint,
   TBlueprintElement,
   TStyle,
 } from "../../blockManager/type";
-import { ID_LENGTH } from "@/Features/blueprint/constants";
-import { parseColorVariableToValue } from "./transformData";
-
+import { CUSTOM_ALPHABET, ID_LENGTH } from "@/Features/blueprint/constants";
+const nanoid = customAlphabet(CUSTOM_ALPHABET, 10);
 export function copyBlueprint(blueprint: TBlueprint): TBlueprint {
   const newStyles: TStyle = {};
   let tempStyles: TStyle = { ...blueprint.styles };
@@ -338,4 +341,123 @@ export function duplicateElement(
     };
   }
   return blueprint;
+}
+const selfCloseTag = new Set(["input", "img"]);
+function generateHTML(element: TBlueprintElement): string {
+  function generate(elm: TBlueprintElement): string {
+    const { id, content, tag, attributes } = elm;
+
+    // Generate attributes string
+    const attrString = Object.entries(attributes ?? {})
+      .filter(([key]) => key !== "labelText")
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(" ");
+
+    const attr = attrString ? ` ${attrString}` : "";
+
+    // Handle self-closing tags
+    if (selfCloseTag.has(tag)) {
+      return `<${tag}${attr} id="${id}" />`;
+    }
+
+    // Handle content
+    if (tag === "label") {
+      const labelText = attributes?.labelText || "";
+      return `<${tag}${attr} id="${id}">${labelText}</${tag}>`;
+    }
+
+    const innerHTML = Array.isArray(content)
+      ? content.map(generate).join("")
+      : content;
+
+    return `<${tag}${attr} id="${id}">${innerHTML}</${tag}>`;
+  }
+
+  return generate(element);
+}
+function generateCssProperty(styles: StyleProperties): string {
+  let result = "";
+  Object.entries(styles).forEach(([key, value]) => {
+    if (value.startsWith("@")) {
+      const [group, colorKey] = value.slice(1).split(".");
+      result += `${key}:var(--${group}-${colorKey});`;
+    } else if (value !== "") {
+      result += `${key}:${value};`;
+    }
+  });
+  return result;
+}
+function generateCSS(styles: TStyle, colorVars: ColorVar): string {
+  let result = `
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+:root {`;
+
+  // Generate CSS variables from colorVars
+  for (const [category, values] of Object.entries(colorVars)) {
+    for (const [shade, colorValue] of Object.entries(values)) {
+      result += `\n  --${category}-${shade}: ${colorValue};`;
+    }
+  }
+
+  result += `\n}\n`;
+
+  // Generate styles for each element ID
+  for (const [id, elementStyles] of Object.entries(styles)) {
+    if (Object.keys(elementStyles).length === 0) continue;
+
+    const states = Object.entries(elementStyles).filter(
+      ([, styles]) => Object.keys(styles).length > 0
+    );
+
+    if (states.length === 0) continue;
+
+    let css = `#${id} {\n`;
+    let pseudoStyles = "";
+
+    for (const [state, stateStyles] of states) {
+      const props = generateCssProperty(stateStyles);
+      if (state === "normal") {
+        css += props;
+      } else {
+        pseudoStyles += `  &:${state} {\n${props}  }\n`;
+      }
+    }
+
+    css += pseudoStyles + `}\n`;
+    result += css;
+  }
+  return result;
+}
+export async function downloadCodeZip(blueprint: TBlueprint) {
+  const zip = new JSZip();
+
+  if (blueprint.element) {
+    const result = generateHTML(blueprint.element);
+    const html = ` <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="style.css">
+      <title>Sample Page</title>
+    </head>
+    <body>
+     ${result}
+    </body>
+    </html>`;
+    zip.file("index.html", html);
+  }
+  if (blueprint.styles) {
+    const css = generateCSS(blueprint.styles, blueprint.colorVars);
+    zip.file("style.css", css);
+  }
+
+  const content = await zip.generateAsync({ type: "blob" });
+  saveAs(content, "web-template.zip");
 }

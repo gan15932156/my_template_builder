@@ -7,14 +7,10 @@ import {
   NavButton,
   NavItemContainer,
 } from "./styledComponents";
-import {
-  IoColorPaletteOutline,
-  IoSaveOutline,
-  IoColorFillOutline,
-} from "react-icons/io5";
+import { IoMdDownload } from "react-icons/io";
+import { IoColorPaletteOutline, IoSaveOutline } from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
 import { BiCustomize } from "react-icons/bi";
-import { FaCode } from "react-icons/fa6";
 import { FaBorderNone, FaBuffer, FaCircleInfo } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
@@ -26,6 +22,7 @@ import {
 import { selectBlueprint } from "@/Features/blueprint/slice/elementSlice";
 import useSaveBlueprint from "@/Features/blueprint/hooks/useSaveBlueprint";
 import AddThemeButton from "./AddThemeButton";
+import { downloadCodeZip } from "../../editor/utils/utils";
 export const ICON_SIZE = 18;
 const Wrapper = styled.div`
   ${getBgTextStyle}
@@ -55,6 +52,11 @@ const TopPanel = () => {
       mutate(currentBlueprint);
     }
   };
+  const handleExport = async () => {
+    if (currentBlueprint) {
+      await downloadCodeZip(currentBlueprint);
+    }
+  };
   return (
     <Wrapper>
       <div></div>
@@ -62,9 +64,9 @@ const TopPanel = () => {
         <ActionNavButton
           title="Export to code button"
           disabled={isPending}
-          onClick={() => {}}
+          onClick={handleExport}
         >
-          <FaCode size={ICON_SIZE} />
+          <IoMdDownload size={ICON_SIZE} />
         </ActionNavButton>
         <ActionNavButton
           title="Save button"

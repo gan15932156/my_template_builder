@@ -1,4 +1,5 @@
 export const ID_LENGTH = 12;
+export const CUSTOM_ALPHABET = "asdjgghfgbfdf";
 export const ELM_TYPES = [
   "base",
   "box",

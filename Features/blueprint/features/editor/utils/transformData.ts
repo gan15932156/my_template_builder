@@ -123,7 +123,10 @@ export function parseColorVariableToValue(
   return newStyles;
 }
 
-function parseColorVariable(value: string, colorVars: ColorVar): string | null {
+export function parseColorVariable(
+  value: string,
+  colorVars: ColorVar
+): string | null {
   if (!value.startsWith("@")) return null;
 
   const [group, key] = value.slice(1).split(".");

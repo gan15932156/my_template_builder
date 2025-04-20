@@ -5,10 +5,10 @@ import {
   TBlueprintElement,
   TBlueprintElementWithStyle,
 } from "../../blockManager/type";
-import { nanoid } from "nanoid";
-import { ID_LENGTH } from "@/Features/blueprint/constants";
+import { CUSTOM_ALPHABET, ID_LENGTH } from "@/Features/blueprint/constants";
 import { copyBlueprint } from "./utils";
-
+import { customAlphabet } from "nanoid";
+const nanoid = customAlphabet(CUSTOM_ALPHABET, 10);
 export const handleInsertElementToElement = (
   blueprint: TBlueprint,
   newElement: TBlueprint | TBasicBlock,
