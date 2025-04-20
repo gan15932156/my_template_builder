@@ -155,17 +155,6 @@ const PropertyField: React.FC<Props> = ({
           onChange={handleOnFieldChange}
           onFocus={() => setShowDropdown(true)}
         />
-        {/* {showDropdown &&
-        (propertyName == "color" ||
-          propertyName == "background-color" ||
-          propertyName == "border-color") && (
-            <ColorVarDropdown
-            propertyName={propertyName}
-            propertyValue={propertyValue}
-            currentStyleState={currentStyleState}
-            closeDropdown={handleShowDropdown}
-            />
-          )} */}
       </Dropdown>
     </FieldWrapper>
   );

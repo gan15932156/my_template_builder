@@ -23,3 +23,11 @@ export const STYLE_STATE = [
 ] as const;
 
 export type TStyleState = (typeof STYLE_STATE)[number];
+
+export const COLOR_CATEGORY = {
+  jewel: {},
+  pastel: {},
+  earth: {},
+  neutral: {},
+  fluorescent: {},
+};

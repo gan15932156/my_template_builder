@@ -13,6 +13,7 @@ const ActionNavButton = styled.button<{ $isActive?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.2rem;
   border-radius: 0.2rem;
   border: 1px solid ${editorStyle.secondary500};
   color: ${editorStyle.secondary500};
@@ -26,6 +27,7 @@ const ActionNavButton = styled.button<{ $isActive?: boolean }>`
     color: ${editorStyle.primary500};
     background-color: ${editorStyle.secondary500};
   }
+  &:active,
   &:disabled {
     filter: brightness(0.4);
     cursor: not-allowed;
@@ -55,6 +57,7 @@ const NavButton = styled.button<{ $isActive: boolean }>`
     color: ${editorStyle.primary500};
     background-color: ${editorStyle.secondary500};
   }
+  &:active,
   &:disabled {
     filter: brightness(0.4);
     cursor: not-allowed;

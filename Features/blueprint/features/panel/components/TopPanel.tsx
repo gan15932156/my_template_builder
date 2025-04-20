@@ -7,9 +7,14 @@ import {
   NavButton,
   NavItemContainer,
 } from "./styledComponents";
-import { IoColorPaletteOutline, IoSaveOutline } from "react-icons/io5";
+import {
+  IoColorPaletteOutline,
+  IoSaveOutline,
+  IoColorFillOutline,
+} from "react-icons/io5";
 import { LuLayoutGrid } from "react-icons/lu";
 import { BiCustomize } from "react-icons/bi";
+import { FaCode } from "react-icons/fa6";
 import { FaBorderNone, FaBuffer, FaCircleInfo } from "react-icons/fa6";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
@@ -20,7 +25,8 @@ import {
 } from "@/Features/blueprint/slice/panelSlice";
 import { selectBlueprint } from "@/Features/blueprint/slice/elementSlice";
 import useSaveBlueprint from "@/Features/blueprint/hooks/useSaveBlueprint";
-const ICON_SIZE = 18;
+import AddThemeButton from "./AddThemeButton";
+export const ICON_SIZE = 18;
 const Wrapper = styled.div`
   ${getBgTextStyle}
   grid-column: 1 / -1;
@@ -54,6 +60,13 @@ const TopPanel = () => {
       <div></div>
       <NavItemContainer>
         <ActionNavButton
+          title="Export to code button"
+          disabled={isPending}
+          onClick={() => {}}
+        >
+          <FaCode size={ICON_SIZE} />
+        </ActionNavButton>
+        <ActionNavButton
           title="Save button"
           disabled={isPending}
           onClick={handleSave}
@@ -68,6 +81,7 @@ const TopPanel = () => {
         >
           <FaBorderNone size={ICON_SIZE} />
         </ActionNavButton>
+        <AddThemeButton isPending={isPending} />
       </NavItemContainer>
       <NavItemContainer>
         <NavButton
