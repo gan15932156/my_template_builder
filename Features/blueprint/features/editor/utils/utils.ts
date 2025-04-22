@@ -29,6 +29,8 @@ export function copyBlueprint(blueprint: TBlueprint): TBlueprint {
       // } else {
       //   newStyles[newElementId] = tempStyles[element.id];
       // }
+
+      // don't parsed to color code, use colorVars instead
       newStyles[newElementId] = tempStyles[element.id];
     }
     return {

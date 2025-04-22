@@ -1,5 +1,4 @@
-import { ELM_TYPES } from "./../../constants/index";
-import { ThemeStyle2, VariantStyles } from "@/Features/theme/types";
+import { ThemeStyle2 } from "@/Features/theme/types";
 import {
   DynamicPseudoStyles,
   TBlueprint,

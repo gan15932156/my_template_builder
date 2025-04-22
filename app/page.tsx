@@ -2,5 +2,5 @@
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  if (true) redirect("/project");
+  if (true) redirect("/blueprint");
 }

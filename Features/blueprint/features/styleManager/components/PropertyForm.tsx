@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import _ from "lodash";
 import FormAccordion from "./FormAccordion";
 import PropertyField from "./PropertyField";
-import { readStylePropertyFromJSON } from "@/Features/blueprint/actions/styleProperty";
-import { getStylesByTypeTagState } from "@/Features/theme/components/showcase/utils";
 import useSelectedStyle from "@/Features/blueprint/hooks/useSelectedStyle";
+import { useEffect, useState } from "react";
+import { readStylePropertyFromJSON } from "@/Features/blueprint/actions/styleProperty";
 export type StylePropertieType = {
   [category: string]: string[];
 };

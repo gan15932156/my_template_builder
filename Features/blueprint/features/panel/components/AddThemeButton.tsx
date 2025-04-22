@@ -1,14 +1,12 @@
 "use client";
 
+import styled from "styled-components";
+import BlueprintThemeChooser from "./BlueprintThemeChooser";
 import { IoColorFillOutline } from "react-icons/io5";
-import Dropdown from "../../styleManager/components/Dropdown";
 import { ActionNavButton } from "./styledComponents";
 import { ICON_SIZE } from "./TopPanel";
 import { useState } from "react";
-import styled from "styled-components";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import ThemeChooser from "@/Features/theme/components/themeChooser/ThemeChooser";
-import BlueprintThemeChooser from "./BlueprintThemeChooser";
 import { createPortal } from "react-dom";
 
 interface Props {

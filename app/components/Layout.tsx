@@ -8,7 +8,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <nav className={styles.navContainer}>
-        <Link
+        {/* <Link
           href={"/"}
           className={`${styles.link} ${pathName === "/" ? styles.active : ""}`}
         >
@@ -21,7 +21,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           }`}
         >
           Component
-        </Link>
+        </Link> */}
         <Link
           href={"/theme"}
           className={`${styles.link} ${
