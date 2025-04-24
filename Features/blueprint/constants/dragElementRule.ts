@@ -38,7 +38,7 @@ const dragElementRule: Record<string, DragRules> = {
   box: { tag: boxTag, accept: boxAccept, defaultTag: "div" },
   form: { tag: formTag, accept: formAccept, defaultTag: "form" },
   button: { tag: buttonTag, accept: buttonAccept, defaultTag: "button" },
-  iamge: { tag: imageTag, accept: imageAccept, defaultTag: "img" },
+  image: { tag: imageTag, accept: imageAccept, defaultTag: "img" },
   text: { tag: textTag, accept: textAccept, defaultTag: "h5" },
   link: { tag: linkTag, accept: linkAccept, defaultTag: "a" },
   label: { tag: labelTag, accept: labelAccept, defaultTag: "label" },

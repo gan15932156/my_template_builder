@@ -398,6 +398,18 @@ function generateCSS(styles: TStyle, colorVars: ColorVar): string {
   padding: 0;
   margin: 0;
 }
+html{
+  font-family: --theme(
+    --default-font-family,
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji'
+  ); 
+}
 :root {`;
 
   // Generate CSS variables from colorVars

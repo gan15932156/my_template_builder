@@ -23,7 +23,6 @@ const Wrapper = styled.div`
 `;
 const EditorArea = styled.div<{ $isOver: boolean }>`
   width: 100%;
-  height: 100%;
   background-color: #fff;
 
   ${(props) =>
@@ -60,7 +59,7 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
     if (blueprintData) {
       const { createdAt, status, updatedAt, ...rest } = blueprintData;
       const isBlueprint = true;
-      if (rest.element) {
+      if (rest.element && Object.keys(rest.element).length > 0) {
         try {
           const blueprint = transformToTBlueprint({ ...rest, isBlueprint });
           dispatch(updateElement(blueprint));

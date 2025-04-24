@@ -1,13 +1,14 @@
 {
   "styleProperty": {
-    "general": [
-      "display",
+    "general": ["display"],
+    "position": [
       "float",
       "position",
       "top",
       "right",
       "left",
-      "bottom"
+      "bottom",
+      "transform"
     ],
     "flex": [
       "flex-direction",

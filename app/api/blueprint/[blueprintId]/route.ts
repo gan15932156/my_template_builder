@@ -85,7 +85,7 @@ export async function PATCH(
       data: {
         ...rest,
         colorVars,
-        element,
+        element: element ?? {},
         styles,
       },
     });

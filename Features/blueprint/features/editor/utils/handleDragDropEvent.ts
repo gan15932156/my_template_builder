@@ -87,6 +87,7 @@ export const handleInsertElementToBlueprint = (
   const { styles, ...rest } = getBasicBlockElementData2(
     newElement as TBasicBlock
   );
+  // console.log(rest);
   return {
     ...blueprint,
     element: rest ? { ...rest } : undefined,
@@ -324,7 +325,6 @@ export const handleDropSiblingElement = ({
 export const getBasicBlockElementData2 = (
   basicBlock: TBasicBlock
 ): TBlueprintElementWithStyle => {
-  // console.log(basicBlock);
   const elementId = nanoid(ID_LENGTH);
   const elementData: TBlueprintElementWithStyle = {
     id: elementId,

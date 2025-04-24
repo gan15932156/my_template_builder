@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={roboto.className}>
-      <body style={{ position: "relative" }}>
+      <body style={{ position: "relative", overflowY: "hidden" }}>
         <StyledComponentsRegistry>
           <Layout>
             <StoreProvider>
