@@ -79,12 +79,12 @@ const SelectElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Select
         ref={(node) => {
           targetRef.current = node;
@@ -119,7 +119,7 @@ const SelectElement: React.FC<RenderElementProps> = ({
           <option value="option">option</option>
         )}
       </Select>
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

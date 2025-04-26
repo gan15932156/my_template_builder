@@ -83,12 +83,12 @@ const InputElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Input
         ref={(node) => {
           targetRef.current = node;
@@ -110,7 +110,7 @@ const InputElement: React.FC<RenderElementProps> = ({
         {...attributes}
         onClick={(e) => handleElementClick(e, element.id)}
       />
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

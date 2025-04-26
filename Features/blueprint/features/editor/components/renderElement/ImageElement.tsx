@@ -81,12 +81,12 @@ const ImageElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Image
         ref={(node) => {
           targetRef.current = node;
@@ -107,7 +107,7 @@ const ImageElement: React.FC<RenderElementProps> = ({
         {...attributes}
         onClick={(e) => handleElementClick(e, element.id)}
       />
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

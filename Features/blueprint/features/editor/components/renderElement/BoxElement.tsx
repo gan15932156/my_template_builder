@@ -3,7 +3,7 @@
 import styled, { css } from "styled-components";
 import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import React, { MouseEvent, useRef } from "react";
+import React, { MouseEvent, useEffect, useRef } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
@@ -12,6 +12,7 @@ import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
+import useTooltip from "@/Features/blueprint/hooks/useTooltip";
 const Box = styled.div<{
   $style: Record<string, any> | null;
   $isSelected: boolean;
@@ -28,23 +29,21 @@ const Box = styled.div<{
         outline: 1px solid ${editorStyle.primary500};
       }
     `}
-  && {
+  ${(props) =>
+    props.$style &&
+    css`
+      ${props.$style}
+    `}
     ${(props) =>
-      props.$style &&
-      css`
-        ${props.$style}
-      `}
-    ${(props) =>
-      (props.$isOver || props.$isSelected) &&
-      css`
-        outline: 1px solid ${editorStyle.primary500};
-      `}
+    (props.$isOver || props.$isSelected) &&
+    css`
+      outline: 1px solid ${editorStyle.primary500};
+    `}
       ${(props) =>
-      props.$isDragging &&
-      css`
-        filter: brightness(0.7) sepia(0.5);
-      `}
-  }
+    props.$isDragging &&
+    css`
+      filter: brightness(0.7) sepia(0.5);
+    `}
 `;
 const BoxElement: React.FC<RenderElementProps> = ({
   element: elements,
@@ -66,25 +65,29 @@ const BoxElement: React.FC<RenderElementProps> = ({
     isDragging,
   } = useDndFunc(elements);
   const targetRef = useRef<HTMLDivElement | null>(null);
+  useTooltip({
+    elementId: elements.id,
+    targetRef,
+    canInsertElement: true,
+  });
   const { TopOverlay, BottomOverlay } = useOverlay2(
     isHorizontal,
     targetRef,
     elements.id,
     elements.category
   );
-  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
-  const dispatch = useAppDispatch();
+  const {
+    selectedElementId,
+    layoutSelectedElementId,
+    handleSetSelectedElementId,
+  } = useSelectedElement();
   const isUseBorder = useAppSelector(selectIsUseBorder);
   const handleElementClick = (
     event: MouseEvent<HTMLDivElement>,
     elementId: string
   ) => {
     event.stopPropagation();
-    if (elementId === selectedElementId) {
-      dispatch(setSelectedElement(""));
-    } else {
-      dispatch(setSelectedElement(elementId));
-    }
+    handleSetSelectedElementId(elementId);
   };
   if (isDragging) return;
   if (Array.isArray(elements.content)) {
@@ -109,12 +112,12 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          <Tooltip
+          {/* <Tooltip
             isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
-          />
-          {!isRootElement && <TopOverlay />}
+          /> */}
+          {/* {!isRootElement && <TopOverlay />} */}
           {elements.isListing
             ? [...Array(5)].map((_, index) => {
                 const isLastChildElm = index + 1 == elements.content.length;
@@ -151,7 +154,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
                   />
                 );
               })}
-          {!isRootElement && isLastElm && <BottomOverlay />}
+          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Box>
       );
     } else {
@@ -175,14 +178,14 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          <Tooltip
+          {/* <Tooltip
             isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
-          />
-          {!isRootElement && <TopOverlay />}
+          /> */}
+          {/* {!isRootElement && <TopOverlay />} */}
           <p>{elements.elmType}</p>
-          {!isRootElement && isLastElm && <BottomOverlay />}
+          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Box>
       );
     }
@@ -207,11 +210,11 @@ const BoxElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
-        <Tooltip
+        {/* <Tooltip
           isCanPasteElement={true}
           isActive={selectedElementId == elements.id}
           targetRef={targetRef}
-        />
+        /> */}
         {elements.content}
       </Box>
     );

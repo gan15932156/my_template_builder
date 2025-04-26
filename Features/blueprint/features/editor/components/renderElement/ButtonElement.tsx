@@ -83,12 +83,12 @@ const ButtonElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Button
         ref={(node) => {
           targetRef.current = node;
@@ -107,7 +107,7 @@ const ButtonElement: React.FC<RenderElementProps> = ({
       >
         {!Array.isArray(element.content) && element.content}
       </Button>
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

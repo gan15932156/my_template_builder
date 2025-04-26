@@ -20,6 +20,7 @@ import {
   updateElementContent,
   updateElementProperty,
 } from "../features/editor/utils/utils";
+import { clearTooltip, setTooltip } from "../slice/elementToolStateSlice";
 
 const useSelectedElement = () => {
   const selectedElementId = useAppSelector(selectSelectedElementId);
@@ -38,6 +39,7 @@ const useSelectedElement = () => {
       if (duplicateElementId === elementId) {
         dispatch(setDuplicateElementId(null));
       }
+      dispatch(clearTooltip());
       dispatch(setSelectedElement(""));
       dispatch(updateElement(result));
     }
@@ -79,7 +81,18 @@ const useSelectedElement = () => {
     }
   };
   const handleSetSelectedElementId = (elementId: string) => {
-    dispatch(setSelectedElement(elementId));
+    if (elementId === selectedElementId) {
+      dispatch(
+        setTooltip({
+          position: { x: 0, y: 0 },
+          isActive: false,
+          canInsertElement: false,
+        })
+      );
+      dispatch(setSelectedElement(""));
+    } else {
+      dispatch(setSelectedElement(elementId));
+    }
   };
   const handleSetlayoutSelectedElementId = (elementId: string) => {
     dispatch(setLayoutSelectedElement(elementId));

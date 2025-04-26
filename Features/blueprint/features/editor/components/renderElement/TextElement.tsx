@@ -80,12 +80,12 @@ const TextElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
         isCanPasteElement={false}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Text
         as={element.tag}
         ref={(node) => {
@@ -105,7 +105,7 @@ const TextElement: React.FC<RenderElementProps> = ({
       >
         {!Array.isArray(element.content) && element.content}
       </Text>
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

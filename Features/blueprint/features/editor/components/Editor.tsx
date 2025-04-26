@@ -14,6 +14,8 @@ import RenderElement from "./renderElement/RenderElement";
 import useDragDropEvent from "../../../hooks/useDragDropEvent";
 import useBlueprintData from "../../../hooks/useGetBlueprint";
 import { ColorVar } from "../../blockManager/type";
+import Tooltip2 from "./tooltip/Tooltip2";
+import { clearTooltip } from "@/Features/blueprint/slice/elementToolStateSlice";
 
 const Wrapper = styled.div`
   grid-column: 1 / 3;
@@ -55,6 +57,9 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
   });
 
   const dispatch = useAppDispatch();
+  const handleClearTooltip = () => {
+    dispatch(clearTooltip());
+  };
   useEffect(() => {
     if (blueprintData) {
       const { createdAt, status, updatedAt, ...rest } = blueprintData;
@@ -79,6 +84,7 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
       }
     }
   }, [blueprintData]);
+
   if (blueprintIsLoading && blueprintBlockIsLoading)
     return (
       <Wrapper>
@@ -92,9 +98,10 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
       </Wrapper>
     );
   return (
-    <Wrapper>
+    <Wrapper onScroll={handleClearTooltip}>
       <EditorArea ref={setNodeRef} $isOver={isOver}>
         <RenderElement />
+        <Tooltip2 />
       </EditorArea>
     </Wrapper>
   );

@@ -109,12 +109,12 @@ const FormElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          <Tooltip
+          {/* <Tooltip
             isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
-          />
-          {!isRootElement && <TopOverlay />}
+          /> */}
+          {/* {!isRootElement && <TopOverlay />} */}
           {elements.isListing
             ? [...Array(5)].map((_, index) => {
                 const isLastChildElm = index + 1 == elements.content.length;
@@ -151,7 +151,7 @@ const FormElement: React.FC<RenderElementProps> = ({
                   />
                 );
               })}
-          {!isRootElement && isLastElm && <BottomOverlay />}
+          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Form>
       );
     } else {
@@ -174,14 +174,14 @@ const FormElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          <Tooltip
+          {/* <Tooltip
             isCanPasteElement={true}
             isActive={selectedElementId == elements.id}
             targetRef={targetRef}
-          />
-          {!isRootElement && <TopOverlay />}
+          /> */}
+          {/* {!isRootElement && <TopOverlay />} */}
           <p>{elements.elmType}</p>
-          {!isRootElement && isLastElm && <BottomOverlay />}
+          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Form>
       );
     }
@@ -205,11 +205,11 @@ const FormElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
-        <Tooltip
+        {/* <Tooltip
           isCanPasteElement={true}
           isActive={selectedElementId == elements.id}
           targetRef={targetRef}
-        />
+        /> */}
         {elements.content}
       </Form>
     );

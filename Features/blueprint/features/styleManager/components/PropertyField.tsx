@@ -82,7 +82,7 @@ const PropertyField: React.FC<Props> = ({
   const { styles, handleUpdateStyle, handleClearStyleProperty } =
     useSelectedStyle();
   const getInitialValue = () =>
-    styles?.[currentStyleState]?.[toCamelCase(propertyName)] ?? "";
+    styles?.[currentStyleState]?.[propertyName] ?? "";
 
   const [propertyValue, setPropertyValue] = useState(getInitialValue);
 

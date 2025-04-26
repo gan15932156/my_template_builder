@@ -94,12 +94,12 @@ const LabelElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Label
         ref={(node) => {
           targetRef.current = node;
@@ -118,7 +118,7 @@ const LabelElement: React.FC<RenderElementProps> = ({
       >
         {relLabelText}
       </Label>
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

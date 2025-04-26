@@ -79,12 +79,12 @@ const LinkElement: React.FC<RenderElementProps> = ({
   if (isDragging) return;
   return (
     <>
-      <Tooltip
+      {/* <Tooltip
         isCanPasteElement={false}
         isActive={selectedElementId == element.id}
         targetRef={targetRef}
-      />
-      {!isRootElement && <TopOverlay />}
+      /> */}
+      {/* {!isRootElement && <TopOverlay />} */}
       <Link
         ref={(node) => {
           targetRef.current = node;
@@ -104,7 +104,7 @@ const LinkElement: React.FC<RenderElementProps> = ({
       >
         {!Array.isArray(element.content) && element.content}
       </Link>
-      {!isRootElement && isLastElm && <BottomOverlay />}
+      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

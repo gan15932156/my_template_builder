@@ -50,11 +50,7 @@ const LayoutAccordion: React.FC<Props> = ({ element }) => {
   };
   const handleOnClickWrapper = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    if (element.id === selectedElementId) {
-      handleSetSelectedElementId("");
-    } else {
-      handleSetSelectedElementId(element.id);
-    }
+    handleSetSelectedElementId(element.id);
   };
   if (!element) return null;
   return (
