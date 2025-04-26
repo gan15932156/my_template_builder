@@ -11,7 +11,7 @@ const overalyPaadding = 2;
 const OverlayBase = styled.div<{ $isOver: boolean }>`
   position: absolute;
   background-color: transparent;
-  padding: ${overalyPaadding};
+  padding: ${overalyPaadding}px;
 
   ${(props) =>
     props.$isOver &&
@@ -20,33 +20,59 @@ const OverlayBase = styled.div<{ $isOver: boolean }>`
     `}
 `;
 
-const TopOverlayStyled = styled(OverlayBase)<{
+// const TopOverlayStyled = styled(OverlayBase)<{
+//   $top: string;
+//   $left: string;
+//   $width: string;
+//   $height: string;
+// }>`
+//   ${(props) => css`
+//     top: ${props.$top};
+//     left: ${props.$left};
+//     width: ${props.$width};
+//     height: ${props.$height};
+//   `}
+// `;
+// const BottomOverlayStyled = styled(OverlayBase)<{
+//   $top: string;
+//   $left: string;
+//   $width: string;
+//   $height: string;
+// }>`
+//   ${(props) => css`
+//     top: ${props.$top};
+//     left: ${props.$left};
+//     width: ${props.$width};
+//     height: ${props.$height};
+//   `}
+// `;
+const TopOverlayStyled = styled(OverlayBase).attrs<{
   $top: string;
   $left: string;
   $width: string;
   $height: string;
-}>`
-  ${(props) => css`
-    top: ${props.$top};
-    left: ${props.$left};
-    width: ${props.$width};
-    height: ${props.$height};
-  `}
-`;
+}>((props) => ({
+  style: {
+    top: props.$top,
+    left: props.$left,
+    width: props.$width,
+    height: props.$height,
+  },
+}))``;
 
-const BottomOverlayStyled = styled(OverlayBase)<{
+const BottomOverlayStyled = styled(OverlayBase).attrs<{
   $top: string;
   $left: string;
   $width: string;
   $height: string;
-}>`
-  ${(props) => css`
-    top: ${props.$top};
-    left: ${props.$left};
-    width: ${props.$width};
-    height: ${props.$height};
-  `}
-`;
+}>((props) => ({
+  style: {
+    top: props.$top,
+    left: props.$left,
+    width: props.$width,
+    height: props.$height,
+  },
+}))``;
 
 function useOverlay2(
   isHorizontal: boolean,

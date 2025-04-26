@@ -14,6 +14,7 @@ import { FiX } from "react-icons/fi";
 import styled from "styled-components";
 import ColorVarDropdown from "./ColorVarDropdown";
 import Dropdown from "./Dropdown";
+import { toCamelCase } from "../../editor/utils/renderElement";
 
 export const FormControl = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ const PropertyField: React.FC<Props> = ({
   const { styles, handleUpdateStyle, handleClearStyleProperty } =
     useSelectedStyle();
   const getInitialValue = () =>
-    styles?.[currentStyleState]?.[propertyName] ?? "";
+    styles?.[currentStyleState]?.[toCamelCase(propertyName)] ?? "";
 
   const [propertyValue, setPropertyValue] = useState(getInitialValue);
 
