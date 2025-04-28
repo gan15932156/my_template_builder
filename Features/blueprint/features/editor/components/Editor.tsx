@@ -11,7 +11,9 @@ import {
 } from "@/Features/blueprint/slice/elementSlice";
 import { transformToTBlueprint } from "../utils/transformData";
 import RenderElement from "./renderElement/RenderElement";
-import useDragDropEvent from "../../../hooks/useDragDropEvent";
+import useDragDropEvent, {
+  DropPosition,
+} from "../../../hooks/useDragDropEvent";
 import useBlueprintData from "../../../hooks/useGetBlueprint";
 import { ColorVar } from "../../blockManager/type";
 import Tooltip2 from "./tooltip/Tooltip2";
@@ -42,8 +44,12 @@ interface Props {
 
 const Editor: React.FC<Props> = ({ blueprintId }) => {
   const currentElement = useAppSelector(selectBlueprint);
-  const { isError: blueprintBlockIsError, isLoading: blueprintBlockIsLoading } =
-    useDragDropEvent();
+  const {
+    isError: blueprintBlockIsError,
+    isLoading: blueprintBlockIsLoading,
+    dropPosition,
+    position,
+  } = useDragDropEvent();
   const {
     data: blueprintData,
     isError: blueprintIsError,
@@ -102,9 +108,70 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
       <EditorArea ref={setNodeRef} $isOver={isOver}>
         <RenderElement />
         <Tooltip2 />
+        <DropIndicator dropPosition={dropPosition} />
+        <Delta position={position} />
       </EditorArea>
     </Wrapper>
   );
 };
 
 export default Editor;
+
+function Delta({ position }: { position: { x: number; y: number } | null }) {
+  if (!position) return;
+  const style: React.CSSProperties = {
+    position: "fixed",
+    backgroundColor: "red",
+    borderRadius: "2rem",
+    left: position.x,
+    top: position.y,
+    width: "1rem",
+    height: "1rem",
+    pointerEvents: "none",
+    zIndex: 9999,
+  };
+  return <div style={style}></div>;
+}
+function DropIndicator({
+  dropPosition,
+}: {
+  dropPosition: DropPosition | null;
+}) {
+  if (!dropPosition) return null;
+
+  const { targetId, position } = dropPosition;
+  const targetEl = document.getElementById(targetId);
+  if (!targetEl) return null;
+  // 1. Read inline styles
+  const inlineStyle = targetEl.style;
+
+  // 2. Read computed styles (real rendered values)
+  const computedStyle = window.getComputedStyle(targetEl);
+
+  // console.log("Computed background:", computedStyle.display);
+  const rect = targetEl.getBoundingClientRect();
+
+  const style: React.CSSProperties = {
+    position: "fixed",
+    left: rect.left,
+    width: rect.width,
+    pointerEvents: "none",
+    zIndex: 9999,
+  };
+
+  if (position === "top") {
+    style.top = rect.top - 2;
+    style.height = "4px";
+    style.background = "blue";
+  } else if (position === "bottom") {
+    style.top = rect.bottom - 2;
+    style.height = "4px";
+    style.background = "blue";
+  } else if (position === "inner") {
+    style.top = rect.top;
+    style.height = rect.height;
+    style.background = "rgba(0, 0, 255, 0.15)";
+  }
+
+  return <div style={style}></div>;
+}

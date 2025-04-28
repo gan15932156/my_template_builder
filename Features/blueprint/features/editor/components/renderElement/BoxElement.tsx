@@ -3,10 +3,8 @@
 import styled, { css } from "styled-components";
 import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import React, { MouseEvent, useEffect, useRef } from "react";
-import Tooltip from "../tooltip/Tooltip";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
+import React, { MouseEvent, useRef } from "react";
+import { useAppSelector } from "@/hooks/reduxHooks";
 import useSelectedElement from "../../../../hooks/useSelectedElement";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
 import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
@@ -89,7 +87,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
     event.stopPropagation();
     handleSetSelectedElementId(elementId);
   };
-  if (isDragging) return;
+  // if (isDragging) return;
   if (Array.isArray(elements.content)) {
     if (elements.content.length > 0) {
       return (
@@ -101,6 +99,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
           as={elements.tag}
+          id={elements.id}
           $isUseBorder={isUseBorder}
           $isOver={isOver}
           $style={elementStyles}
@@ -112,12 +111,8 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          {/* <Tooltip
-            isCanPasteElement={true}
-            isActive={selectedElementId == elements.id}
-            targetRef={targetRef}
-          /> */}
           {/* {!isRootElement && <TopOverlay />} */}
+          {elements.id}
           {elements.isListing
             ? [...Array(5)].map((_, index) => {
                 const isLastChildElm = index + 1 == elements.content.length;
@@ -167,6 +162,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           }}
           onClick={(e) => handleElementClick(e, elements.id)}
           as={elements.tag}
+          id={elements.id}
           $isUseBorder={isUseBorder}
           $isOver={isOver}
           $style={elementStyles}
@@ -178,13 +174,9 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          {/* <Tooltip
-            isCanPasteElement={true}
-            isActive={selectedElementId == elements.id}
-            targetRef={targetRef}
-          /> */}
           {/* {!isRootElement && <TopOverlay />} */}
-          <p>{elements.elmType}</p>
+          {/* <p>{elements.elmType}</p> */}
+          <p>{elements.id}</p>
           {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Box>
       );
@@ -199,6 +191,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
         }}
         onClick={(e) => handleElementClick(e, elements.id)}
         as={elements.tag}
+        id={elements.id}
         $isUseBorder={isUseBorder}
         $isOver={isOver}
         $style={elementStyles}
@@ -210,12 +203,8 @@ const BoxElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
-        {/* <Tooltip
-          isCanPasteElement={true}
-          isActive={selectedElementId == elements.id}
-          targetRef={targetRef}
-        /> */}
-        {elements.content}
+        {elements.id}
+        {/* {elements.content} */}
       </Box>
     );
   }
