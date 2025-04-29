@@ -7,7 +7,6 @@ import React, { MouseEvent, useRef } from "react";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import useSelectedElement from "../../../../hooks/useSelectedElement";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
-import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 import useTooltip from "@/Features/blueprint/hooks/useTooltip";
@@ -19,13 +18,13 @@ const Box = styled.div<{
   $isUseBorder: boolean;
 }>`
   position: relative;
+  &:hover {
+    outline: 1px dashed ${editorStyle.primary500};
+  }
   ${(props) =>
     props.$isUseBorder &&
     css`
       outline: 1px dashed ${editorStyle.primary500};
-      &:hover {
-        outline: 1px solid ${editorStyle.primary500};
-      }
     `}
   ${(props) =>
     props.$style &&
@@ -46,9 +45,6 @@ const Box = styled.div<{
 const BoxElement: React.FC<RenderElementProps> = ({
   element: elements,
   styles,
-  isLastElm = false,
-  isHorizontal = true,
-  isRootElement,
 }) => {
   const { elementStyles, isHorizontalChild } = useParseElementStyle(
     elements.id,
@@ -68,12 +64,6 @@ const BoxElement: React.FC<RenderElementProps> = ({
     targetRef,
     canInsertElement: true,
   });
-  const { TopOverlay, BottomOverlay } = useOverlay2(
-    isHorizontal,
-    targetRef,
-    elements.id,
-    elements.category
-  );
   const {
     selectedElementId,
     layoutSelectedElementId,
@@ -111,11 +101,8 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          {/* {!isRootElement && <TopOverlay />} */}
-          {elements.id}
           {elements.isListing
             ? [...Array(5)].map((_, index) => {
-                const isLastChildElm = index + 1 == elements.content.length;
                 const element = elements.content[0];
                 if (typeof element == "string") {
                   return (
@@ -129,27 +116,19 @@ const BoxElement: React.FC<RenderElementProps> = ({
                       key={element.id + index}
                       element={element}
                       styles={styles}
-                      isLastElm={isLastChildElm}
-                      isHorizontal={isHorizontalChild}
-                      isRootElement={false}
                     />
                   );
                 }
               })
             : elements.content.map((element, index) => {
-                const isLastChildElm = index + 1 == elements.content.length;
                 return (
                   <SwitchCaseElement
                     key={element.id}
                     element={element}
                     styles={styles}
-                    isLastElm={isLastChildElm}
-                    isHorizontal={isHorizontalChild}
-                    isRootElement={false}
                   />
                 );
               })}
-          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Box>
       );
     } else {
@@ -174,10 +153,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          {/* {!isRootElement && <TopOverlay />} */}
-          {/* <p>{elements.elmType}</p> */}
-          <p>{elements.id}</p>
-          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
+          <p>{elements.elmType}</p>
         </Box>
       );
     }
@@ -203,8 +179,7 @@ const BoxElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
-        {elements.id}
-        {/* {elements.content} */}
+        {elements.content}
       </Box>
     );
   }

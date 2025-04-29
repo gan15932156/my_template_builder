@@ -3,7 +3,7 @@
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import { useDroppable } from "@dnd-kit/core";
 import styled, { css } from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
   selectBlueprint,
@@ -109,7 +109,7 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
         <RenderElement />
         <Tooltip2 />
         <DropIndicator dropPosition={dropPosition} />
-        <Delta position={position} />
+        {/* <Delta position={position} /> */}
       </EditorArea>
     </Wrapper>
   );
@@ -132,46 +132,62 @@ function Delta({ position }: { position: { x: number; y: number } | null }) {
   };
   return <div style={style}></div>;
 }
-function DropIndicator({
-  dropPosition,
-}: {
+type DropIndicatorProps = {
   dropPosition: DropPosition | null;
-}) {
-  if (!dropPosition) return null;
+};
+function DropIndicator({ dropPosition }: DropIndicatorProps) {
+  const [style, setStyle] = useState<React.CSSProperties | null>(null);
 
-  const { targetId, position } = dropPosition;
-  const targetEl = document.getElementById(targetId);
-  if (!targetEl) return null;
-  // 1. Read inline styles
-  const inlineStyle = targetEl.style;
+  useEffect(() => {
+    if (!dropPosition) {
+      setStyle(null);
+      return;
+    }
 
-  // 2. Read computed styles (real rendered values)
-  const computedStyle = window.getComputedStyle(targetEl);
+    const { targetId, position, axis } = dropPosition;
+    const targetEl = document.getElementById(targetId);
+    if (!targetEl) {
+      setStyle(null);
+      return;
+    }
 
-  // console.log("Computed background:", computedStyle.display);
-  const rect = targetEl.getBoundingClientRect();
+    const rect = targetEl.getBoundingClientRect();
+    const commonStyle: React.CSSProperties = {
+      position: "fixed",
+      pointerEvents: "none",
+      zIndex: 9999,
+      background: "blue",
+      left: rect.left,
+    };
 
-  const style: React.CSSProperties = {
-    position: "fixed",
-    left: rect.left,
-    width: rect.width,
-    pointerEvents: "none",
-    zIndex: 9999,
-  };
+    if (position === "top") {
+      setStyle({
+        ...commonStyle,
+        top: axis === "row" ? rect.top - 2 : rect.top,
+        width: axis === "row" ? rect.width : "4px",
+        height: axis === "row" ? "4px" : rect.height,
+      });
+    } else if (position === "bottom") {
+      setStyle({
+        ...commonStyle,
+        top: axis === "row" ? rect.bottom - 2 : rect.top,
+        left: axis === "row" ? rect.left : rect.left + rect.width,
+        width: axis === "row" ? rect.width : "4px",
+        height: axis === "row" ? "4px" : rect.height,
+      });
+    } else if (position === "inner") {
+      setStyle({
+        ...commonStyle,
+        background: "rgba(0, 0, 255, 0.15)",
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
+      });
+    }
+  }, [dropPosition]);
 
-  if (position === "top") {
-    style.top = rect.top - 2;
-    style.height = "4px";
-    style.background = "blue";
-  } else if (position === "bottom") {
-    style.top = rect.bottom - 2;
-    style.height = "4px";
-    style.background = "blue";
-  } else if (position === "inner") {
-    style.top = rect.top;
-    style.height = rect.height;
-    style.background = "rgba(0, 0, 255, 0.15)";
-  }
+  if (!style) return null;
 
-  return <div style={style}></div>;
+  return <div style={style} />;
 }

@@ -1,32 +1,24 @@
 "use client";
 
-import {
-  useDndMonitor,
-  DragEndEvent,
-  DragOverEvent,
-  DragCancelEvent,
-  DragMoveEvent,
-  DragStartEvent,
-} from "@dnd-kit/core";
 import useGetBlueprintBlock from "./useGetBlueprintBlock";
+import { useDndMonitor, DragEndEvent, DragOverEvent } from "@dnd-kit/core";
 import { blockCategories } from "@/Features/blueprint/constants/block";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
   selectBlueprint,
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
 import {
-  handleChangeElement,
   handleDropInElement,
-  handleDropSiblingElement,
   handleInsertElementToBlueprint,
-  handleInsertElementToElement,
 } from "../features/editor/utils/handleDragDropEvent";
-import { useState } from "react";
-
+import { flatternElementTags } from "../constants/dragElementRule";
+export type DropDirection = "top" | "bottom" | "inner";
 export type DropPosition = {
   targetId: string;
-  position: "top" | "bottom" | "inner";
+  axis: "row" | "column";
+  position: DropDirection;
 };
 function useDragDropEvent() {
   const [dropPosition, setDropPosition] = useState<DropPosition | null>(null);
@@ -38,34 +30,117 @@ function useDragDropEvent() {
   const dispatch = useAppDispatch();
   const handleDragOver = (event: DragOverEvent) => {
     const { over } = event;
-    // Skip if active or over elements are not defined
     if (!over) {
       setDropPosition(null);
       return;
     }
+
     const overData = over.data.current;
     const overId = overData?.id;
-    const activatorEvent = event.activatorEvent as PointerEvent;
-    const clientY = activatorEvent?.clientY;
-    const clientX = activatorEvent?.clientX;
+    if (!overId) {
+      setDropPosition(null);
+      return;
+    }
 
-    if (!overId || clientY === undefined) return;
+    const activatorEvent = event.activatorEvent as PointerEvent;
+    const clientX = activatorEvent?.clientX;
+    const clientY = activatorEvent?.clientY;
+    if (clientX === undefined || clientY === undefined) {
+      setDropPosition(null);
+      return;
+    }
+
+    const targetEl = document.getElementById(overId);
+    if (!targetEl) {
+      setDropPosition(null);
+      return;
+    }
+    const elementTag = targetEl.tagName.toLowerCase();
     const rect = event.over?.rect;
-    if (!rect) return;
+    if (!rect) {
+      setDropPosition(null);
+      return;
+    }
+
+    const parentElement = targetEl.parentElement;
+    if (!parentElement) {
+      setDropPosition(null);
+      return;
+    }
+
+    const parentComputedStyle = window.getComputedStyle(parentElement);
+
     const currentX = event.delta.x + clientX;
     const currentY = event.delta.y + clientY;
-    setPosition({
-      x: currentX,
-      y: currentY,
-    });
-    const relativeY = currentY - rect.top;
-    let positionEnum: "top" | "bottom" | "inner" = "inner";
-    if (relativeY < rect.height * 0.25) {
-      positionEnum = "top";
-    } else if (relativeY > rect.height * 0.75) {
-      positionEnum = "bottom";
+
+    setPosition({ x: currentX, y: currentY });
+
+    let axis: "row" | "column" = "row";
+    let position: DropDirection;
+    if (
+      parentComputedStyle.display === "flex" &&
+      parentComputedStyle.flexDirection === "row"
+    ) {
+      axis = "column";
+      const relativeX = currentX - rect.left;
+
+      if (relativeX < rect.width * 0.25) {
+        position = "top";
+        setDropPosition({
+          targetId: overId,
+          position,
+          axis,
+        });
+      } else if (relativeX > rect.width * 0.75) {
+        position = "bottom";
+        setDropPosition({
+          targetId: overId,
+          position,
+          axis,
+        });
+      } else {
+        if (flatternElementTags.has(elementTag)) {
+          setDropPosition(null);
+        } else {
+          position = "inner";
+          setDropPosition({
+            targetId: overId,
+            position,
+            axis,
+          });
+        }
+      }
+    } else {
+      axis = "row";
+      const relativeY = currentY - rect.top;
+
+      if (relativeY < rect.height * 0.25) {
+        position = "top";
+        setDropPosition({
+          targetId: overId,
+          position,
+          axis,
+        });
+      } else if (relativeY > rect.height * 0.75) {
+        position = "bottom";
+        setDropPosition({
+          targetId: overId,
+          position,
+          axis,
+        });
+      } else {
+        if (!(elementTag in flatternElementTags)) {
+          position = "inner";
+          setDropPosition({
+            targetId: overId,
+            position,
+            axis,
+          });
+        } else {
+          setDropPosition(null);
+        }
+      }
     }
-    setDropPosition({ targetId: overId as string, position: positionEnum });
   };
   useDndMonitor({
     onDragOver: handleDragOver,

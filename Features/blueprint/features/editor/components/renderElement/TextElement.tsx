@@ -1,16 +1,14 @@
 "use client";
 
 import styled, { css } from "styled-components";
+import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
+import useTooltip from "@/Features/blueprint/hooks/useTooltip";
+import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
+import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { RenderElementProps } from "./SwitchCaseElement";
 import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
-import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
+import { useAppSelector } from "@/hooks/reduxHooks";
 import { MouseEvent, useRef } from "react";
-import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
-import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
-import Tooltip from "../tooltip/Tooltip";
-import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Text = styled.h5<{
   $style: Record<string, any> | null;
@@ -20,76 +18,62 @@ const Text = styled.h5<{
 }>`
   position: relative;
   user-select: none;
+  &:hover {
+    outline: 1px dashed ${editorStyle.primary500};
+  }
   ${(props) =>
     props.$isUseBorder &&
     css`
       outline: 1px dashed ${editorStyle.primary500};
-      &:hover {
-        outline: 1px solid ${editorStyle.primary500};
-      }
     `}
-  && {
+  ${(props) =>
+    props.$style &&
+    css`
+      ${props.$style}
+    `}
     ${(props) =>
-      props.$style &&
-      css`
-        ${props.$style}
-      `}
-    ${(props) =>
-      props.$isSelected &&
-      css`
-        outline: 1px solid ${editorStyle.primary500};
-      `}
+    props.$isSelected &&
+    css`
+      outline: 1px solid ${editorStyle.primary500};
+    `}
       ${(props) =>
-      props.$isDragging &&
-      css`
-        filter: brightness(0.7) sepia(0.5);
-      `}
-  }
+    props.$isDragging &&
+    css`
+      filter: brightness(0.7) sepia(0.5);
+    `}
 `;
-const TextElement: React.FC<RenderElementProps> = ({
-  element,
-  styles,
-  isLastElm = false,
-  isHorizontal = true,
-  isRootElement,
-}) => {
+const TextElement: React.FC<RenderElementProps> = ({ element, styles }) => {
   const { elementStyles } = useParseElementStyle(element.id, styles);
-  const { setDragNodeRef, attributes, listeners, isDragging } =
+  const { setDropNodeRef, setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
   const isUseBorder = useAppSelector(selectIsUseBorder);
-  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
-  const dispatch = useAppDispatch();
+  const {
+    selectedElementId,
+    layoutSelectedElementId,
+    handleSetSelectedElementId,
+  } = useSelectedElement();
   const targetRef = useRef<HTMLElement | null>(null);
-  const { BottomOverlay, TopOverlay } = useOverlay2(
-    isHorizontal,
+  useTooltip({
+    elementId: element.id,
     targetRef,
-    element.id,
-    element.category
-  );
+    canInsertElement: false,
+  });
   const handleElementClick = (
     event: MouseEvent<HTMLElement>,
     elementId: string
   ) => {
     event.stopPropagation();
-    if (elementId === selectedElementId) {
-      dispatch(setSelectedElement(""));
-    } else {
-      dispatch(setSelectedElement(elementId));
-    }
+    handleSetSelectedElementId(elementId);
   };
-  if (isDragging) return;
+  // if (isDragging) return;
   return (
     <>
-      {/* <Tooltip
-        isActive={selectedElementId == element.id}
-        targetRef={targetRef}
-        isCanPasteElement={false}
-      /> */}
-      {/* {!isRootElement && <TopOverlay />} */}
       <Text
         as={element.tag}
+        id={element.id}
         ref={(node) => {
           targetRef.current = node;
+          setDropNodeRef(node);
           setDragNodeRef(node);
         }}
         $isUseBorder={isUseBorder}
@@ -105,7 +89,6 @@ const TextElement: React.FC<RenderElementProps> = ({
       >
         {!Array.isArray(element.content) && element.content}
       </Text>
-      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

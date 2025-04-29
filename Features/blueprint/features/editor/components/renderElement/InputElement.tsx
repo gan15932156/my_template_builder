@@ -1,15 +1,13 @@
 "use client";
-import { RenderElementProps } from "./SwitchCaseElement";
-import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { MouseEvent, useRef } from "react";
-import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
-import Tooltip from "../tooltip/Tooltip";
-import styled, { css } from "styled-components";
-import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
+import useTooltip from "@/Features/blueprint/hooks/useTooltip";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
+import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import styled, { css } from "styled-components";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { MouseEvent, useRef } from "react";
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
+import { RenderElementProps } from "./SwitchCaseElement";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 const Input = styled.input<{
   $style: Record<string, any> | null;
@@ -19,84 +17,68 @@ const Input = styled.input<{
 }>`
   position: relative;
   user-select: none;
+  &:hover {
+    outline: 1px dashed ${editorStyle.primary500};
+  }
   ${(props) =>
     props.$isUseBorder &&
     css`
       outline: 1px dashed ${editorStyle.primary500};
-      &:hover {
-        outline: 1px solid ${editorStyle.primary500};
-      }
     `}
-  &:hover {
-    outline: 1px solid ${editorStyle.primary500};
-  }
-  && {
+  ${(props) =>
+    props.$style &&
+    css`
+      ${props.$style}
+    `}
     ${(props) =>
-      props.$style &&
-      css`
-        ${props.$style}
-      `}
-    ${(props) =>
-      props.$isSelected &&
-      css`
-        outline: 1px solid ${editorStyle.primary500};
-      `}
+    props.$isSelected &&
+    css`
+      outline: 1px solid ${editorStyle.primary500};
+    `}
       ${(props) =>
-      props.$isDragging &&
-      css`
-        filter: brightness(0.7) sepia(0.5);
-      `}
-  }
+    props.$isDragging &&
+    css`
+      filter: brightness(0.7) sepia(0.5);
+    `}
 `;
-const InputElement: React.FC<RenderElementProps> = ({
-  element,
-  styles,
-  isLastElm = false,
-  isHorizontal = true,
-  isRootElement,
-}) => {
+const InputElement: React.FC<RenderElementProps> = ({ element, styles }) => {
   const isUseBorder = useAppSelector(selectIsUseBorder);
   const { elementStyles } = useParseElementStyle(element.id, styles);
-  const { setDragNodeRef, attributes, listeners, isDragging } =
+  const { setDropNodeRef, setDragNodeRef, attributes, listeners, isDragging } =
     useDndFunc(element);
 
-  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
-  const dispatch = useAppDispatch();
+  const {
+    selectedElementId,
+    layoutSelectedElementId,
+    handleSetSelectedElementId,
+  } = useSelectedElement();
   const targetRef = useRef<HTMLInputElement | null>(null);
-  const { BottomOverlay, TopOverlay } = useOverlay2(
-    isHorizontal,
+  useTooltip({
+    elementId: element.id,
     targetRef,
-    element.id,
-    element.category
-  );
+    canInsertElement: false,
+  });
+
   const handleElementClick = (
     event: MouseEvent<HTMLInputElement>,
     elementId: string
   ) => {
     event.stopPropagation();
-    if (elementId === selectedElementId) {
-      dispatch(setSelectedElement(""));
-    } else {
-      dispatch(setSelectedElement(elementId));
-    }
+    handleSetSelectedElementId(elementId);
   };
-  if (isDragging) return;
+  // if (isDragging) return;
   return (
     <>
-      {/* <Tooltip
-        isCanPasteElement={false}
-        isActive={selectedElementId == element.id}
-        targetRef={targetRef}
-      /> */}
-      {/* {!isRootElement && <TopOverlay />} */}
       <Input
         ref={(node) => {
           targetRef.current = node;
+          setDropNodeRef(node);
           setDragNodeRef(node);
         }}
         placeholder={
           (element.attributes?.placeholder as string) ?? "placeholder"
         }
+        id={element.id}
         name={(element.attributes?.name as string) ?? element.id}
         type={(element.attributes?.type as string) ?? "text"}
         $isUseBorder={isUseBorder}
@@ -110,7 +92,6 @@ const InputElement: React.FC<RenderElementProps> = ({
         {...attributes}
         onClick={(e) => handleElementClick(e, element.id)}
       />
-      {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
     </>
   );
 };

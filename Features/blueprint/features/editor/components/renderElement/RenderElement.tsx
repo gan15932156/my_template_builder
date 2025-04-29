@@ -15,15 +15,10 @@ const RenderElement: React.FC = () => {
   }
 
   if (currentElement?.element) {
-    const isLastElm = Array.isArray(currentElement.element.content)
-      ? currentElement.element.content.length == 1
-      : true;
     return (
       <SwitchCaseElement
         element={currentElement.element}
         styles={currentElement.styles}
-        isLastElm={isLastElm}
-        isRootElement={true}
       />
     );
   }

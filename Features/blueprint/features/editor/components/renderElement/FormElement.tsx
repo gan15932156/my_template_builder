@@ -1,16 +1,14 @@
 "use client";
 
-import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
-import styled, { css } from "styled-components";
-import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
+import useTooltip from "@/Features/blueprint/hooks/useTooltip";
 import useDndFunc from "@/Features/blueprint/hooks/useDndFunc";
-import useOverlay2 from "@/Features/blueprint/hooks/useSibingOverlay2";
-import React, { MouseEvent, useRef } from "react";
 import useSelectedElement from "@/Features/blueprint/hooks/useSelectedElement";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
-import { setSelectedElement } from "@/Features/blueprint/slice/elementSlice";
-import Tooltip from "../tooltip/Tooltip";
 import useParseElementStyle from "@/Features/blueprint/hooks/useParseElementStyle";
+import styled, { css } from "styled-components";
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
+import React, { MouseEvent, useRef } from "react";
+import { useAppSelector } from "@/hooks/reduxHooks";
+import SwitchCaseElement, { RenderElementProps } from "./SwitchCaseElement";
 import { selectIsUseBorder } from "@/Features/blueprint/slice/panelSlice";
 
 const Form = styled.form<{
@@ -21,38 +19,33 @@ const Form = styled.form<{
   $isUseBorder: boolean;
 }>`
   position: relative;
+  &:hover {
+    outline: 1px dashed ${editorStyle.primary500};
+  }
   ${(props) =>
     props.$isUseBorder &&
     css`
       outline: 1px dashed ${editorStyle.primary500};
-      &:hover {
-        outline: 1px solid ${editorStyle.primary500};
-      }
     `}
-  && {
+  ${(props) =>
+    props.$style &&
+    css`
+      ${props.$style}
+    `}
     ${(props) =>
-      props.$style &&
-      css`
-        ${props.$style}
-      `}
-    ${(props) =>
-      (props.$isOver || props.$isSelected) &&
-      css`
-        outline: 1px solid ${editorStyle.primary500};
-      `}
+    (props.$isOver || props.$isSelected) &&
+    css`
+      outline: 1px solid ${editorStyle.primary500};
+    `}
       ${(props) =>
-      props.$isDragging &&
-      css`
-        filter: brightness(0.7) sepia(0.5);
-      `}
-  }
+    props.$isDragging &&
+    css`
+      filter: brightness(0.7) sepia(0.5);
+    `}
 `;
 const FormElement: React.FC<RenderElementProps> = ({
   element: elements,
   styles,
-  isLastElm = false,
-  isHorizontal = true,
-  isRootElement,
 }) => {
   const isUseBorder = useAppSelector(selectIsUseBorder);
   const { elementStyles, isHorizontalChild } = useParseElementStyle(
@@ -68,26 +61,24 @@ const FormElement: React.FC<RenderElementProps> = ({
     isDragging,
   } = useDndFunc(elements);
   const targetRef = useRef<HTMLFormElement | null>(null);
-  const { TopOverlay, BottomOverlay } = useOverlay2(
-    isHorizontal,
+  useTooltip({
+    elementId: elements.id,
     targetRef,
-    elements.id,
-    elements.category
-  );
-  const { selectedElementId, layoutSelectedElementId } = useSelectedElement();
-  const dispatch = useAppDispatch();
+    canInsertElement: true,
+  });
+  const {
+    selectedElementId,
+    layoutSelectedElementId,
+    handleSetSelectedElementId,
+  } = useSelectedElement();
   const handleElementClick = (
     event: MouseEvent<HTMLFormElement>,
     elementId: string
   ) => {
     event.stopPropagation();
-    if (elementId === selectedElementId) {
-      dispatch(setSelectedElement(""));
-    } else {
-      dispatch(setSelectedElement(elementId));
-    }
+    handleSetSelectedElementId(elementId);
   };
-  if (isDragging) return;
+  // if (isDragging) return;
   if (Array.isArray(elements.content)) {
     if (elements.content.length > 0) {
       return (
@@ -97,6 +88,7 @@ const FormElement: React.FC<RenderElementProps> = ({
             setDropNodeRef(node);
             setDragNodeRef(node);
           }}
+          id={elements.id}
           onClick={(e) => handleElementClick(e, elements.id)}
           $isUseBorder={isUseBorder}
           $isOver={isOver}
@@ -109,15 +101,8 @@ const FormElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          {/* <Tooltip
-            isCanPasteElement={true}
-            isActive={selectedElementId == elements.id}
-            targetRef={targetRef}
-          /> */}
-          {/* {!isRootElement && <TopOverlay />} */}
           {elements.isListing
             ? [...Array(5)].map((_, index) => {
-                const isLastChildElm = index + 1 == elements.content.length;
                 const element = elements.content[0];
                 if (typeof element == "string") {
                   return (
@@ -131,27 +116,19 @@ const FormElement: React.FC<RenderElementProps> = ({
                       key={element.id + index}
                       element={element}
                       styles={styles}
-                      isLastElm={isLastChildElm}
-                      isHorizontal={isHorizontalChild}
-                      isRootElement={false}
                     />
                   );
                 }
               })
             : elements.content.map((element, index) => {
-                const isLastChildElm = index + 1 == elements.content.length;
                 return (
                   <SwitchCaseElement
                     key={element.id}
                     element={element}
                     styles={styles}
-                    isLastElm={isLastChildElm}
-                    isHorizontal={isHorizontalChild}
-                    isRootElement={false}
                   />
                 );
               })}
-          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Form>
       );
     } else {
@@ -162,6 +139,7 @@ const FormElement: React.FC<RenderElementProps> = ({
             setDropNodeRef(node);
             setDragNodeRef(node);
           }}
+          id={elements.id}
           onClick={(e) => handleElementClick(e, elements.id)}
           $isUseBorder={isUseBorder}
           $isOver={isOver}
@@ -174,14 +152,7 @@ const FormElement: React.FC<RenderElementProps> = ({
           {...listeners}
           {...attributes}
         >
-          {/* <Tooltip
-            isCanPasteElement={true}
-            isActive={selectedElementId == elements.id}
-            targetRef={targetRef}
-          /> */}
-          {/* {!isRootElement && <TopOverlay />} */}
           <p>{elements.elmType}</p>
-          {/* {!isRootElement && isLastElm && <BottomOverlay />} */}
         </Form>
       );
     }
@@ -193,6 +164,7 @@ const FormElement: React.FC<RenderElementProps> = ({
           setDropNodeRef(node);
           setDragNodeRef(node);
         }}
+        id={elements.id}
         onClick={(e) => handleElementClick(e, elements.id)}
         $isUseBorder={isUseBorder}
         $isOver={isOver}
@@ -205,11 +177,6 @@ const FormElement: React.FC<RenderElementProps> = ({
         {...listeners}
         {...attributes}
       >
-        {/* <Tooltip
-          isCanPasteElement={true}
-          isActive={selectedElementId == elements.id}
-          targetRef={targetRef}
-        /> */}
         {elements.content}
       </Form>
     );

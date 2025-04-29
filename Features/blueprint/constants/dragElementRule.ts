@@ -50,4 +50,13 @@ const dragElementRule: Record<string, DragRules> = {
     defaultTag: "input",
   },
 };
-export { dragElementRule, ACCEPT_ALL };
+const flatternElementTags = new Set([
+  ...textTag,
+  dragElementRule.button.defaultTag,
+  dragElementRule.image.defaultTag,
+  dragElementRule.link.defaultTag,
+  dragElementRule.label.defaultTag,
+  dragElementRule.select.defaultTag,
+  dragElementRule.input.defaultTag,
+]);
+export { dragElementRule, ACCEPT_ALL, flatternElementTags };
