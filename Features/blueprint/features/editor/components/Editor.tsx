@@ -105,7 +105,7 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
     );
   return (
     <Wrapper onScroll={handleClearTooltip}>
-      <EditorArea ref={setNodeRef} $isOver={isOver}>
+      <EditorArea ref={setNodeRef} $isOver={isOver} id="editor-area">
         <RenderElement />
         <Tooltip2 />
         <DropIndicator dropPosition={dropPosition} />

@@ -23,6 +23,7 @@ import { selectBlueprint } from "@/Features/blueprint/slice/elementSlice";
 import useSaveBlueprint from "@/Features/blueprint/hooks/useSaveBlueprint";
 import AddThemeButton from "./AddThemeButton";
 import { downloadCodeZip } from "../../editor/utils/utils";
+import { getEditorImage } from "../utils";
 export const ICON_SIZE = 18;
 const Wrapper = styled.div`
   ${getBgTextStyle}
@@ -47,9 +48,13 @@ const TopPanel = () => {
   const handleToggleHideShowBorder = () => {
     dispatch(toggleIsUseBorder());
   };
-  const handleSave = () => {
+  const handleSave = async () => {
     if (currentBlueprint) {
-      mutate(currentBlueprint);
+      const iframe = document.querySelector("#editor-area") as HTMLElement;
+      const editorImage = await getEditorImage(iframe);
+      if (editorImage) {
+        mutate({ blueprint: currentBlueprint, newImage: editorImage });
+      }
     }
   };
   const handleExport = async () => {

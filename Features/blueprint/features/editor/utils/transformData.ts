@@ -12,6 +12,7 @@ function transformToTBlueprint(data: {
   category?: string;
   isBlueprint: boolean;
   styles: object;
+  imageUrl?: string;
   element: object;
   colorVars: object;
 }): TBlueprint {
@@ -78,6 +79,7 @@ function transformToTBlueprint(data: {
     name: data.name,
     category: data.category,
     isBlueprint: data.isBlueprint,
+    imageUrl: data.imageUrl,
     styles: validateStyles(data.styles),
     element: validateElement(data.element),
     colorVars: data.colorVars as ColorVar,

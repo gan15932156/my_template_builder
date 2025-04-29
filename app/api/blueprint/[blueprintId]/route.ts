@@ -1,4 +1,6 @@
+import { cloudinary } from "@/config/cloudinary-config";
 import db from "@/config/prisma";
+import { uploadToCloudinary } from "@/utils/mediaUtils";
 
 export async function GET(
   request: Request,
@@ -68,45 +70,63 @@ export async function PATCH(
   }
   try {
     const {
-      id,
-      isBlueprint,
-      createdAt,
-      status,
-      updatedAt,
-      colorVars,
-      styles,
-      element,
-      ...rest
-    } = await request.json();
-    const res = await db.blueprint.update({
-      where: {
+      blueprint: {
         id,
-      },
-      data: {
-        ...rest,
+        isBlueprint,
+        createdAt,
+        status,
+        updatedAt,
         colorVars,
-        element: element ?? {},
         styles,
+        element,
+        imageUrl,
+        ...rest
       },
-    });
-    if (res) {
-      return Response.json(
-        {
-          success: true,
-          data: res,
-          message: "Success",
+      newImage,
+    } = await request.json();
+    if (imageUrl) {
+      const regex = /nextjs_uploads\/([^\.]+)/;
+      const match = imageUrl.match(regex);
+      if (match && match[1]) {
+        const publicId = `nextjs_uploads/${match[1]}`;
+        await cloudinary.uploader.destroy(publicId);
+      }
+    }
+    const imageRes = await uploadToCloudinary(newImage, `screenshot_${id}`);
+    if (imageRes.success && imageRes.result) {
+      const res = await db.blueprint.update({
+        where: {
+          id,
         },
-        { status: 200 }
-      );
+        data: {
+          ...rest,
+          colorVars,
+          element: element ?? {},
+          styles,
+          imageUrl: imageRes.result.secure_url,
+        },
+      });
+      if (res) {
+        return Response.json(
+          {
+            success: true,
+            message: "Success",
+            data: res,
+          },
+          { status: 200 }
+        );
+      } else {
+        return Response.json(
+          {
+            success: false,
+            message: "Fail to update blieprint",
+            data: {},
+          },
+          { status: 500 }
+        );
+      }
     } else {
-      return Response.json(
-        {
-          success: false,
-          data: {},
-          message: "Fail",
-        },
-        { status: 400 }
-      );
+      throw new Error("Failed to upload to Cloudinary");
     }
   } catch (error) {
     console.error("Error on select blueprint", error);
@@ -139,16 +159,38 @@ export async function DELETE(
     );
   }
   try {
-    const res = await db.blueprint.delete({ where: { id: blueprintId } });
-    if (res) {
-      return Response.json(
-        {
-          success: true,
-          data: res,
-          message: "Success",
-        },
-        { status: 200 }
-      );
+    const blueprint = await db.blueprint.findUnique({
+      where: { id: blueprintId },
+    });
+    if (blueprint) {
+      if (blueprint.imageUrl) {
+        const regex = /nextjs_uploads\/([^\.]+)/;
+        const match = blueprint.imageUrl.match(regex);
+        if (match && match[1]) {
+          const publicId = `nextjs_uploads/${match[1]}`;
+          await cloudinary.uploader.destroy(publicId);
+        }
+      }
+      const res = await db.blueprint.delete({ where: { id: blueprintId } });
+      if (res) {
+        return Response.json(
+          {
+            success: true,
+            data: res,
+            message: "Success",
+          },
+          { status: 200 }
+        );
+      } else {
+        return Response.json(
+          {
+            success: true,
+            data: {},
+            message: "Success",
+          },
+          { status: 200 }
+        );
+      }
     } else {
       return Response.json(
         {

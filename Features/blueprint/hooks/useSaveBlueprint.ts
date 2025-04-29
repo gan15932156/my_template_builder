@@ -4,12 +4,13 @@ import { ApiResponse } from "@/types/types";
 import { TBlueprint } from "../features/blockManager/type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const saveBlueprint = (
-  blueprint: TBlueprint
-): Promise<ApiResponse<TBlueprint>> =>
-  fetch(`/api/blueprint/${blueprint.id}`, {
+const saveBlueprint = (data: {
+  blueprint: TBlueprint;
+  newImage: string;
+}): Promise<ApiResponse<TBlueprint>> =>
+  fetch(`/api/blueprint/${data.blueprint.id}`, {
     method: "PATCH",
-    body: JSON.stringify(blueprint),
+    body: JSON.stringify(data),
   }).then((response) => response.json());
 
 const useSaveBlueprint = () => {

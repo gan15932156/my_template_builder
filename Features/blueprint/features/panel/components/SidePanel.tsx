@@ -12,6 +12,7 @@ import ColorVarManager from "../../colorVarManager/components/ColorVarManager";
 const Wrapper = styled.div`
   ${getBgTextStyle}
   padding:.2rem;
+  overflow-y: scroll;
 `;
 const SidePanel = () => {
   return (
