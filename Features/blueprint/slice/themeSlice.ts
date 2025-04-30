@@ -72,7 +72,7 @@ export const ThemeSlice = createSlice({
         elementStyles[styleState.tag][styleState.state][property] = newValue;
       }
     },
-
+    resetThemeData: () => initialState,
     clearStyleProperty: (
       state,
       action: PayloadAction<{
@@ -98,6 +98,6 @@ export const ThemeSlice = createSlice({
 });
 
 export default ThemeSlice.reducer;
-export const { updateTheme, updateStyle, clearStyleProperty } =
+export const { resetThemeData, updateTheme, updateStyle, clearStyleProperty } =
   ThemeSlice.actions;
 export const selectTheme = (state: RootState) => state.theme.theme;

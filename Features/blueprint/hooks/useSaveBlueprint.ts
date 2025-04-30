@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const saveBlueprint = (data: {
   blueprint: TBlueprint;
-  newImage: string;
+  newImage: string | null;
 }): Promise<ApiResponse<TBlueprint>> =>
   fetch(`/api/blueprint/${data.blueprint.id}`, {
     method: "PATCH",

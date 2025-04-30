@@ -6,6 +6,7 @@ import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import {
+  resetState,
   selectBlueprint,
   updateElement,
 } from "@/Features/blueprint/slice/elementSlice";
@@ -17,7 +18,11 @@ import useDragDropEvent, {
 import useBlueprintData from "../../../hooks/useGetBlueprint";
 import { ColorVar } from "../../blockManager/type";
 import Tooltip2 from "./tooltip/Tooltip2";
-import { clearTooltip } from "@/Features/blueprint/slice/elementToolStateSlice";
+import {
+  clearTooltip,
+  resetToolState,
+} from "@/Features/blueprint/slice/elementToolStateSlice";
+import { resetPanelState } from "@/Features/blueprint/slice/panelSlice";
 
 const Wrapper = styled.div`
   grid-column: 1 / 3;
@@ -66,6 +71,11 @@ const Editor: React.FC<Props> = ({ blueprintId }) => {
   const handleClearTooltip = () => {
     dispatch(clearTooltip());
   };
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(resetPanelState());
+    dispatch(resetToolState());
+  }, []);
   useEffect(() => {
     if (blueprintData) {
       const { createdAt, status, updatedAt, ...rest } = blueprintData;

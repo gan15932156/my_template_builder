@@ -46,6 +46,7 @@ export const ElementlSlice = createSlice({
       blueprintStyles[elementId][styleState][property] = newValue;
       state.blueprint.styles = blueprintStyles;
     },
+    resetState: () => initialState,
     clearStyleProperty: (
       state,
       action: PayloadAction<{
@@ -76,6 +77,7 @@ export default ElementlSlice.reducer;
 export const {
   updateElement,
   updateStyle,
+  resetState,
   clearStyleProperty,
   setSelectedElement,
   setDuplicateElementId,

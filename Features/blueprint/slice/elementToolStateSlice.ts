@@ -33,10 +33,12 @@ export const ElementToolStateSlice = createSlice({
     clearTooltip: (state) => {
       state.tooltip = initialTooltipState;
     },
+    resetToolState: () => initialState,
   },
 });
 
 export default ElementToolStateSlice.reducer;
 export const selectElementTooltipState = (state: RootState) =>
   state.tool.tooltip;
-export const { setTooltip, clearTooltip } = ElementToolStateSlice.actions;
+export const { resetToolState, setTooltip, clearTooltip } =
+  ElementToolStateSlice.actions;

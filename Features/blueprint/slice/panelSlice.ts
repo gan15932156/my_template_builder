@@ -21,11 +21,13 @@ export const panelSlice = createSlice({
     toggleIsUseBorder: (state) => {
       state.isUseBorder = !state.isUseBorder;
     },
+    resetPanelState: () => initialState,
   },
 });
 
 export default panelSlice.reducer;
-export const { changePanel, toggleIsUseBorder } = panelSlice.actions;
+export const { resetPanelState, changePanel, toggleIsUseBorder } =
+  panelSlice.actions;
 export const selectCurrentPanel = (state: RootState) =>
   state.panel.currentPanel;
 export const selectIsUseBorder = (state: RootState) => state.panel.isUseBorder;

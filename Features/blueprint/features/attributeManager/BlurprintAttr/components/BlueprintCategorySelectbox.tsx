@@ -93,7 +93,10 @@ const BlueprintCategorySelectbox: React.FC = () => {
   };
   const handleUpdateCategory = (newCategory: string) => {
     if (currentBlueprint) {
-      mutate({ ...currentBlueprint, category: newCategory });
+      mutate({
+        blueprint: { ...currentBlueprint, category: newCategory },
+        newImage: null,
+      });
     }
   };
   const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {

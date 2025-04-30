@@ -4,7 +4,10 @@ import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 import styled, { css } from "styled-components";
 import ThemeForm from "./ThemeForm";
 import { useAppDispatch } from "@/hooks/reduxHooks";
-import { updateTheme } from "@/Features/blueprint/slice/themeSlice";
+import {
+  resetThemeData,
+  updateTheme,
+} from "@/Features/blueprint/slice/themeSlice";
 import useThemeData from "../hooks/useThemeData";
 import { useEffect, useState } from "react";
 import { TTheme } from "../types";
@@ -75,6 +78,9 @@ const Editor: React.FC<Props> = ({ themeId }) => {
   const { data, isError, isLoading } = useThemeData(themeId);
   const handleChangeExample = (newExample: "element" | "page") =>
     setExampleStatus(newExample);
+  useEffect(() => {
+    dispatch(resetThemeData());
+  }, []);
   useEffect(() => {
     if (data) {
       const { createdAt, updatedAt, ...rest } = data;

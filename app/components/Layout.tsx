@@ -22,14 +22,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         >
           Component
         </Link> */}
-        <Link
-          href={"/theme"}
-          className={`${styles.link} ${
-            pathName === "/theme" ? styles.active : ""
-          }`}
-        >
-          Theme
-        </Link>
+
         <Link
           href={"/blueprint"}
           className={`${styles.link} ${
@@ -37,6 +30,14 @@ function Layout({ children }: { children: React.ReactNode }) {
           }`}
         >
           Blueprint
+        </Link>
+        <Link
+          href={"/theme"}
+          className={`${styles.link} ${
+            pathName === "/theme" ? styles.active : ""
+          }`}
+        >
+          Theme
         </Link>
       </nav>
       {children}

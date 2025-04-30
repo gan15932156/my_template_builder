@@ -84,16 +84,52 @@ export async function PATCH(
       },
       newImage,
     } = await request.json();
-    if (imageUrl) {
-      const regex = /nextjs_uploads\/([^\.]+)/;
-      const match = imageUrl.match(regex);
-      if (match && match[1]) {
-        const publicId = `nextjs_uploads/${match[1]}`;
-        await cloudinary.uploader.destroy(publicId);
+    if (newImage) {
+      if (imageUrl) {
+        const regex = /nextjs_uploads\/([^\.]+)/;
+        const match = imageUrl.match(regex);
+        if (match && match[1]) {
+          const publicId = `nextjs_uploads/${match[1]}`;
+          await cloudinary.uploader.destroy(publicId);
+        }
       }
-    }
-    const imageRes = await uploadToCloudinary(newImage, `screenshot_${id}`);
-    if (imageRes.success && imageRes.result) {
+      const imageRes = await uploadToCloudinary(newImage, `screenshot_${id}`);
+      if (imageRes.success && imageRes.result) {
+        const res = await db.blueprint.update({
+          where: {
+            id,
+          },
+          data: {
+            ...rest,
+            colorVars,
+            element: element ?? {},
+            styles,
+            imageUrl: imageRes.result.secure_url,
+          },
+        });
+        if (res) {
+          return Response.json(
+            {
+              success: true,
+              message: "Success",
+              data: res,
+            },
+            { status: 200 }
+          );
+        } else {
+          return Response.json(
+            {
+              success: false,
+              message: "Fail to update blieprint",
+              data: {},
+            },
+            { status: 500 }
+          );
+        }
+      } else {
+        throw new Error("Failed to upload to Cloudinary");
+      }
+    } else {
       const res = await db.blueprint.update({
         where: {
           id,
@@ -101,9 +137,9 @@ export async function PATCH(
         data: {
           ...rest,
           colorVars,
+          imageUrl,
           element: element ?? {},
           styles,
-          imageUrl: imageRes.result.secure_url,
         },
       });
       if (res) {
@@ -125,8 +161,6 @@ export async function PATCH(
           { status: 500 }
         );
       }
-    } else {
-      throw new Error("Failed to upload to Cloudinary");
     }
   } catch (error) {
     console.error("Error on select blueprint", error);

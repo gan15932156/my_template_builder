@@ -18,7 +18,10 @@ const BlueprintNameEditField: React.FC = () => {
   const handleOnFieldBlur = (event: FocusEvent<HTMLInputElement>) => {
     event.stopPropagation();
     if (currentBlueprint) {
-      mutate({ ...currentBlueprint, name: event.target.value });
+      mutate({
+        blueprint: { ...currentBlueprint, name: event.target.value },
+        newImage: null,
+      });
     }
   };
   const handleOnFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
