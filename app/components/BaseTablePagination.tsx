@@ -1,95 +1,100 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-import styles from "./BaseTablePagination.module.css";
+import styled from "styled-components";
+import { editorStyle } from "@/Features/blueprint/constants/editorStyle";
 interface Props<TData> {
   table: Table<TData>;
 }
-
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+`;
+const Button = styled.button`
+  cursor: pointer;
+  padding-inline: 1.2rem;
+  padding-block: 0.4rem;
+  color: ${editorStyle.white};
+  text-decoration: none;
+  transition: background-color 0.3s, border 0.3s;
+  border: 1px solid transparent;
+  border-radius: 0.4rem;
+  background-color: ${editorStyle.primary500};
+  &:hover {
+    background-color: ${editorStyle.primary300};
+    border: 1px solid white;
+  }
+`;
 const BaseTablePagination = <TData,>({ table }: Props<TData>) => {
   return (
-    <div className={styles.paginateContainer}>
+    <Wrapper>
       {table.getCanPreviousPage() && (
         <div>
-          <button
-            className={styles.paginateButton}
-            onClick={() => table.previousPage()}
-          >
-            {"<"}
-          </button>
+          <Button onClick={() => table.previousPage()}>{"<"}</Button>
         </div>
       )}
 
       {table.getState().pagination.pageIndex + 1 >= 4 && (
         <div>
-          <button
-            className={styles.paginateButton}
-            onClick={() => table.setPageIndex(0)}
-          >
-            1
-          </button>
+          <Button onClick={() => table.setPageIndex(0)}>1</Button>
         </div>
       )}
 
       {table.getState().pagination.pageIndex + 1 >= 5 && (
         <div>
-          <button className={styles.paginateButton}>{">>"}</button>
+          <Button>{">>"}</Button>
         </div>
       )}
 
       {table.getState().pagination.pageIndex + 1 - 2 > 0 && (
         <div>
-          <button
-            className={styles.paginateButton}
+          <Button
             onClick={() =>
               table.setPageIndex(table.getState().pagination.pageIndex - 2)
             }
           >
             {table.getState().pagination.pageIndex + 1 - 2}
-          </button>
+          </Button>
         </div>
       )}
       {table.getState().pagination.pageIndex + 1 - 1 > 0 && (
         <div>
-          <button
-            className={styles.paginateButton}
+          <Button
             onClick={() =>
               table.setPageIndex(table.getState().pagination.pageIndex - 1)
             }
           >
             {table.getState().pagination.pageIndex + 1 - 1}
-          </button>
+          </Button>
         </div>
       )}
       <div>
-        <button className={styles.paginateButton}>
-          {table.getState().pagination.pageIndex + 1}
-        </button>
+        <Button>{table.getState().pagination.pageIndex + 1}</Button>
       </div>
       {table.getState().pagination.pageIndex + 1 + 1 <=
         table?.getPageCount() && (
         <div>
-          <button
-            className={styles.paginateButton}
+          <Button
             onClick={() =>
               table.setPageIndex(table.getState().pagination.pageIndex + 1)
             }
           >
             {table.getState().pagination.pageIndex + 1 + 1}
-          </button>
+          </Button>
         </div>
       )}
       {table.getState().pagination.pageIndex + 1 + 2 <=
         table?.getPageCount() && (
         <div>
-          <button
-            className={styles.paginateButton}
+          <Button
             onClick={() =>
               table.setPageIndex(table.getState().pagination.pageIndex + 2)
             }
           >
             {table.getState().pagination.pageIndex + 1 + 2}
-          </button>
+          </Button>
         </div>
       )}
       {table.getState().pagination.pageIndex + 1 + 2 <
@@ -97,25 +102,17 @@ const BaseTablePagination = <TData,>({ table }: Props<TData>) => {
       {table.getState().pagination.pageIndex + 1 + 2 <
         table?.getPageCount() && (
         <div>
-          <button
-            className={styles.paginateButton}
-            onClick={() => table.setPageIndex(table?.getPageCount())}
-          >
+          <Button onClick={() => table.setPageIndex(table?.getPageCount())}>
             {table?.getPageCount()}
-          </button>
+          </Button>
         </div>
       )}
       {table.getCanNextPage() && (
         <div>
-          <button
-            className={styles.paginateButton}
-            onClick={() => table.nextPage()}
-          >
-            {">"}
-          </button>
+          <Button onClick={() => table.nextPage()}>{">"}</Button>
         </div>
       )}
-    </div>
+    </Wrapper>
   );
 };
 

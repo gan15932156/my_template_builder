@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Table from "./Table";
 import CreateThemeButton from "./CreateThemeButton";
 
-const Wrapper = styled.div`
+export const DashboardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,10 +14,10 @@ const Wrapper = styled.div`
 `;
 const Dashboard = () => {
   return (
-    <Wrapper>
+    <DashboardWrapper>
       <CreateThemeButton />
       <Table />
-    </Wrapper>
+    </DashboardWrapper>
   );
 };
 

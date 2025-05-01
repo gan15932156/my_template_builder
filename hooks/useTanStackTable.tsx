@@ -1,5 +1,6 @@
 "use client";
 
+import { PER_PAGE_SIZE } from "@/Features/blueprint/constants";
 import { searchParamsSchema } from "@/zodObject";
 import {
   ColumnDef,
@@ -21,7 +22,7 @@ const useTanStackTable = <TData, TValue>({
   data,
   columns,
   pageCount = -1, // Default to -1 for unknown page count
-  defaultPerPage = 10, // Default rows per page
+  defaultPerPage = PER_PAGE_SIZE, // Default rows per page
 }: UseDataTableProps<TData, TValue>) => {
   const router = useRouter();
   const pathname = usePathname();

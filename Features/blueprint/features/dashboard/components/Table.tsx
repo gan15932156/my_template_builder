@@ -4,24 +4,25 @@ import BaseTable from "@/app/components/BaseTable";
 import BaseTablePagination from "@/app/components/BaseTablePagination";
 import useBlueprintTableData from "@/hooks/useBlueprintTableData";
 import useTanStackTable from "@/hooks/useTanStackTable";
-import styles from "@/Features/projectEditor/Table.module.css";
+import { PER_PAGE_SIZE } from "@/Features/blueprint/constants";
+import { TableWrapper } from "@/Features/projectEditor/Table";
 const Table = () => {
   const { columns, data, isError, isLoading } = useBlueprintTableData();
   const { table } = useTanStackTable({
     data: data?.blueprints != undefined ? data?.blueprints : [],
     columns,
     pageCount: data?.pageCount,
-    defaultPerPage: 10,
+    defaultPerPage: PER_PAGE_SIZE,
   });
   if (isError) return <div>Cannot display blueprint</div>;
   if (isLoading) return <div>Loading...</div>;
   return (
     !isError &&
     !isLoading && (
-      <div className={styles.tableContainer}>
+      <TableWrapper>
         <BaseTable table={table} />
         <BaseTablePagination table={table} />
-      </div>
+      </TableWrapper>
     )
   );
 };

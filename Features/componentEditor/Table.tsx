@@ -4,7 +4,7 @@ import BaseTable from "@/app/components/BaseTable";
 import BaseTablePagination from "@/app/components/BaseTablePagination";
 import useComponentTableData from "@/hooks/useComponentTableData";
 import useTanStackTable from "@/hooks/useTanStackTable";
-import styles from "./Table.module.css";
+import { TableWrapper } from "../projectEditor/Table";
 const Table: React.FC = () => {
   const { columns, data, isError, isLoading } = useComponentTableData();
   const { table } = useTanStackTable({
@@ -18,10 +18,10 @@ const Table: React.FC = () => {
   return (
     !isError &&
     !isLoading && (
-      <div className={styles.tableContainer}>
+      <TableWrapper>
         <BaseTable table={table} />
         <BaseTablePagination table={table} />
-      </div>
+      </TableWrapper>
     )
   );
 };

@@ -1,12 +1,21 @@
+"use client";
+import styled from "styled-components";
 import CreateButton from "./CreateButton";
-import styles from "./Dashboard.module.css";
 import Table from "./Table";
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.6rem;
+  padding-top: 1.2rem;
+`;
 const Dashbaord = () => {
   return (
-    <div className={styles.container}>
+    <Wrapper>
       <CreateButton />
       <Table />
-    </div>
+    </Wrapper>
   );
 };
 

@@ -3,8 +3,11 @@
 import { IComponent } from "@/types/types";
 import { Row } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import styles from "./ActionColumn.module.css";
 import { FiEdit, FiSlash } from "react-icons/fi";
+import {
+  ActionColButton,
+  ActionColWrapper,
+} from "../projectEditor/ActionColumn";
 interface Props {
   row: Row<IComponent>;
 }
@@ -19,22 +22,18 @@ const ActionColumn: React.FC<Props> = ({ row }) => {
   };
   return (
     status == "ACTIVE" && (
-      <div className={styles.actionContainer}>
-        <button
-          title="Edit"
-          onClick={handleEdit}
-          className={`${styles.actionButton} ${styles["warning"]}`}
-        >
+      <ActionColWrapper>
+        <ActionColButton title="Edit" onClick={handleEdit} $variant="warning">
           <FiEdit />
-        </button>
-        <button
+        </ActionColButton>
+        <ActionColButton
           title="Change status"
           onClick={handleCahngeStatus}
-          className={`${styles.actionButton} ${styles["danger"]}`}
+          $variant="danger"
         >
           <FiSlash />
-        </button>
-      </div>
+        </ActionColButton>
+      </ActionColWrapper>
     )
   );
 };

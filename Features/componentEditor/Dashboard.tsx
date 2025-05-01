@@ -1,13 +1,13 @@
-import styles from "./Dashboard.module.css";
+import { DashboardWrapper } from "../theme/components/Dashboard";
 import CreateButton from "./CreateButton";
 import Table from "./Table";
 
 const Dashboard: React.FC = () => {
   return (
-    <div className={styles.container}>
+    <DashboardWrapper>
       <CreateButton />
       <Table />
-    </div>
+    </DashboardWrapper>
   );
 };
 

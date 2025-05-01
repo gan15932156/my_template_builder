@@ -3,9 +3,12 @@
 import { ApiResponse, TBlueprint } from "@/types/types";
 import { Row } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import styles from "@/Features/componentEditor/ActionColumn.module.css";
 import { FiEdit, FiSlash } from "react-icons/fi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  ActionColButton,
+  ActionColWrapper,
+} from "@/Features/projectEditor/ActionColumn";
 interface Props {
   row: Row<TBlueprint>;
 }
@@ -43,24 +46,24 @@ const ActionColumn: React.FC<Props> = ({ row }) => {
   };
   return (
     status == "ACTIVE" && (
-      <div className={styles.actionContainer}>
-        <button
+      <ActionColWrapper>
+        <ActionColButton
           title="Edit"
           disabled={isPending}
           onClick={handleEdit}
-          className={`${styles.actionButton} ${styles["warning"]}`}
+          $variant="warning"
         >
           <FiEdit />
-        </button>
-        <button
+        </ActionColButton>
+        <ActionColButton
           title="Change status"
           disabled={isPending}
           onClick={handleCahngeStatus}
-          className={`${styles.actionButton} ${styles["danger"]}`}
+          $variant="danger"
         >
           <FiSlash />
-        </button>
-      </div>
+        </ActionColButton>
+      </ActionColWrapper>
     )
   );
 };

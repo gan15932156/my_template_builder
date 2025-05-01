@@ -1,3 +1,4 @@
+import { PER_PAGE_SIZE } from "@/Features/blueprint/constants";
 import { z } from "zod";
 
 export const zodProject = z.object({
@@ -5,7 +6,7 @@ export const zodProject = z.object({
 });
 export const searchParamsSchema = z.object({
   page: z.coerce.number().default(1),
-  per_page: z.coerce.number().default(10),
+  per_page: z.coerce.number().default(PER_PAGE_SIZE),
 });
 export const componentBodySchema = z.object({
   html: z.string(),

@@ -3,26 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Layout.module.css";
+import styled from "styled-components";
+const NavWrapper = styled.nav`
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+`;
 function Layout({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
   return (
     <div>
-      <nav className={styles.navContainer}>
-        {/* <Link
-          href={"/"}
-          className={`${styles.link} ${pathName === "/" ? styles.active : ""}`}
-        >
-          Home
-        </Link>
-        <Link
-          href={"/component"}
-          className={`${styles.link} ${
-            pathName === "/component" ? styles.active : ""
-          }`}
-        >
-          Component
-        </Link> */}
-
+      <NavWrapper>
         <Link
           href={"/blueprint"}
           className={`${styles.link} ${
@@ -39,7 +32,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         >
           Theme
         </Link>
-      </nav>
+      </NavWrapper>
       {children}
     </div>
   );

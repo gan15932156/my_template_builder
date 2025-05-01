@@ -1,5 +1,6 @@
 export const ID_LENGTH = 12;
 export const CUSTOM_ALPHABET = "asdjgghfgbfdf";
+export const PER_PAGE_SIZE = 4;
 export const ELM_TYPES = [
   "base",
   "box",

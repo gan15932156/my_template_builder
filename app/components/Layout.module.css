@@ -1,11 +1,3 @@
-.navContainer {
-  padding: 0.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.4rem;
-  /* margin-bottom: 0.8rem; */
-}
 .link,
 .link:visited {
   text-transform: capitalize;
