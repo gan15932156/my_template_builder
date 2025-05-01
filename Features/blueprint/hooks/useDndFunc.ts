@@ -12,6 +12,7 @@ function useDndFunc(element: TBlueprintElement) {
     attributes,
     listeners,
     isDragging,
+    transform,
     setNodeRef: setDragNodeRef,
   } = useDraggable({
     id: "draggable-" + element.id,
@@ -21,6 +22,7 @@ function useDndFunc(element: TBlueprintElement) {
     setDropNodeRef,
     setDragNodeRef,
     isOver,
+    transform,
     attributes,
     listeners,
     isDragging,

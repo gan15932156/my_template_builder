@@ -8,7 +8,7 @@ const Block = styled.div<{
   $dragType: "OVERLAY" | "BLOCK_MANAGER";
 }>`
   display: flex;
-  font-size: 1rem;
+  font-size: 0.8rem;
   border-radius: 0.4rem;
   font-weight: bold;
   flex-direction: column;

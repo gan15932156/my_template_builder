@@ -46,7 +46,7 @@ const BlockItem: React.FC<Props> = ({ block }) => {
         <img
           src={blueprint.imageUrl}
           alt={blueprint.name}
-          style={{ width: "24px", height: "24px" }}
+          style={{ width: "100px", objectFit: "cover" }}
         />
         <p style={{ textAlign: "center" }}>
           {blueprint.name ? blueprint.name : "n/a"}

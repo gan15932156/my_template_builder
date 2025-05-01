@@ -165,7 +165,7 @@ function DropIndicator({ dropPosition }: DropIndicatorProps) {
     const commonStyle: React.CSSProperties = {
       position: "fixed",
       pointerEvents: "none",
-      zIndex: 9999,
+      zIndex: 10,
       background: "blue",
       left: rect.left,
     };
