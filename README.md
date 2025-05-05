@@ -1,14 +1,10 @@
 ## Sitemap
 
-/project => project dashboard
+/blueprint => Blueprint dashboard
 
-/project/edtior/[projectId] => project editor
+/blueprint/edtior/[blueprintId] => Blueprint editor
 
-/component => component dashboard
+/theme => Theme dashboard
 
-/component/editor/[componentId] => component editor
-
-/blueprint => blueprint dashboard
-
-/blueprint/editor/[blueprintId] => blueprint editor(In progess)
+/theme/edtior/[themeId] => Theme editor
 
