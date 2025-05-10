@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 
 export async function readStylePropertyFromJSON() {
   try {
-    const filePath = process.cwd() + "/data/style-properties.json";
+    const filePath = process.cwd() + "/app/data/style-properties.json";
     const file = await fs.readFile(filePath, "utf8");
     return JSON.parse(file);
   } catch (error) {
