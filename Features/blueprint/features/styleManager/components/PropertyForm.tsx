@@ -1,54 +1,44 @@
 "use client";
 
 import _ from "lodash";
+import { FC } from "react";
 import FormAccordion from "./FormAccordion";
 import PropertyField from "./PropertyField";
 import useSelectedStyle from "@/Features/blueprint/hooks/useSelectedStyle";
-import { useEffect, useState } from "react";
-import { readStylePropertyFromJSON } from "@/Features/blueprint/actions/styleProperty";
+import { PROPERTIES } from "@/Features/blueprint/constants/styleProperty";
+
 export type StylePropertieType = {
   [category: string]: string[];
 };
+
 interface Props {
   currentStyleState: string;
 }
-const PropertyForm: React.FC<Props> = ({ currentStyleState }) => {
-  const [styleProperty, setStyleProperty] = useState<StylePropertieType | null>(
-    null
-  );
+
+const PropertyForm: FC<Props> = ({ currentStyleState }) => {
   const { styles } = useSelectedStyle();
-  useEffect(() => {
-    const getReadstylePropertyJSON = async () => {
-      const data = await readStylePropertyFromJSON();
-      if (data) {
-        setStyleProperty(data.styleProperty);
-      }
-    };
-    getReadstylePropertyJSON();
-  }, []);
+  const currentStyles = styles[currentStyleState] || {};
+  const cleanedStyles = _.pickBy(currentStyles, (value) => value !== "");
+
   return (
     <form>
-      {styleProperty &&
-        Object.keys(styleProperty).map((style, index) => {
-          const rel = styles[currentStyleState];
-          const cleaned = _.pickBy(rel, (value) => value !== "");
-          const hasMatch =
-            cleaned && Object.keys(cleaned).length > 0
-              ? _.intersection(Object.keys(cleaned), styleProperty[style])
-                  .length > 0
-              : false;
-          return (
-            <FormAccordion key={index + style} text={style} hasMatch={hasMatch}>
-              {styleProperty[style].map((property, index2) => (
-                <PropertyField
-                  key={index + index2 + property}
-                  currentStyleState={currentStyleState}
-                  propertyName={property}
-                />
-              ))}
-            </FormAccordion>
-          );
-        })}
+      {Object.entries(PROPERTIES).map(([category, properties]) => {
+        const hasMatch =
+          Object.keys(cleanedStyles).length > 0 &&
+          _.intersection(Object.keys(cleanedStyles), properties).length > 0;
+
+        return (
+          <FormAccordion key={category} text={category} hasMatch={hasMatch}>
+            {properties.map((property) => (
+              <PropertyField
+                key={`${category}-${property}`}
+                currentStyleState={currentStyleState}
+                propertyName={property}
+              />
+            ))}
+          </FormAccordion>
+        );
+      })}
     </form>
   );
 };
