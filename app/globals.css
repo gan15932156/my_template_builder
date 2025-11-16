@@ -1,6 +1,8 @@
 /* https://colorhunt.co/palette/bfecffcdc1fffff6e3ffccea */
 :root {
   --background: #fff6e3;
+  --background200: #ccc5b6;
+  --background300: #999488;
   --foreground: #112a46;
   --success100: #d4edda;
   --success200: #a9dcb5;

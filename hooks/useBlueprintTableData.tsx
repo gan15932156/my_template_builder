@@ -3,13 +3,14 @@
 import Badge from "@/app/components/Badge";
 import BaseTableHeader from "@/app/components/BaseTableHeader";
 import ActionColumn from "@/Features/blueprint/features/dashboard/components/ActionColumn";
+import ImageCell from "@/Features/blueprint/features/dashboard/components/ImageCell";
 import { ApiResponse, TBlueprint } from "@/types/types";
 import { formattedDate } from "@/utils";
 import { searchParamsSchema, searchParamsSchemaType } from "@/zodObject";
 import { ProjectStatus } from "@prisma/client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
+
 import { useSearchParams } from "next/navigation";
 
 const fetchBlueprints = async (
@@ -42,21 +43,7 @@ const useBlueprintTableData = () => {
       id: "imageUrl",
       accessorKey: "imageUrl",
       header: () => "",
-      cell: (info) =>
-        info.getValue() ? (
-          <div style={{ textAlign: "center", position: "relative" }}>
-            <Image
-              style={{ objectFit: "contain" }}
-              width={320}
-              height={160}
-              priority={true}
-              src={info.getValue()}
-              alt="Blueprint screenshot image"
-            />
-          </div>
-        ) : (
-          ""
-        ),
+      cell: (info) => <ImageCell row={info.row} />,
     },
     {
       id: "name",

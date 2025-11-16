@@ -1,6 +1,7 @@
 import panelReducer from "@/Features/blueprint/slice/panelSlice";
 import elementReducer from "@/Features/blueprint/slice/elementSlice";
 import elementToolStateReducer from "@/Features/blueprint/slice/elementToolStateSlice";
+import imageModalReducer from "@/libs/imageModalSlice";
 import themeReducer from "@/Features/blueprint/slice/themeSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -11,6 +12,7 @@ export const makeStore = () => {
       element: elementReducer,
       tool: elementToolStateReducer,
       panel: panelReducer,
+      imageModal: imageModalReducer,
     },
   });
 };

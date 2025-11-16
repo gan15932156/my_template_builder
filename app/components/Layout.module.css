@@ -2,7 +2,7 @@
 .link:visited {
   text-transform: capitalize;
   font-size: 1rem;
-  color: var(--foreground);
+  color: #191917;
   text-decoration: none;
   position: relative;
   display: block;
