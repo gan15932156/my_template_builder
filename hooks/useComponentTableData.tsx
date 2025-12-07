@@ -2,6 +2,7 @@
 
 import Badge from "@/app/components/Badge";
 import BaseTableHeader from "@/app/components/BaseTableHeader";
+import { ProjectStatus } from "@/app/generated/prisma/enums";
 import ActionColumn from "@/Features/componentEditor/ActionColumn";
 import { ApiResponse, IComponent } from "@/types/types";
 import { formattedDate } from "@/utils";
@@ -10,7 +11,6 @@ import {
   searchParamsSchemaType,
   TComponentCategoryEnum,
 } from "@/zodObject";
-import { ProjectStatus } from "@prisma/client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";

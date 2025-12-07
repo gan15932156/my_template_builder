@@ -2,12 +2,12 @@
 
 import Badge from "@/app/components/Badge";
 import BaseTableHeader from "@/app/components/BaseTableHeader";
+import { ProjectStatus } from "@/app/generated/prisma/enums";
 import ActionColumn from "@/Features/blueprint/features/dashboard/components/ActionColumn";
 import ImageCell from "@/Features/blueprint/features/dashboard/components/ImageCell";
 import { ApiResponse, TBlueprint } from "@/types/types";
 import { formattedDate } from "@/utils";
 import { searchParamsSchema, searchParamsSchemaType } from "@/zodObject";
-import { ProjectStatus } from "@prisma/client";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 
