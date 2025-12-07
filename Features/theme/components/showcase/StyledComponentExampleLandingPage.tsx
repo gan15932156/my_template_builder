@@ -27,7 +27,7 @@ export const Navbar = styled.nav<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: ${({ theme }) => theme.primary.main};
+  background: ${({ theme }) => theme?.primary?.main};
   color: ${({ theme }) => theme.primary.contrastText};
   && {
     ${(props) =>

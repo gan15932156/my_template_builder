@@ -2,8 +2,9 @@ import { PrismaClient } from "@/app/generated/prisma/client";
 import { Pool } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
 const prismaCLientSignleton = () => {
+  const connectionString = `${process.env.POSTGRES_URL}`;
   const neon = new Pool({ connectionString: process.env.POSTGRES_PRISMA_URL });
-  const adapter = new PrismaNeon(neon);
+  const adapter = new PrismaNeon({ connectionString });
   return new PrismaClient({ adapter });
 };
 

@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error on get theme", error);
+    console.error("Error on get theme", JSON.stringify(error));
     return Response.json(
       {
         success: false,
